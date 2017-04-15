@@ -6,7 +6,7 @@ const faucetReducer = (state = {}, action) => {
         case RECEIVE_FAUCETS:
             return {
                 ...state,
-                faucets: action.addresses
+                faucets: action.payload
             }
         default:
             return state
