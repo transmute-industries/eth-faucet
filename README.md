@@ -3,6 +3,10 @@
 All truffle boxes come with Truffle, Webpack and React. This box adds react-router, redux and redux-auth-wrapper for authentication powered by a smart contract. Great for building your own auth system.
 
 
+## UI Example 
+http://ipfs.b9lab.com:8080/ipfs/QmTHdYEYiJPmbkcth3mQvEQQgEamFypLhc9zapsBatQW7Y/throttled_faucet.html
+
+## Contract Exmple
 https://gist.githubusercontent.com/kvhnuke/bdb71b8c849ae278717c/raw/fc7acaffea00338b4e954ee2f6fadc4a6540f6cd/gistfile1.txt
 
 ## Installation
