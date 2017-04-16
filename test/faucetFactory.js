@@ -75,7 +75,7 @@ contract('FaucetFactory', function (accounts) {
     })
 
     it("Verify Customer Can Get Wei", (done) => {
-        return Faucet.at(faucetAddress).then((_faucet) => {
+         Faucet.at(faucetAddress).then((_faucet) => {
             var events = _faucet.EtherRequested();
 
             events.watch((error, result) => {
