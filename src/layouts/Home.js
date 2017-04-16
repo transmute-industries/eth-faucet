@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Row, Col } from 'react-grid-system';
 
-import {Card, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 import Page from '../components/Page';
 

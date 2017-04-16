@@ -1,16 +1,27 @@
 import React, { Component } from 'react'
 
+import { Row, Col } from 'react-grid-system';
+
+import {Card, CardTitle, CardText} from 'material-ui/Card';
+
+import Page from '../components/Page';
+import SignUpForm from '../components/SignUpForm';
+
 class SignUp extends Component {
   render() {
     return(
-      <main className="container">
-        <div className="pure-g">
-          <div className="pure-u-1-1">
-            <h1>Sign Up</h1>
-            <p>We've got your wallet information, simply input your name and your account is made!</p>
-          </div>
-        </div>
-      </main>
+      <Page>
+        <Row>
+          <Col xs={12}>
+            <Card>
+              <CardTitle title="Signup" subtitle="Enter your info below." />
+              <CardText>
+                <SignUpForm />
+              </CardText>
+            </Card>
+          </Col>
+        </Row>
+      </Page>
     )
   }
 }
