@@ -5,18 +5,18 @@ import { Row, Col } from 'react-grid-system';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 import Page from '../components/Page';
-import SignUpFormContainer from '../containers/SignUpFormContainer';
+import CreateFaucetFormContainer from '../containers/CreateFaucetFormContainer';
 
-class SignUp extends Component {
+class CreateFaucet extends Component {
   render() {
     return(
       <Page>
         <Row>
           <Col xs={12}>
             <Card>
-              <CardTitle title="Signup" subtitle="Enter your info below." />
+              <CardTitle title="Create Faucet" subtitle="Enter your info below." />
               <CardText>
-                <SignUpFormContainer />
+                <CreateFaucetFormContainer />
               </CardText>
             </Card>
           </Col>
@@ -26,4 +26,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp
+export default CreateFaucet

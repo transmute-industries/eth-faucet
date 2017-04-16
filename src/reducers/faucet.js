@@ -1,5 +1,5 @@
 
-import { RECEIVE_FAUCETS, FAUCET_CREATED } from './Actions';
+import { RECEIVE_FAUCETS, FAUCET_CREATED } from '../actions/faucet';
 
 const initialState = {
     lastCreated: null,

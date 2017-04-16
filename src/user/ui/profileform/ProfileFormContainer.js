@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import ProfileForm from './ProfileForm'
-import { updateUser } from './ProfileFormActions'
+import { updateUser } from '../../../actions/user'
 
 const mapStateToProps = (state, ownProps) => {
   return {

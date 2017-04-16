@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import userReducer from './user/userReducer'
 
-import faucetReducer from './faucet/Reducers'
+import userReducer from './reducers/user'
+import faucetReducer from './reducers/faucet'
 
 const reducer = combineReducers({
   routing: routerReducer,
