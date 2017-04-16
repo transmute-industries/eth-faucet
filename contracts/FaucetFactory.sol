@@ -1,8 +1,8 @@
 pragma solidity ^0.4.8;
 import "./Faucet.sol";
-import './zeppelin/ownership/Ownable.sol';
+import './zeppelin/lifecycle/Killable.sol';
 
-contract FaucetFactory is Ownable {
+contract FaucetFactory is Killable {
 
   address[] faucetAddresses;
   mapping (address => address[]) faucetOwnerMapping;
@@ -10,7 +10,7 @@ contract FaucetFactory is Ownable {
   event FaucetCreated(address creatorAddress);
 
 	function createFaucet() payable returns (address) {
-		Faucet newFaucet = new Faucet(msg.value, msg.sender);
+		Faucet newFaucet = new Faucet();
     if (!newFaucet.send(msg.value)) {
       throw;
     }
