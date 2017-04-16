@@ -20,7 +20,7 @@ import { getAllFaucets } from './actions/faucet';
 function doEverything() {
   return dispatch => Promise.all([
     store.dispatch(getAllFaucets()),
-    store.dispatch(loginUser())
+    // store.dispatch(loginUser())
   ]);
 }
 

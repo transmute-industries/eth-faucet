@@ -9,6 +9,10 @@ import Admin from './layouts/Admin'
 import Profile from './layouts/Profile'
 import CreateFaucet from './layouts/CreateFaucet'
 
+import Faucet from './layouts/Faucet'
+
+
+
 const routes = (
     <Route path="/">
         <IndexRoute component={Home} />
@@ -19,6 +23,7 @@ const routes = (
         <Route path="admin" component={UserIsAuthenticated(Admin)} />
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
 
+        <Route path="faucet/:faucetAddress" component={UserIsNotAuthenticated(Faucet)} />
         <Route path="faucet/create" component={UserIsAuthenticated(CreateFaucet)} />
     </Route>
 )
