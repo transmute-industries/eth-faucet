@@ -13,11 +13,15 @@ import './css/pure-min.css'
 import './App.css'
 
 class App extends Component {
+  
   render() {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
         <li className="pure-menu-item">
           <Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
+        </li>
+        <li className="pure-menu-item">
+          <Link to="/faucet" className="pure-menu-link">Faucet</Link>
         </li>
         <li className="pure-menu-item">
           <Link to="/profile" className="pure-menu-link">Profile</Link>
