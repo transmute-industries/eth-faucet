@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import { Row, Col } from 'react-grid-system';
 
 import PageContainer from '../containers/PageContainer';
-import ProfileFormContainer from '../containers/ProfileFormContainer';
 
-class Profile extends Component {
+import FaucetTableContainer from '../containers/FaucetTableContainer';
+
+class Admin extends Component {
     render() {
         return (
             <PageContainer>
                 <Row>
                     <Col xs={12}>
-                        <ProfileFormContainer />
+                        <FaucetTableContainer />
                     </Col>
                 </Row>
             </PageContainer>
@@ -18,4 +19,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile
+export default Admin
