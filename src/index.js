@@ -16,7 +16,7 @@ injectTapEventPlugin();
 import Faucet from './faucet/Faucet';
 import Home from './layouts/Home';
 import Dashboard from './layouts/Dashboard';
-import SignUp from './layouts/SignUp';
+import SignUp from './containers/SignUpFormContainer';
 import Profile from './layouts/Profile';
 
 // Redux Store
