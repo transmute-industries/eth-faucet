@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 
 export default class CreateFaucetCard extends React.Component {
 
@@ -48,7 +48,7 @@ export default class CreateFaucetCard extends React.Component {
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
         <CardActions>
-          <FlatButton label="Create" onTouchTap={this.handleCreate} />
+          {/*<FlatButton label="Create" onTouchTap={this.handleCreate} />*/}
         </CardActions>
       </Card>
     );

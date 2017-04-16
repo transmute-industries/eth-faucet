@@ -15,11 +15,11 @@ class Faucet extends Component {
   }
 
   handleLoadFaucet = () => {
-    this.props.getAllFaucets('0x781218e2b16e53b0f198e545c75d90fcb6ea6c53');
+    this.props.getAllFaucets();
   }
 
   handleCreateFaucet = () => {
-    this.props.createFaucet('0x781218e2b16e53b0f198e545c75d90fcb6ea6c53');
+    this.props.createFaucet();
   }
 
   render() {
@@ -35,7 +35,7 @@ class Faucet extends Component {
   }
 }
 const mapStateToProps = state => ({
-  faucet: state.faucet
+  faucets: state.faucets
 })
 
 export default connect(mapStateToProps, { getAllFaucets, createFaucet })(Faucet);

@@ -1,8 +1,11 @@
 
 
+export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS';
+export const FAUCET_CREATED = 'FAUCET_CREATED';
+
 import Web3 from 'web3'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-// const web3 = new Web3(provider)
+const web3 = new Web3(provider)
 
 const contract = require('truffle-contract')
 
@@ -15,9 +18,9 @@ faucetContract.setProvider(provider);
 const faucetFactoryContract = contract(FaucetFactory);
 faucetFactoryContract.setProvider(provider);
 
-export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS';
+let fromAddress = web3.eth.accounts[0];
 
-export const getAllFaucets = (fromAddress) => {
+export const getAllFaucets = () => {
     return (dispatch) => {
         let faucetFactoryInstance;
 
@@ -29,25 +32,19 @@ export const getAllFaucets = (fromAddress) => {
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((data) => {
-                    console.log('data: ', data);
-
+                .then((faucets) => {
+                    // console.log('faucets: ', faucets);
                     dispatch({
                         type: RECEIVE_FAUCETS,
-                        payload: ['0x0...']
+                        payload: faucets.concat(['0x0'])
                     });
-
-                    // dispatch({
-                    //     type: RECEIVE_FAUCETS,
-                    //     payload: [balanceObject.toNumber()]
-                    // });
                 })
         })
     }
 }
 
 
-export const createFaucet = (fromAddress) => {
+export const createFaucet = () => {
     return (dispatch) => {
         let faucetFactoryInstance;
 
@@ -55,23 +52,19 @@ export const createFaucet = (fromAddress) => {
             faucetFactoryInstance = instance;
             console.log('faucetFactoryInstance: ', faucetFactoryInstance);
 
-            faucetFactoryInstance.getAllFaucets
-                .call({ from: fromAddress })
+            faucetFactoryInstance
+                .createFaucet({ from: fromAddress, gas: 2000000, value: web3.toWei(10) })
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((data) => {
-                    console.log('data: ', data);
+                .then((tx) => {
+                    console.log('tx: ', tx);
 
                     dispatch({
-                        type: RECEIVE_FAUCETS,
-                        payload: ['0x0...']
+                        type: FAUCET_CREATED,
+                        payload: tx
                     });
 
-                    // dispatch({
-                    //     type: RECEIVE_FAUCETS,
-                    //     payload: [balanceObject.toNumber()]
-                    // });
                 })
         })
     }
