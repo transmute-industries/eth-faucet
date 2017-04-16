@@ -15,8 +15,18 @@ import routes from './routes';
 const history = syncHistoryWithStore(browserHistory, store);
 
 import { loginUser } from './actions/user';
+import { getAllFaucets } from './actions/faucet';
 
-store.dispatch(loginUser())
+function doEverything() {
+  return dispatch => Promise.all([
+    store.dispatch(getAllFaucets()),
+    store.dispatch(loginUser())
+  ]);
+}
+
+store.dispatch(doEverything()).then(() => {
+  console.log('I did everything!');
+});
 
 ReactDOM.render((
   <Provider store={store}>

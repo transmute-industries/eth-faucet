@@ -14,7 +14,7 @@ import {
   grey100, grey300, grey400, grey500,
   white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
-import {fade} from 'material-ui/utils/colorManipulator';
+import { fade } from 'material-ui/utils/colorManipulator';
 
 const customTheme = {
   // spacing: spacing,
@@ -66,15 +66,15 @@ class Page extends React.Component {
 
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
-        <Link to='admin'><MenuItem>Admin Dashboard</MenuItem></Link>
-        <Link to='profile'><MenuItem>Profile</MenuItem></Link>
-        <Link to='faucet/create'><MenuItem>Create Faucet</MenuItem></Link>
+        <Link to='/admin'><MenuItem>Admin Dashboard</MenuItem></Link>
+        <Link to='/profile'><MenuItem>Profile</MenuItem></Link>
+        <Link to='/faucet/create'><MenuItem>Create Faucet</MenuItem></Link>
       </span>
     )
 
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
       <span>
-        <Link to='signup'><MenuItem>Signup</MenuItem></Link>
+        <Link to='/signup'><MenuItem>Signup</MenuItem></Link>
       </span>
     )
 
@@ -96,7 +96,6 @@ class Page extends React.Component {
       } else {
         return <IconButton label="login" onClick={e => this.props.loginUser()}> <ActionFlightTakeoff /> </IconButton>
       }
-
     }
 
     return (
@@ -106,9 +105,7 @@ class Page extends React.Component {
         }}>
           <AppBar
             title="The Austin Ethereum Faucet"
-
             iconElementLeft={
-
               <IconButton
                 tooltip="Learn more about..."
                 tooltipPosition="bottom-right"
@@ -117,11 +114,9 @@ class Page extends React.Component {
                 <NavigationMenu />
               </IconButton>
             }
-
             iconElementRight={
               <SmartMenu />
             }
-
             onLeftIconButtonTouchTap={e => this.onHamburgerClick()}
           />
           <Drawer open={this.state.navOpen} onRequestChange={e => this.onHamburgerClick()} docked={false}>

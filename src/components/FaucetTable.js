@@ -6,9 +6,6 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 class FaucetTable extends React.Component {
 
-    // Material-UI Alpha Documentation
-    // https://material-ui-1dab0.firebaseapp.com/
-
     constructor(props) {
         super(props);
 
@@ -64,9 +61,9 @@ class FaucetTable extends React.Component {
                         showRowHover={this.state.showRowHover}
                         stripedRows={this.state.stripedRows}
                     >
-                        {this.props.faucet.addresses.map((row, index) => (
-                            <TableRow key={index} selected={row.selected}>
-                                <TableRowColumn>{row.address}</TableRowColumn>
+                        {this.props.faucet.addresses.map((address, index) => (
+                            <TableRow key={index}>
+                                <TableRowColumn>{address}</TableRowColumn>
                             </TableRow>
                         ))}
                     </TableBody>
