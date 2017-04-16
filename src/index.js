@@ -29,7 +29,7 @@ ReactDOM.render((
       <Router history={history}>
         <Route path="/" component={Home} />
         <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
-        <Route path="faucet" component={UserIsAuthenticated(Faucet)} />
+        <Route path="faucet" component={UserIsNotAuthenticated(Faucet)} />
         <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
       </Router>
