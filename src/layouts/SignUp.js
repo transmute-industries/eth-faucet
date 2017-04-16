@@ -4,13 +4,13 @@ import { Row, Col } from 'react-grid-system';
 
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 
-import Page from '../components/Page';
+import PageContainer from '../containers/PageContainer';
 import SignUpFormContainer from '../containers/SignUpFormContainer';
 
 class SignUp extends Component {
   render() {
     return(
-      <Page>
+      <PageContainer>
         <Row>
           <Col xs={12}>
             <Card>
@@ -21,7 +21,7 @@ class SignUp extends Component {
             </Card>
           </Col>
         </Row>
-      </Page>
+      </PageContainer>
     )
   }
 }
