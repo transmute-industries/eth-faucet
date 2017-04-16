@@ -1,7 +1,6 @@
 import React from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
 
 export default class CreateFaucetCard extends React.Component {
 
@@ -13,28 +12,32 @@ export default class CreateFaucetCard extends React.Component {
   }
 
   handleExpandChange = (expanded) => {
-    this.setState({expanded: expanded});
+    this.setState({ expanded: expanded });
   };
 
   handleToggle = (event, toggle) => {
-    this.setState({expanded: toggle});
+    this.setState({ expanded: toggle });
   };
 
   handleExpand = () => {
-    this.setState({expanded: true});
+    this.setState({ expanded: true });
   };
 
   handleReduce = () => {
-    this.setState({expanded: false});
+    this.setState({ expanded: false });
+  };
+
+  handleCreate = () => {
+    console.log('create new faucet...')
   };
 
   render() {
     return (
       <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
         <CardHeader
-          title="URL Avatar"
-          subtitle="Subtitle"
-          avatar="images/ok-128.jpg"
+          title="New Faucet"
+          subtitle="Owner "
+          avatar="water.jpg"
           actAsExpander={true}
           showExpandableButton={true}
         />
@@ -45,8 +48,7 @@ export default class CreateFaucetCard extends React.Component {
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
         <CardActions>
-          <FlatButton label="Expand" onTouchTap={this.handleExpand} />
-          <FlatButton label="Reduce" onTouchTap={this.handleReduce} />
+          <FlatButton label="Create" onTouchTap={this.handleCreate} />
         </CardActions>
       </Card>
     );

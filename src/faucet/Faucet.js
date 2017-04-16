@@ -1,43 +1,41 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 
-import { getAllFaucets } from './Actions';
+import { getAllFaucets, createFaucet } from './Actions';
 
 import Page from '../components/Page';
 
 import CreateFaucetCard from './CreateFaucet/CreateFaucetCard'
+import RaisedButton from 'material-ui/RaisedButton';
 
 class Faucet extends Component {
   constructor(props, { authData }) {
     super(props)
-    console.log(this.props, authData);
+    // console.log(this.props, authData);
   }
 
-  loadFaucet = () => {
-    console.log('call action ehre..')
-    this.props.getAllFaucets();
+  handleLoadFaucet = () => {
+    this.props.getAllFaucets('0x781218e2b16e53b0f198e545c75d90fcb6ea6c53');
+  }
+
+  handleCreateFaucet = () => {
+    this.props.createFaucet('0x781218e2b16e53b0f198e545c75d90fcb6ea6c53');
   }
 
   render() {
     return (
       <Page>
-
-        <h1>Faucet</h1>
-        <strong>Hello {this.props.authData.name}!</strong>
-        <br />
-        <br />
-        <br />
-        <button className="" onClick={this.loadFaucet}> Load Faucet</button>
-        {JSON.stringify(this.props.faucet)}
-
         <CreateFaucetCard />
+        <br />
+        <RaisedButton onClick={this.handleLoadFaucet} label="Load" />
+        <br />
+        <RaisedButton onClick={this.handleCreateFaucet} label="Create" />
       </Page>
     )
   }
 }
-
 const mapStateToProps = state => ({
   faucet: state.faucet
 })
 
-export default connect(mapStateToProps, { getAllFaucets })(Faucet);
+export default connect(mapStateToProps, { getAllFaucets, createFaucet })(Faucet);
