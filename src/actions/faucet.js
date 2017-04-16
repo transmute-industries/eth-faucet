@@ -59,7 +59,6 @@ export const createFaucet = () => {
                 })
                 .then((tx) => {
                     console.log('tx: ', tx);
-
                     dispatch({
                         type: FAUCET_CREATED,
                         payload: tx

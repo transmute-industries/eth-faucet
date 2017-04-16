@@ -4,13 +4,13 @@ import { Row, Col } from 'react-grid-system';
 
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 
-import Page from '../components/Page';
+import PageContainer from '../containers/PageContainer';
 import CreateFaucetFormContainer from '../containers/CreateFaucetFormContainer';
 
 class CreateFaucet extends Component {
   render() {
     return(
-      <Page>
+      <PageContainer>
         <Row>
           <Col xs={12}>
             <Card>
@@ -21,7 +21,7 @@ class CreateFaucet extends Component {
             </Card>
           </Col>
         </Row>
-      </Page>
+      </PageContainer>
     )
   }
 }

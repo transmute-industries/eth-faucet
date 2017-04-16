@@ -28,33 +28,54 @@ contract('FaucetFactory', function (accounts) {
     it("Create Faucet", () => {
         return faucetFactoryInstance
             .createFaucet({ from: faucetOwner, gas: 2000000, value: web3.toWei(10) })
+            .then((tx) =>{
+                console.log(tx)
+            })
     });
 
-    it("Verify Faucet owner", () => {
-        return Faucet.at(faucetAddress).then((Faucet) => {
-            return Faucet.faucetOwner.call().then((_faucetOwner) => {
-                assert.equal(faucetOwner, _faucetOwner, "faucetOwner is not _faucetOwner")
+    it("Verify Faucet Factory Addresses", (done) => {
+        faucetFactoryInstance.getAllFaucets
+            .call({ from: faucetOwner })
+            .then((faucetAddresses) => {
+                console.log(faucetAddresses)
+                done();
             });
-        })
     })
 
-    it("Verify Faucet Balance", () => {
-        return Faucet.at(faucetAddress).then((Faucet) => {
-            return Faucet.faucetBalance.call().then((faucetBalance) => {
-                // console.log(faucetBalance.toNumber())
-                assert.equal(10000000000000000000, faucetBalance.toNumber(), "10000000000000000000 wasn't the faucetBalance")
-            });
-        })
-    })
+    // it("Verify Faucet owner", () => {
+    //     return Faucet.at(faucetAddress).then((Faucet) => {
+    //         return Faucet.faucetOwner.call().then((_faucetOwner) => {
+    //             assert.equal(faucetOwner, _faucetOwner, "faucetOwner is not _faucetOwner")
+    //         });
+    //     })
+    // })
 
-    it("Verify Faucet Balance", () => {
-        return Faucet.at(faucetAddress).then((Faucet) => {
-            return Faucet.getBalance.call().then((faucetBalance) => {
-                // console.log(faucetBalance.toNumber())
-                assert.equal(10000000000000000000, faucetBalance.toNumber(), "10000000000000000000 wasn't the faucetBalance")
-            });
-        })
-    })
+    // it("Verify Faucet Factory Addresses Increased", (done) => {
+    //     faucetFactoryInstance.getAllFaucets
+    //         .call({ from: faucetOwner })
+    //         .then((faucetAddresses) => {
+    //             console.log(faucetAddresses)
+    //             done();
+    //         });
+    // })
+
+    // it("Verify Faucet Balance", () => {
+    //     return Faucet.at(faucetAddress).then((Faucet) => {
+    //         return Faucet.faucetBalance.call().then((faucetBalance) => {
+    //             // console.log(faucetBalance.toNumber())
+    //             assert.equal(10000000000000000000, faucetBalance.toNumber(), "10000000000000000000 wasn't the faucetBalance")
+    //         });
+    //     })
+    // })
+
+    // it("Verify Faucet Balance", () => {
+    //     return Faucet.at(faucetAddress).then((Faucet) => {
+    //         return Faucet.getBalance.call().then((faucetBalance) => {
+    //             // console.log(faucetBalance.toNumber())
+    //             assert.equal(10000000000000000000, faucetBalance.toNumber(), "10000000000000000000 wasn't the faucetBalance")
+    //         });
+    //     })
+    // })
 
     // it("Verify Get Send Amount", (done) => {
     //     Faucet.at(faucetAddress)
@@ -69,15 +90,15 @@ contract('FaucetFactory', function (accounts) {
     // })
 
 
-    it("Verify Customer Can Get Wei", (done) => {
-        Faucet.at(faucetAddress)
-            .then((Faucet) => {
-                return Faucet.getWei({ from: faucetCustomer, gas: 2000000})
-            })
-            .then((tx) => {
-                console.log(tx)
-            })
-    })
+    // it("Verify Customer Can Get Wei", (done) => {
+    //     Faucet.at(faucetAddress)
+    //         .then((Faucet) => {
+    //             return Faucet.getWei({ from: faucetCustomer, gas: 2000000 })
+    //         })
+    //         .then((tx) => {
+    //             console.log(tx)
+    //         })
+    // })
 
     // it("Verify Thief Account Balance After Steal", (done) => {
     //     Faucet.at(faucetAddress).then((Faucet) => {

@@ -37,26 +37,22 @@ class Page extends React.Component {
 
   render() {
 
-    // needed for VisibleOnlyAuth & HiddenOnlyAuth
-    const { user } = this.props
-    // kindof a code smell?
-
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
         <Link to='admin'><MenuItem>Admin Dashboard</MenuItem></Link>
         <Link to='profile'><MenuItem>Profile</MenuItem></Link>
+        <Link to='faucet/create'><MenuItem>Create Faucet</MenuItem></Link>
       </span>
     )
 
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
       <span>
-        <Link to='faucet/create'><MenuItem>Create Faucet</MenuItem></Link>
         <Link to='signup'><MenuItem>Signup</MenuItem></Link>
       </span>
     )
 
     const SmartMenu = () => {
-      if (user.data) {
+      if (this.props.user.data) {
         return (<IconMenu
           iconButtonElement={
             <IconButton>

@@ -7,6 +7,7 @@ export default class CreateFaucetForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            faucetName: '',
             expanded: true,
         };
     }
@@ -37,7 +38,14 @@ export default class CreateFaucetForm extends React.Component {
     }
 
     handleCreateFaucet = () => {
+        console.log(this.state)
         this.props.onCreateFaucetFormSubmit();
+    }
+
+    onInputChange(event) {
+        this.setState({
+            faucetName: event.target.value
+        });
     }
 
     render() {
