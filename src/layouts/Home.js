@@ -4,7 +4,7 @@ import { Row, Col } from 'react-grid-system';
 
 import {Card, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
-import Page from '../Page';
+import Page from '../components/Page';
 
 class Home extends Component {
   render() {

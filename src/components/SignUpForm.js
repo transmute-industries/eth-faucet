@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component } from 'react'
 
 class SignUpForm extends Component {
@@ -6,7 +8,7 @@ class SignUpForm extends Component {
 
     this.state = {
       name: ''
-    }
+    };
   }
 
   onInputChange(event) {
@@ -16,8 +18,7 @@ class SignUpForm extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    if (this.state.name.length < 2)
-    {
+    if (this.state.name.length < 2) {
       return alert('Please fill in your name.')
     }
 
