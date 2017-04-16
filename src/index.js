@@ -13,11 +13,12 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 // Layouts
+import App from './App';
+import Faucet from './faucet/Faucet';
 import Home from './layouts/Home';
 import Dashboard from './layouts/Dashboard';
 import SignUp from './layouts/SignUp';
 import Profile from './layouts/Profile';
-
 
 // Redux Store
 import store from './store';
@@ -29,6 +30,7 @@ ReactDOM.render((
       <Router history={history}>
         <Route path="/" component={Home} />
         <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
+        <Route path="faucet" component={UserIsAuthenticated(Faucet)} />
         <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
       </Router>
