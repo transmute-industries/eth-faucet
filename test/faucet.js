@@ -68,33 +68,20 @@ contract('FaucetFactory', function (accounts) {
     //         })
     // })
 
-
     it("Verify Customer Can Get Wei", (done) => {
         Faucet.at(faucetAddress)
             .then((Faucet) => {
-                return Faucet.getWei({ from: faucetCustomer, gas: 2000000})
+                return Faucet.getWei({ from: faucetCustomer, gas: 2000000 })
             })
             .then((tx) => {
-                console.log(tx)
+                // console.log(tx)
+                var ethRequestedEvent = tx.logs[0];
+                // console.log(ethRequestedEvent)
+                assert(ethRequestedEvent.event === 'EtherRequested', 'event is not EtherRequested');
+                assert(ethRequestedEvent.args.fromAddress === faucetCustomer, 'fromAddress is not faucetCustomer');
+                // assert(ethRequestedEvent.args.fromAddress === faucetCustomer, 'fromAddress faucetCustomer');
+                done();
             })
     })
 
-    // it("Verify Thief Account Balance After Steal", (done) => {
-    //     Faucet.at(faucetAddress).then((Faucet) => {
-    //         var events = Faucet.EtherRequested();
-
-    //         events.watch((error, result) => {
-    //             if (error == null) {
-    //                 console.log(result)
-    //                 // assert.equal(1000000000000000000, result.args._amount.toNumber(), "Amount was not set to 1000000000000000000")
-    //                 events.stopWatching()
-    //                 done()
-    //             }
-    //             console.log(error, result)
-    //         });
-
-    //         Faucet.getWei
-    //             .call({ from: faucetCustomer })
-    //     })
-    // })
 });
