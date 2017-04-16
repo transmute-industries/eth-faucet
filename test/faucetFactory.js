@@ -1,6 +1,5 @@
 var Web3 = require('web3')
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-
 var Faucet = artifacts.require("./Faucet.sol");
 var FaucetFactory = artifacts.require("./FaucetFactory.sol");
 
@@ -19,7 +18,7 @@ contract('FaucetFactory', function (accounts) {
 
     it("Create Faucet address", () => {
         return faucetFactoryInstance.createFaucet
-            .call({ from: faucetOwner, gas: 2000000, value: web3.toWei(10) })
+            .call({ from: faucetOwner, value: web3.toWei(1) })
             .then((address) => {
                 return faucetAddress = address;
             });
@@ -27,7 +26,7 @@ contract('FaucetFactory', function (accounts) {
 
     it("Create Faucet", () => {
         return faucetFactoryInstance
-            .createFaucet({ from: faucetOwner, gas: 2000000, value: web3.toWei(10) })
+            .createFaucet({ from: faucetOwner, gas: 2000000, value: web3.toWei(1) })
             .then((tx) =>{
                 console.log(tx)
             })
@@ -42,13 +41,13 @@ contract('FaucetFactory', function (accounts) {
             });
     })
 
-    // it("Verify Faucet owner", () => {
-    //     return Faucet.at(faucetAddress).then((Faucet) => {
-    //         return Faucet.faucetOwner.call().then((_faucetOwner) => {
-    //             assert.equal(faucetOwner, _faucetOwner, "faucetOwner is not _faucetOwner")
-    //         });
-    //     })
-    // })
+    it("Verify Faucet owner", () => {
+        return Faucet.at(faucetAddress).then((Faucet) => {
+            return Faucet.faucetOwner.call().then((_faucetOwner) => {
+                assert.equal(faucetOwner, _faucetOwner, "faucetOwner is not _faucetOwner")
+            });
+        })
+    })
 
     // it("Verify Faucet Factory Addresses Increased", (done) => {
     //     faucetFactoryInstance.getAllFaucets
