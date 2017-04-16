@@ -3,6 +3,10 @@ import React, { Component } from 'react'
 
 import { getAllFaucets } from './Actions';
 
+import Page from '../components/Page';
+
+import CreateFaucetCard from './CreateFaucet/CreateFaucetCard'
+
 class Faucet extends Component {
   constructor(props, { authData }) {
     super(props)
@@ -16,7 +20,8 @@ class Faucet extends Component {
 
   render() {
     return (
-      <div>
+      <Page>
+
         <h1>Faucet</h1>
         <strong>Hello {this.props.authData.name}!</strong>
         <br />
@@ -24,7 +29,9 @@ class Faucet extends Component {
         <br />
         <button className="" onClick={this.loadFaucet}> Load Faucet</button>
         {JSON.stringify(this.props.faucet)}
-      </div>
+
+        <CreateFaucetCard />
+      </Page>
     )
   }
 }
