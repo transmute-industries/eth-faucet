@@ -1,40 +1,30 @@
 pragma solidity ^0.4.8;
 
-contract TreasureChest {
+contract Faucet {
 
-    uint public treasureAmount;
-    address public treasureOwner;
+    uint public faucetBalance;
+    address public faucetOwner;
 
     uint256 sendAmount;
     mapping (address => uint) lastSent;
     uint blockLimit;
 
-
-    event Steal(address indexed _to, uint indexed _amount);
+    event EtherRequested(address indexed fromAddress);
+	event EtherSent(address indexed toAddress);
 
     function () payable {}
 
     // Constructor
-    function TreasureChest(
-      uint _treasureValue,
-      address _treasureOwner
+    function Faucet(
+      uint _value,
+      address _owner
       ) {
-        treasureAmount = _treasureValue;
-        treasureOwner = _treasureOwner;
+        faucetBalance = _value;
+        faucetOwner = _owner;
         sendAmount = 1000000000000000000;
         blockLimit = 5;
-        
     }
-
-    function stealCoins(address _thiefAddress) public returns (bool sufficient) {
-      if (this.balance > 0 && _thiefAddress.send(this.balance)) {
-          Steal(_thiefAddress, treasureAmount);
-          treasureAmount = 0;
-      }
-		  return bool(true);
-    }
-
-
+   
 	function getBalance() returns (uint){
 	     return address(this).balance;
 	}
@@ -42,6 +32,7 @@ contract TreasureChest {
 	    if(lastSent[msg.sender]<(block.number-blockLimit)&&address(this).balance>sendAmount){
 	        if (msg.sender.send(sendAmount) ){
                 lastSent[msg.sender] = block.number;
+				EtherRequested(msg.sender );
 	            return true;
             } else {
                 throw;
@@ -54,6 +45,7 @@ contract TreasureChest {
 		  if(lastSent[msg.sender]<(block.number-blockLimit)&&address(this).balance>sendAmount){
 	        if (recp.send(sendAmount) ){
                 lastSent[msg.sender] = block.number;
+				EtherSent(msg.sender );
 	            return true;
             } else{
                 throw;
@@ -73,7 +65,7 @@ contract TreasureChest {
 		  return blockLimit;
 	}
 	function setBlockLimit(uint limit) returns (bool){
-		  if(msg.sender==treasureOwner) {
+		  if(msg.sender==faucetOwner) {
 	        blockLimit = limit;
 	        return true;
 	    } else {
@@ -81,7 +73,7 @@ contract TreasureChest {
 	    }
 	}
 	function setSendAmount(uint256 val) returns (bool){
-	    if(msg.sender==treasureOwner)   {
+	    if(msg.sender==faucetOwner)   {
 	        sendAmount = val;
 	        return true;
 	    } else {
@@ -92,8 +84,8 @@ contract TreasureChest {
 	    return sendAmount;
 	}
 	function killMe(){
-	    if(msg.sender==treasureOwner) {
-	        suicide(treasureOwner);
+	    if(msg.sender==faucetOwner) {
+	        suicide(faucetOwner);
 	    }
 	}
 

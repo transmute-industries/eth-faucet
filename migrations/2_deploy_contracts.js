@@ -2,8 +2,8 @@ var Ownable = artifacts.require("./zeppelin/ownership/Ownable.sol");
 var Killable = artifacts.require("./zeppelin/lifecycle/Killable.sol");
 var Authentication = artifacts.require("./Authentication.sol");
 
-var TreasureChestFactory = artifacts.require("./TreasureChestFactory.sol");
-var TreasureChest = artifacts.require("./TreasureChest.sol");
+var FaucetFactory = artifacts.require("./FaucetFactory.sol");
+var Faucet = artifacts.require("./Faucet.sol");
 
 module.exports = function (deployer) {
   deployer.deploy(Ownable);
@@ -12,7 +12,7 @@ module.exports = function (deployer) {
   deployer.link(Killable, Authentication);
   deployer.deploy(Authentication);
   
-  deployer.deploy(TreasureChestFactory);
-  deployer.link(TreasureChestFactory, TreasureChest);
-  deployer.deploy(TreasureChest);
+  deployer.deploy(FaucetFactory);
+  deployer.link(FaucetFactory, Faucet);
+  deployer.deploy(Faucet);
 };
