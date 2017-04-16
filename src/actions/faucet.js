@@ -36,7 +36,7 @@ export const getAllFaucets = () => {
                     // console.log('faucets: ', faucets);
                     dispatch({
                         type: RECEIVE_FAUCETS,
-                        payload: faucets.concat(['0x0'])
+                        payload: faucets
                     });
                 })
         })
