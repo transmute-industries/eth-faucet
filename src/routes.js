@@ -5,6 +5,7 @@ import { UserIsNotAuthenticated, UserIsAuthenticated } from './util/wrappers.js'
 
 import Home from './layouts/Home'
 import SignUp from './layouts/SignUp'
+import Admin from './layouts/Admin'
 import Profile from './layouts/Profile'
 import CreateFaucet from './layouts/CreateFaucet'
 
@@ -14,6 +15,9 @@ const routes = (
 
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
         <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
+
+        <Route path="admin" component={UserIsAuthenticated(Admin)} />
+        <Route path="profile" component={UserIsAuthenticated(Profile)} />
 
         <Route path="faucet/create" component={UserIsAuthenticated(CreateFaucet)} />
     </Route>

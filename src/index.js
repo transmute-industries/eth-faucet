@@ -14,6 +14,10 @@ import routes from './routes';
 
 const history = syncHistoryWithStore(browserHistory, store);
 
+import { loginUser } from './actions/user';
+
+store.dispatch(loginUser())
+
 ReactDOM.render((
   <Provider store={store}>
     <Router history={history}>
