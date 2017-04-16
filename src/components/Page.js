@@ -14,11 +14,12 @@ import {
   Drawer,
   IconButton,
   IconMenu,
-  MenuItem,
-  AvatarIcon
+  MenuItem
 } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+
+import ActionFlightTakeoff from 'material-ui/svg-icons/action/flight-takeoff';
 
 class Page extends React.Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class Page extends React.Component {
       navOpen: !this.state.navOpen,
     })
   }
+
   render() {
 
     // needed for VisibleOnlyAuth & HiddenOnlyAuth
@@ -42,6 +44,7 @@ class Page extends React.Component {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
         <Link to='admin'><MenuItem>Admin Dashboard</MenuItem></Link>
+        <Link to='profile'><MenuItem>Profile</MenuItem></Link>
       </span>
     )
 
@@ -51,6 +54,27 @@ class Page extends React.Component {
         <Link to='signup'><MenuItem>Signup</MenuItem></Link>
       </span>
     )
+
+    const SmartMenu = () => {
+      if (user.data) {
+        return (<IconMenu
+          iconButtonElement={
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          }
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+        >
+          <MenuItem primaryText="Source" target="_blank" href="https://github.com/transmute-industries/eth-faucet" />
+          <OnlyAuthLinks />
+          <OnlyGuestLinks />
+        </IconMenu>)
+      } else {
+        return <IconButton label="login" onClick={e => this.props.loginUser()}> <ActionFlightTakeoff /> </IconButton>
+      }
+
+    }
 
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
@@ -72,25 +96,7 @@ class Page extends React.Component {
             }
 
             iconElementRight={
-
-              <IconMenu
-                iconButtonElement={
-                  <IconButton>
-                    {
-                      user === null ? <AvatarIcon /> : <MoreVertIcon />
-                    }
-                  </IconButton>
-                }
-                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-              >
-                <MenuItem primaryText="Source" target="_blank" href="https://github.com/transmute-industries/eth-faucet" />
-
-                <OnlyAuthLinks />
-                <OnlyGuestLinks />
-
-              </IconMenu>
-
+              <SmartMenu />
             }
 
             onLeftIconButtonTouchTap={e => this.onHamburgerClick()}
