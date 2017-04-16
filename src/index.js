@@ -13,7 +13,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 // Layouts
-import App from './App';
 import Faucet from './faucet/Faucet';
 import Home from './layouts/Home';
 import Dashboard from './layouts/Dashboard';
