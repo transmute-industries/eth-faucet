@@ -14,7 +14,7 @@ contract Faucet is Killable {
     // Constructor
     function Faucet() {
         sendAmount = 1000000000000000000;
-        blockLimit = 1;
+        blockLimit = 0;
     }
 
   	function setBlockLimit(uint limit) returns (bool){

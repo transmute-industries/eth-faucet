@@ -15,3 +15,7 @@ build_webpack
 .env
 npm-debug.log
 .truffle-solidity-loader
+
+# sigmate
+sigmate-v3-austin-eth-faucet.json
+creds.js

@@ -43,12 +43,14 @@
     "truffle-contract": "^1.1.8",
     "truffle-solidity-loader": "0.0.8",
     "url-loader": "0.5.7",
+    "web3": "^0.18.2",
     "webpack": "1.14.0",
     "webpack-dev-server": "1.16.2",
     "webpack-manifest-plugin": "1.1.0",
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "@digix/truffle-lightwallet-provider": "git+https://git@github.com/DigixGlobal/truffle-lightwallet-provider.git",
     "material-ui": "^0.17.4",
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
@@ -61,12 +63,24 @@
     "redux": "^3.6.0",
     "redux-auth-wrapper": "^1.0.0",
     "redux-logger": "^3.0.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "truffle-hdwallet-provider": "0.0.3",
+    "uport-connect": "^0.5.6",
+    "uport-lib": "^2.1.1",
+    "web3": "^0.17.0-beta",
+    "web3-provider-engine": "^11.0.2"
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "migrate": "truffle migrate --reset --network development",
+    "build": "cp -R build/contracts public/contracts; node scripts/build.js; rm -rf ../docs; cp -R build/ ../docs; rm -rf public/contracts",
+    "deploy": "git add -A; git commit -m 'deploy'; git push origin master"
+  },
+  "standard": {
+    "globals": [
+      "web3"
+    ]
   },
   "jest": {
     "collectCoverageFrom": [
@@ -91,11 +105,6 @@
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
     }
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   },
   "eslintConfig": {
     "extends": "react-app"
