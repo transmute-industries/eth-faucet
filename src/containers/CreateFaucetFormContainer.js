@@ -10,7 +10,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onCreateFaucetFormSubmit: (name) => {
       event.preventDefault();
-      dispatch(createFaucet())
+      dispatch(createFaucet(name))
     },
     onGetAllFaucets: () => {
       event.preventDefault();

@@ -1,59 +1,84 @@
 var Web3 = require('web3')
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 var Faucet = artifacts.require("./Faucet.sol");
-var FaucetFactory = artifacts.require("./FaucetFactory.sol");
+var FaucetManager = artifacts.require("./FaucetManager.sol");
 
-contract('FaucetFactory', function (accounts) {
+contract('FaucetManager', function (accounts) {
 
-    var faucetFactoryInstance = null;
+    var faucetManagerInstance = null;
     var faucetAddress = null;
     var faucetCreator = accounts[0];
+    var faucetRecipient = accounts[1];
     var faucetCustomer = accounts[2];
-    var creatorFaucets = [];
+    var creatorFaucet = null;
+    var faucetName = "austin-test-faucet";
     var faucetSeedEther = 5000000000000000000;
 
     it("Factory Instance Exists", () => {
-        return FaucetFactory.deployed().then((_instance) => {
-            faucetFactoryInstance = _instance;
+        return FaucetManager.deployed().then((_instance) => {
+            faucetManagerInstance = _instance;
         });
     })
 
     it("Verify Faucet Factory Addresses", (done) => {
-        faucetFactoryInstance.getAllFaucets
+        faucetManagerInstance.faucetByCreator
             .call({ from: faucetCreator })
-            .then((_faucetAddresses) => {
-                creatorFaucets = _faucetAddresses;
+            .then((_faucetAddress) => {
+                creatorFaucet = _faucetAddress;
                 done();
             });
     })
 
     it("Create Faucet address", (done) => {
-        faucetFactoryInstance.createFaucet
-            .call({ from: faucetCreator, value: faucetSeedEther })
+        faucetManagerInstance.createFaucet
+            .call(faucetName, { from: faucetCreator, value: faucetSeedEther })
             .then((_address) => {
                 faucetAddress = _address;
                 done();
             });
     })
 
-    it("Create Faucet", () => {
-        return faucetFactoryInstance.createFaucet({ from: faucetCreator, gas: 2000000, value: faucetSeedEther });
+    it("Create Faucet", (done) => {
+        var events = faucetManagerInstance.FaucetCreated();
+
+        events.watch((error, result) => {
+            if (error == null) {
+                assert.equal(faucetAddress, result.args._address, "_faucetAddress does not match faucetAddress")
+                events.stopWatching()
+                done();
+            }
+        });
+
+        faucetManagerInstance.createFaucet(faucetName, {
+          from: faucetCreator,
+          gas: 2000000,
+          value: faucetSeedEther
+        }).then();
     });
 
     it("Verify Faucet owner", (done) => {
         Faucet.at(faucetAddress).then((_faucet) => {
             return _faucet.owner.call().then((_owner) => {
-                assert.equal(faucetFactoryInstance.address, _owner, "faucetFactoryInstance is not faucet owner")
+                assert.equal(faucetManagerInstance.address, _owner, "faucetManagerInstance is not faucet owner")
                 done();
             });
         })
     })
 
-    it("Verify Faucet Factory Addresses Increased", (done) => {
-        faucetFactoryInstance.getAllFaucets
+    it("Verify faucetByCreatorMapping update", (done) => {
+        faucetManagerInstance.faucetByCreator
             .call({ from: faucetCreator })
-            .then((_faucetAddresses) => {
-                assert.equal(_faucetAddresses.length, creatorFaucets.length + 1, "faucetFactoryInstance addresses did not increase")
+            .then((_faucetAddress) => {
+                assert.equal(_faucetAddress, faucetAddress, "_faucetAddress does not match faucetAddress")
+                done();
+            });
+    })
+
+    it("Verify nameFaucetMapping update", (done) => {
+        faucetManagerInstance.faucetByName
+            .call(faucetName, { from: faucetCreator })
+            .then((_faucetAddress) => {
+                assert.equal(_faucetAddress, faucetAddress, "_faucetAddress does not match faucetAddress")
                 done();
             });
     })
@@ -80,7 +105,7 @@ contract('FaucetFactory', function (accounts) {
 
             events.watch((error, result) => {
                 if (error == null) {
-                    assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), "Amount sent was not equalt to 1000000000000000000")
+                    assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), "Amount sent was not equal to 1000000000000000000")
                     events.stopWatching()
                     done();
                 }
@@ -88,5 +113,27 @@ contract('FaucetFactory', function (accounts) {
 
             _faucet.getWei({ from: faucetCustomer, gas: 2000000 });
         });
+    })
+
+    it("Verify Customer Can Send Wei", (done) => {
+         Faucet.at(faucetAddress).then((_faucet) => {
+            var events = _faucet.EtherSent();
+
+            events.watch((error, result) => {
+                if (error == null) {
+                    assert.equal(faucetCustomer, result.args.toAddress, "faucetCutomer was not sent wei")
+                    events.stopWatching()
+                    done();
+                }
+            });
+
+            _faucet.sendWei(faucetRecipient, { from: faucetCustomer, gas: 2000000 });
+        });
+    })
+
+    it("Destroy Faucet", () => {
+        Faucet.at(faucetAddress).then((_faucet) => {
+            return faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, { from: faucetCreator, gas: 4000000 });
+        })
     })
 });

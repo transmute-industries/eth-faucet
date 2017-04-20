@@ -14,6 +14,7 @@ const faucetReducer = (state = initialState, action) => {
     }
 
     if (action.type === FAUCET_CREATED) {
+        console.log("payload: ", action.payload);
         return Object.assign(...state, state, {
             addresses: state.addresses.concat(action.payload.logs[0].address)
         })

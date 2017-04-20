@@ -23,7 +23,7 @@ const routes = (
         <Route path="admin" component={UserIsAuthenticated(Admin)} />
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
 
-        <Route path="faucet/:faucetAddress" component={UserIsNotAuthenticated(Faucet)} />
+        <Route path="faucets/:faucetName" component={UserIsNotAuthenticated(Faucet)} />
         <Route path="faucet/create" component={UserIsAuthenticated(CreateFaucet)} />
     </Route>
 )

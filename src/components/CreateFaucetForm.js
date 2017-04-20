@@ -28,18 +28,8 @@ export default class CreateFaucetForm extends React.Component {
         this.setState({ expanded: false });
     };
 
-    handleCreate = () => {
-        console.log('create new faucet...')
-    };
-
-    handleLoadFaucet = () => {
-        console.log(this)
-        this.props.onGetAllFaucets();
-    }
-
     handleCreateFaucet = () => {
-        console.log(this.state)
-        this.props.onCreateFaucetFormSubmit();
+        this.props.onCreateFaucetFormSubmit(this.state.faucetName);
     }
 
     onInputChange(event) {
@@ -60,7 +50,6 @@ export default class CreateFaucetForm extends React.Component {
                     onChange={e => this.onInputChange(e)}
                 />
                 <br />
-                <RaisedButton onClick={this.handleLoadFaucet} label="Load" />
                 <RaisedButton onClick={this.handleCreateFaucet} label="Create" />
             </div>
 

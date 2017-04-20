@@ -1,5 +1,3 @@
-
-
 export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS';
 export const FAUCET_CREATED = 'FAUCET_CREATED';
 
@@ -10,30 +8,30 @@ const web3 = new Web3(provider)
 const contract = require('truffle-contract')
 
 import Faucet from '../../build/contracts/Faucet.json'
-import FaucetFactory from '../../build/contracts/FaucetFactory.json'
+import FaucetManager from '../../build/contracts/FaucetManager.json'
 
 const faucetContract = contract(Faucet)
 faucetContract.setProvider(provider);
 
-const faucetFactoryContract = contract(FaucetFactory);
-faucetFactoryContract.setProvider(provider);
+const faucetManagerContract = contract(FaucetManager);
+faucetManagerContract.setProvider(provider);
 
 let fromAddress = web3.eth.accounts[0];
 
 export const getAllFaucets = () => {
     return (dispatch) => {
-        let faucetFactoryInstance;
+        let faucetManagerInstance;
 
-        faucetFactoryContract.deployed().then((instance) => {
-            faucetFactoryInstance = instance;
-            console.log('faucetFactoryInstance: ', faucetFactoryInstance);
-            faucetFactoryInstance.getAllFaucets
+        faucetManagerContract.deployed().then((instance) => {
+            faucetManagerInstance = instance;
+            console.log('faucetManagerInstance: ', faucetManagerInstance);
+            faucetManagerInstance.getAllFaucets
                 .call({ from: fromAddress })
                 .catch((error) => {
                     console.error(error);
                 })
                 .then((faucets) => {
-                    // console.log('faucets: ', faucets);
+                    console.log("faucets: ", faucets);
                     dispatch({
                         type: RECEIVE_FAUCETS,
                         payload: faucets
@@ -43,17 +41,16 @@ export const getAllFaucets = () => {
     }
 }
 
-
-export const createFaucet = () => {
+export const createFaucet = (name) => {
     return (dispatch) => {
-        let faucetFactoryInstance;
+        let faucetManagerInstance;
 
-        faucetFactoryContract.deployed().then((instance) => {
-            faucetFactoryInstance = instance;
-            console.log('faucetFactoryInstance: ', faucetFactoryInstance);
+        faucetManagerContract.deployed().then((instance) => {
+            faucetManagerInstance = instance;
+            console.log('faucetManagerInstance: ', faucetManagerInstance);
 
-            faucetFactoryInstance
-                .createFaucet({ from: fromAddress, gas: 2000000, value: web3.toWei(10) })
+            faucetManagerInstance
+                .createFaucet(name, { from: fromAddress, gas: 2000000, value: web3.toWei(10) })
                 .catch((error) => {
                     console.error(error);
                 })
@@ -63,7 +60,6 @@ export const createFaucet = () => {
                         type: FAUCET_CREATED,
                         payload: tx
                     });
-
                 })
         })
     }

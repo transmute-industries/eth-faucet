@@ -5,6 +5,8 @@ contract Faucet is Killable {
     uint256 sendAmount;
     mapping (address => uint) lastSent;
     uint blockLimit;
+    bytes32 public name;
+    uint public timeCreated;
 
     event EtherRequested(address indexed fromAddress, uint256 indexed sentAmount);
     event EtherSent(address indexed toAddress);
@@ -12,7 +14,9 @@ contract Faucet is Killable {
     function () payable {}
 
     // Constructor
-    function Faucet() {
+    function Faucet(bytes32 _name) {
+        timeCreated = now;
+        name = _name;
         sendAmount = 1000000000000000000;
         blockLimit = 0;
     }
@@ -72,5 +76,13 @@ contract Faucet is Killable {
             return blockLimit-(block.number-lastSent[msg.sender]);
         else
             return 0;
+  	}
+
+  	function refundRemainingBalance() returns (bool) {
+        if (owner.send(address(this).balance)) {
+            return true;
+        } else {
+            throw;
+        }
   	}
 }

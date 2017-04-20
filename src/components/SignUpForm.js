@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 class SignUpForm extends Component {
   constructor(props) {
     super(props);
