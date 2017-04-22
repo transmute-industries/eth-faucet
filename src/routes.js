@@ -11,8 +11,6 @@ import CreateFaucet from './layouts/CreateFaucet'
 
 import Faucet from './layouts/Faucet'
 
-
-
 const routes = (
     <Route path="/">
         <IndexRoute component={Home} />

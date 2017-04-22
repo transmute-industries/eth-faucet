@@ -20,21 +20,34 @@ let fromAddress = web3.eth.accounts[0];
 
 export const getAllFaucets = () => {
     return (dispatch) => {
-        let faucetManagerInstance;
+        faucetManagerContract.deployed().then((_instance) => {
+            _instance.getFaucets
+                .call()
+                .catch((error) => {
+                    console.error(error);
+                })
+                .then((faucet) => {
+                    dispatch({
+                        type: RECEIVE_FAUCETS,
+                        payload: faucet
+                    });
+                })
+        })
+    }
+}
 
-        faucetManagerContract.deployed().then((instance) => {
-            faucetManagerInstance = instance;
-            console.log('faucetManagerInstance: ', faucetManagerInstance);
-            faucetManagerInstance.getAllFaucets
+export const getFaucetByCreator = () => {
+    return (dispatch) => {
+        faucetManagerContract.deployed().then((_instance) => {
+            _instance.faucetByCreator
                 .call({ from: fromAddress })
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((faucets) => {
-                    console.log("faucets: ", faucets);
+                .then((faucet) => {
                     dispatch({
                         type: RECEIVE_FAUCETS,
-                        payload: faucets
+                        payload: faucet
                     });
                 })
         })
@@ -43,19 +56,13 @@ export const getAllFaucets = () => {
 
 export const createFaucet = (name) => {
     return (dispatch) => {
-        let faucetManagerInstance;
-
-        faucetManagerContract.deployed().then((instance) => {
-            faucetManagerInstance = instance;
-            console.log('faucetManagerInstance: ', faucetManagerInstance);
-
-            faucetManagerInstance
+        faucetManagerContract.deployed().then((_instance) => {
+            _instance
                 .createFaucet(name, { from: fromAddress, gas: 2000000, value: web3.toWei(10) })
                 .catch((error) => {
                     console.error(error);
                 })
                 .then((tx) => {
-                    console.log('tx: ', tx);
                     dispatch({
                         type: FAUCET_CREATED,
                         payload: tx

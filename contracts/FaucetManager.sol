@@ -1,11 +1,14 @@
 pragma solidity ^0.4.8;
 import "./Faucet.sol";
+import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract FaucetManager is Killable {
 
+  using ArrayUtils for *;
   mapping (address => address) creatorFaucetMapping;
   mapping (bytes32 => address) nameFaucetMapping;
+  address[] public faucets;
 
   event FaucetCreated(
     address _address,
@@ -38,6 +41,7 @@ contract FaucetManager is Killable {
     }
 
     // Update State Dependent On Other Contracts
+    faucets.push(address(_newFaucet));
     creatorFaucetMapping[msg.sender] = address(_newFaucet);
     nameFaucetMapping[_name] = address(_newFaucet);
 
@@ -54,6 +58,10 @@ contract FaucetManager is Killable {
     return nameFaucetMapping[_name];
   }
 
+  function getFaucets() onlyOwner returns(address[] faucetAddresses)  {
+    return faucetAddresses;
+  }
+
   function killFaucet(address _address, bytes32 _name, address _creator) constant returns(bool)  {
     Faucet _faucet = Faucet(_address);
     if (nameFaucetMapping[_name] == 0) {
@@ -64,6 +72,7 @@ contract FaucetManager is Killable {
     }
     delete nameFaucetMapping[_name];
     delete creatorFaucetMapping[_creator];
+    ArrayUtils.RemoveByValue(faucets, _faucet);
     _faucet.kill();
     return true;
   }
