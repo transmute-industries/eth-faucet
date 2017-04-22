@@ -15,7 +15,7 @@ module.exports = function (deployer) {
   deployer.link(Killable, Authentication);
   deployer.deploy(Authentication);
 
-  deployer.deploy(FaucetManager);
+  deployer.deploy(FaucetManager, {value:5000000000000000000});
   deployer.link(FaucetManager, Faucet);
   deployer.deploy(Faucet);
 };

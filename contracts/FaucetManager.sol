@@ -14,6 +14,12 @@ contract FaucetManager is Killable {
     uint _timeCreated
   );
 
+  function FaucetManager() payable {
+  }
+
+  function() payable {
+  }
+
 	function createFaucet(bytes32 _name) payable returns (address) {
     // Validate Local State
     if (nameFaucetMapping[_name] != 0) {
@@ -56,12 +62,9 @@ contract FaucetManager is Killable {
     if ((_creator != msg.sender && this.owner() != msg.sender) || creatorFaucetMapping[_creator] == 0) {
       throw;
     }
-    if (!_faucet.refundRemainingBalance()) {
-      throw;
-    }
-    /*delete nameFaucetMapping[_name];
+    delete nameFaucetMapping[_name];
     delete creatorFaucetMapping[_creator];
-    _faucet.kill();*/
+    _faucet.kill();
     return true;
   }
 }

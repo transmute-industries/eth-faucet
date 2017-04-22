@@ -7,7 +7,7 @@ import "../ownership/Ownable.sol";
  * Base contract that can be killed by owner. All funds in contract will be sent to the owner.
  */
 contract Killable is Ownable {
-  function kill() onlyOwner {
+  function kill() {
     selfdestruct(owner);
   }
 }

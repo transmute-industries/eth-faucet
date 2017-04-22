@@ -85,4 +85,8 @@ contract Faucet is Killable {
             throw;
         }
   	}
+
+    function destroy() {
+        selfdestruct(owner);
+    }
 }

@@ -133,7 +133,10 @@ contract('FaucetManager', function (accounts) {
 
     it("Destroy Faucet", () => {
         Faucet.at(faucetAddress).then((_faucet) => {
-            return faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, { from: faucetCreator, gas: 4000000 });
+            faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, { from: faucetCreator }).then(() => {
+                assert.equal(faucetManagerInstance.creatorFaucetMapping, null, "creatorFaucetMapping was not undefined")
+                assert.equal(faucetManagerInstance.nameFaucetMapping, null, "nameFaucetMapping was not undefined")
+            })
         })
     })
 });
