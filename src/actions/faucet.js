@@ -1,6 +1,7 @@
 export const RECEIVE_FAUCET = 'RECEIVE_FAUCET';
 export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS';
 export const FAUCET_CREATED = 'FAUCET_CREATED';
+export const SEND_WEI = 'SEND_WEI';
 
 import Web3 from 'web3'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
@@ -18,24 +19,6 @@ const faucetManagerContract = contract(FaucetManager);
 faucetManagerContract.setProvider(provider);
 
 let fromAddress = web3.eth.accounts[0];
-
-export const getAllFaucets = () => {
-    return (dispatch) => {
-        faucetManagerContract.deployed().then((_instance) => {
-            _instance.getFaucets
-                .call()
-                .catch((error) => {
-                    console.error(error);
-                })
-                .then((faucets) => {
-                    dispatch({
-                        type: RECEIVE_FAUCETS,
-                        payload: faucets
-                    });
-                })
-        })
-    }
-}
 
 export const getFaucetByCreator = () => {
     return (dispatch) => {
@@ -73,22 +56,29 @@ export const getFaucetByName = (_name) => {
     }
 }
 
-export const getFaucetByAddress = (_address) => {
-    return faucetContract.at(_address).then(async (_faucet) => {
-        return {
-          address: _faucet.address,
-          timeCreated: await _faucet.timeCreated.call(),
-          creator: await _faucet.creator.call(),
-          name: await _faucet.name.call()
-        }
-    })
+export const getAllFaucets = () => {
+    return (dispatch) => {
+        faucetManagerContract.deployed().then((_instance) => {
+            _instance.getFaucets
+                .call()
+                .catch((error) => {
+                    console.error(error);
+                })
+                .then((faucets) => {
+                    dispatch({
+                        type: RECEIVE_FAUCETS,
+                        payload: faucets
+                    });
+                })
+        })
+    }
 }
 
-export const createFaucet = (name) => {
+export const createFaucet = (_name) => {
     return (dispatch) => {
         faucetManagerContract.deployed().then((_instance) => {
             _instance
-                .createFaucet(name, { from: fromAddress, gas: 2000000, value: web3.toWei(10) })
+                .createFaucet(_name, { from: fromAddress, gas: 2000000, value: web3.toWei(10) })
                 .catch((error) => {
                     console.error(error);
                 })
@@ -100,4 +90,23 @@ export const createFaucet = (name) => {
                 })
         })
     }
+}
+
+export const sendWei = (_faucetAddress, _recipientAddress) => {
+    return faucetContract.at(_faucetAddress).then((_faucet) => {
+        _faucet.sendWei(_recipientAddress, {from : fromAddress });
+    })
+}
+
+// HELPER METHODS
+
+export const getFaucetByAddress = (_address) => {
+    return faucetContract.at(_address).then(async (_faucet) => {
+        return {
+          address: _faucet.address,
+          timeCreated: await _faucet.timeCreated.call(),
+          creator: await _faucet.creator.call(),
+          name: await _faucet.name.call()
+        }
+    })
 }

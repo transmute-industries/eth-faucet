@@ -121,13 +121,13 @@ contract('FaucetManager', function (accounts) {
 
             events.watch((error, result) => {
                 if (error == null) {
-                    assert.equal(faucetCustomer, result.args.toAddress, "faucetCutomer was not sent wei")
+                    assert.equal(faucetCustomer, result.args.toAddress, "faucetCustomer was not sent wei")
                     events.stopWatching()
                     done();
                 }
             });
 
-            _faucet.sendWei(faucetRecipient, { from: faucetCustomer, gas: 2000000 });
+            _faucet.sendWei(faucetRecipient, {from: faucetCustomer});
         });
     })
 

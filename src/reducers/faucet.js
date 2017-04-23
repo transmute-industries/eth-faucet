@@ -1,5 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { RECEIVE_FAUCET, RECEIVE_FAUCETS, FAUCET_CREATED } from '../actions/faucet';
+import { RECEIVE_FAUCET, RECEIVE_FAUCETS, FAUCET_CREATED, SEND_WEI } from '../actions/faucet';
 import { without } from 'lodash';
 import { getFaucetByName } from '../actions/faucet';
 import store from '../store';

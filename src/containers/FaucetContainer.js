@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import Faucet from '../components/Faucet'
+import { sendWei } from '../actions/faucet'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -10,6 +11,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onSendWeiFormSubmit: (_faucetAddress, _recipientAddress) => {
+      event.preventDefault();
+      sendWei(_faucetAddress, _recipientAddress)
+    }
   }
 }
 

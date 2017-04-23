@@ -40,7 +40,6 @@ export default class CreateFaucetForm extends React.Component {
 
     render() {
         return (
-
             <div>
                 <TextField
                     id="text-field-controlled"
@@ -52,7 +51,6 @@ export default class CreateFaucetForm extends React.Component {
                 <br />
                 <RaisedButton onClick={this.handleCreateFaucet} label="Create" />
             </div>
-
         );
     }
 }
