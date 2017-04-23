@@ -5,6 +5,7 @@ contract Faucet is Killable {
     uint256 sendAmount;
     mapping (address => uint) lastSent;
     uint blockLimit;
+    address public creator;
     bytes32 public name;
     uint public timeCreated;
 
@@ -14,9 +15,10 @@ contract Faucet is Killable {
     function () payable {}
 
     // Constructor
-    function Faucet(bytes32 _name) {
+    function Faucet(bytes32 _name, address _creator) {
         timeCreated = now;
         name = _name;
+        creator = _creator;
         sendAmount = 1000000000000000000;
         blockLimit = 0;
     }

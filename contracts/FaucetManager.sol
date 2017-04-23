@@ -35,7 +35,7 @@ contract FaucetManager is Killable {
     // Update Local State
 
     // Interact With Other Contracts
-		Faucet _newFaucet = new Faucet(_name);
+		Faucet _newFaucet = new Faucet(_name, msg.sender);
     if (!_newFaucet.send(msg.value)) {
       throw;
     }
@@ -58,8 +58,8 @@ contract FaucetManager is Killable {
     return nameFaucetMapping[_name];
   }
 
-  function getFaucets() onlyOwner returns(address[] faucetAddresses)  {
-    return faucetAddresses;
+  function getFaucets() returns(address[] faucetAddresses)  {
+    return faucets;
   }
 
   function killFaucet(address _address, bytes32 _name, address _creator) constant returns(bool)  {

@@ -16,7 +16,7 @@ export default class Faucet extends React.Component {
         return (
 
             <div>
-              hey
+              {this.props.faucet.selected}
             </div>
 
         );

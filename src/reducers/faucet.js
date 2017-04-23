@@ -2,6 +2,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import { RECEIVE_FAUCET, RECEIVE_FAUCETS, FAUCET_CREATED } from '../actions/faucet';
 import { without } from 'lodash';
 import { getFaucetByName } from '../actions/faucet';
+import store from '../store';
 
 const initialState = {
     addresses: [],
@@ -21,10 +22,7 @@ const faucetReducer = (state = initialState, action) => {
         if (parts.length == 3 &&
             parts[1].toLowerCase() == "faucets" &&
             parts[2].trim().length != 0) {
-            var str = parts[2].trim();
-            console.log("str:", str);
-            console.log("str trimmed:", str.trim());
-            getFaucetByName(parts[2].trim());
+            store.dispatch(getFaucetByName(parts[2].trim()));
         }
     }
 

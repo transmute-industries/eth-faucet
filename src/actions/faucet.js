@@ -45,10 +45,10 @@ export const getFaucetByCreator = () => {
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((faucet) => {
+                .then(async (_address) => {
                     dispatch({
                         type: RECEIVE_FAUCET,
-                        payload: faucet
+                        payload: _address == 0 ? null : await getFaucetByAddress(_address)
                     });
                 })
         })
@@ -56,7 +56,6 @@ export const getFaucetByCreator = () => {
 }
 
 export const getFaucetByName = (_name) => {
-    console.log("getFaucetByName:", _name);
     return (dispatch) => {
         faucetManagerContract.deployed().then((_instance) => {
             _instance.faucetByName
@@ -64,15 +63,25 @@ export const getFaucetByName = (_name) => {
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((faucet) => {
-                    console.log("getFaucetByName: ", faucet);
+                .then(async (_address) => {
                     dispatch({
                         type: RECEIVE_FAUCET,
-                        payload: faucet
-                    });
+                        payload: _address == 0 ? null : await getFaucetByAddress(_address)
+                    })
                 })
         })
     }
+}
+
+export const getFaucetByAddress = (_address) => {
+    return faucetContract.at(_address).then(async (_faucet) => {
+        return {
+          address: _faucet.address,
+          timeCreated: await _faucet.timeCreated.call(),
+          creator: await _faucet.creator.call(),
+          name: await _faucet.name.call()
+        }
+    })
 }
 
 export const createFaucet = (name) => {
@@ -83,10 +92,10 @@ export const createFaucet = (name) => {
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((tx) => {
+                .then(async (_address) => {
                     dispatch({
                         type: FAUCET_CREATED,
-                        payload: tx
+                        payload: _address == 0 ? null : await getFaucetByAddress(_address)
                     });
                 })
         })
