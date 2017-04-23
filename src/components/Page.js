@@ -46,7 +46,6 @@ import {
 
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
-import ActionFlightTakeoff from 'material-ui/svg-icons/action/flight-takeoff';
 
 class Page extends React.Component {
   constructor(props) {
@@ -78,7 +77,6 @@ class Page extends React.Component {
     )
 
     const SmartMenu = () => {
-      if (this.props.user && this.props.user.data) {
         return (<IconMenu
           iconButtonElement={
             <IconButton>
@@ -87,14 +85,12 @@ class Page extends React.Component {
           }
           targetOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+          iconStyle={{ fill: 'rgba(255, 255, 255, 1.00)' }}
         >
           <MenuItem primaryText="Source" target="_blank" href="https://github.com/transmute-industries/eth-faucet" />
           <OnlyAuthLinks />
           <OnlyGuestLinks />
         </IconMenu>)
-      } else {
-        return <IconButton label="login" onClick={e => this.props.loginUser()}> <ActionFlightTakeoff /> </IconButton>
-      }
     }
 
     return (
@@ -114,7 +110,7 @@ class Page extends React.Component {
               </IconButton>
             }
             iconElementRight={
-              <SmartMenu />
+              this.props.web3 && this.props.web3.defaultAddress && <SmartMenu />
             }
             onLeftIconButtonTouchTap={e => this.onHamburgerClick()}
           />

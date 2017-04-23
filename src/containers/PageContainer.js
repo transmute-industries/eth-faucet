@@ -1,24 +1,14 @@
 import { connect } from 'react-redux'
 import Page from '../components/Page'
-import { loginUser, logoutUser } from '../actions/user'
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        user: state.user
+        web3: state.web3
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        loginUser: () => {
-            event.preventDefault();
-            dispatch(loginUser())
-        },
-        logoutUser: () => {
-            event.preventDefault();
-            dispatch(logoutUser())
-        }
-    }
+    return {}
 }
 
 const PageContainer = connect(
