@@ -8,7 +8,6 @@ import SignUp from './layouts/SignUp'
 import Admin from './layouts/Admin'
 import Profile from './layouts/Profile'
 import CreateFaucet from './layouts/CreateFaucet'
-
 import Faucet from './layouts/Faucet'
 
 const routes = (

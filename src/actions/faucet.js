@@ -1,3 +1,4 @@
+export const RECEIVE_FAUCET = 'RECEIVE_FAUCET';
 export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS';
 export const FAUCET_CREATED = 'FAUCET_CREATED';
 
@@ -26,10 +27,10 @@ export const getAllFaucets = () => {
                 .catch((error) => {
                     console.error(error);
                 })
-                .then((faucet) => {
+                .then((faucets) => {
                     dispatch({
                         type: RECEIVE_FAUCETS,
-                        payload: faucet
+                        payload: faucets
                     });
                 })
         })
@@ -46,7 +47,27 @@ export const getFaucetByCreator = () => {
                 })
                 .then((faucet) => {
                     dispatch({
-                        type: RECEIVE_FAUCETS,
+                        type: RECEIVE_FAUCET,
+                        payload: faucet
+                    });
+                })
+        })
+    }
+}
+
+export const getFaucetByName = (_name) => {
+    console.log("getFaucetByName:", _name);
+    return (dispatch) => {
+        faucetManagerContract.deployed().then((_instance) => {
+            _instance.faucetByName
+                .call(_name)
+                .catch((error) => {
+                    console.error(error);
+                })
+                .then((faucet) => {
+                    console.log("getFaucetByName: ", faucet);
+                    dispatch({
+                        type: RECEIVE_FAUCET,
                         payload: faucet
                     });
                 })

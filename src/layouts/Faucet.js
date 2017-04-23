@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'react-grid-system';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 import PageContainer from '../containers/PageContainer';
-
+import FaucetContainer from '../containers/FaucetContainer';
 
 class Faucet extends Component {
     render() {
@@ -10,7 +11,12 @@ class Faucet extends Component {
             <PageContainer>
                 <Row>
                     <Col xs={12}>
-                        fancy faucet from url here...
+                      <Card>
+                        <CardTitle title={this.props.params.faucetName + " Faucet"} />
+                        <CardText>
+                          <FaucetContainer faucetName={this.props.params.faucetName}/>
+                        </CardText>
+                      </Card>
                     </Col>
                 </Row>
             </PageContainer>
