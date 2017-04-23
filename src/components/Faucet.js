@@ -6,11 +6,15 @@ import {Card, CardTitle, CardText} from 'material-ui/Card';
 export default class Faucet extends React.Component {
 
     constructor(props) {
-        console.log("props: ", props.faucet);
+        console.log("constructor: ", props.faucet);
         super(props);
         this.state = {
             address: '',
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+      console.log("nextProps:", nextProps);
     }
 
     handleSendWei = () => {
@@ -18,6 +22,8 @@ export default class Faucet extends React.Component {
     }
 
     onInputChange(event) {
+        console.log("this.props:", this.props);
+        console.log("this.state:", this.state);
         this.setState({
             address: event.target.value
         });

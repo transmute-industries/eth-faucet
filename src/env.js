@@ -1,11 +1,12 @@
 import Web3 from 'web3'
 import { Connect } from 'uport-connect'
+import { without } from 'lodash';
 
 export const uport = new Connect('Austin.Faucet')
 export const envs = ['testrpc', 'parity', 'infura', 'metamask']
 
-let _web3, _provider;
 let currentEnv = 'infura';
+let _web3, _provider;
 let isInjected = window.web3 !== undefined;
 
 switch (currentEnv) {
@@ -23,6 +24,12 @@ switch (currentEnv) {
     case 'parity': _web3 = new Web3(new Web3.providers.HttpProvider(_provider)); break;
     case 'infura': _web3 = uport.getWeb3(); break;
     case 'metamask': _web3 = window.web3; break;
+}
+
+export const getRandomAddress = (addresses, exclude = []) => {
+    let possible = without(addresses, exclude);
+    let addr = possible[Math.floor(Math.random() * possible.length)];
+    return addr;
 }
 
 export const web3 = _web3;

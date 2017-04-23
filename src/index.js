@@ -14,13 +14,13 @@ import routes from './routes';
 
 const history = syncHistoryWithStore(browserHistory, store);
 
-import { loginUser } from './actions/user';
+import { getWeb3Accounts } from './actions/web3';
 import { getAllFaucets } from './actions/faucet';
 
 function doEverything() {
   return dispatch => Promise.all([
     store.dispatch(getAllFaucets()),
-    // store.dispatch(loginUser())
+    store.dispatch(getWeb3Accounts())
   ]);
 }
 

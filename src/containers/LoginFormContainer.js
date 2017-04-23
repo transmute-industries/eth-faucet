@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import SignUpForm from '../components/SignUpForm'
+import LoginForm from '../components/LoginForm'
 import { signUpUser } from '../actions/user'
 
 const mapStateToProps = (state, ownProps) => {
@@ -8,16 +8,16 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSignUpFormSubmit: (name) => {
+    onLoginFormSubmit: (name) => {
       event.preventDefault();
       dispatch(signUpUser(name))
     }
   }
 }
 
-const SignUpFormContainer = connect(
+const LoginFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignUpForm)
+)(LoginForm)
 
-export default SignUpFormContainer
+export default LoginFormContainer

@@ -67,14 +67,13 @@ class Page extends React.Component {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
         <Link to='/admin'><MenuItem>Admin Dashboard</MenuItem></Link>
-        <Link to='/profile'><MenuItem>Profile</MenuItem></Link>
         <Link to='/faucet/create'><MenuItem>Create Faucet</MenuItem></Link>
       </span>
     )
 
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
       <span>
-        <Link to='/signup'><MenuItem>Signup</MenuItem></Link>
+        <Link to='/login'><MenuItem>Login</MenuItem></Link>
       </span>
     )
 

@@ -68,7 +68,7 @@ export function loginUser() {
                     // If error, go to signup page.
                     console.log('Wallet ' + coinbase + ' does not have an account!')
 
-                    return browserHistory.push('/signup')
+                    return browserHistory.push('/login')
                 })
                 .then(function (result) {
                     // If no error, login user.

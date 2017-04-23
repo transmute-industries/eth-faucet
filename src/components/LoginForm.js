@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import { web3 } from '../env'
+let isInjected = window.web3 !== undefined;
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-class SignUpForm extends Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +28,7 @@ class SignUpForm extends Component {
       return;
     }
 
-    this.props.onSignUpFormSubmit(this.state.name);
+    this.props.onLoginFormSubmit(this.state.name);
   }
 
   render() {
@@ -45,4 +48,4 @@ class SignUpForm extends Component {
   }
 }
 
-export default SignUpForm;
+export default LoginForm;
