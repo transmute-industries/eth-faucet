@@ -4,6 +4,7 @@ import Faucet from '../components/Faucet'
 import { sendWei } from '../actions/faucet'
 
 const mapStateToProps = (state, ownProps) => {
+  console.log("state:", state);
   return {
     faucet: state.faucet
   }
@@ -13,7 +14,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSendWeiFormSubmit: (_faucetAddress, _recipientAddress) => {
       event.preventDefault();
-      sendWei(_faucetAddress, _recipientAddress)
+      dispatch(sendWei(_faucetAddress, _recipientAddress))
     }
   }
 }

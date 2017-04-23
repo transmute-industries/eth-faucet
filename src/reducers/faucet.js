@@ -1,5 +1,11 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { RECEIVE_FAUCET, RECEIVE_FAUCETS, FAUCET_CREATED, SEND_WEI } from '../actions/faucet';
+import {
+  RECEIVE_FAUCET,
+  RECEIVE_FAUCETS,
+  FAUCET_CREATED,
+  FAUCET_UPDATED,
+  SEND_WEI
+} from '../actions/faucet';
 import { without } from 'lodash';
 import { getFaucetByName } from '../actions/faucet';
 import store from '../store';
@@ -35,6 +41,16 @@ const faucetReducer = (state = initialState, action) => {
     if (action.type === FAUCET_CREATED) {
         return Object.assign(...state, state, {
             addresses: state.addresses.concat(action.payload.logs[0].address)
+        })
+    }
+
+    if (action.type === FAUCET_UPDATED) {
+        console.log("state.selected:", state.selected.balance);
+        return Object.assign(...state, state, {
+            selected: {
+                ...state.selected,
+                balance: state.selected.balance - 1
+            }
         })
     }
 

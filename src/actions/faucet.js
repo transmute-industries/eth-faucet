@@ -1,6 +1,7 @@
 export const RECEIVE_FAUCET = 'RECEIVE_FAUCET';
 export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS';
 export const FAUCET_CREATED = 'FAUCET_CREATED';
+export const FAUCET_UPDATED = 'FAUCET_UPDATED';
 export const SEND_WEI = 'SEND_WEI';
 
 import Web3 from 'web3'
@@ -82,10 +83,10 @@ export const createFaucet = (_name) => {
                 .catch((error) => {
                     console.error(error);
                 })
-                .then(async (_address) => {
+                .then((_tx) => {
                     dispatch({
                         type: FAUCET_CREATED,
-                        payload: _address == 0 ? null : await getFaucetByAddress(_address)
+                        payload: _tx
                     });
                 })
         })
@@ -93,9 +94,21 @@ export const createFaucet = (_name) => {
 }
 
 export const sendWei = (_faucetAddress, _recipientAddress) => {
-    return faucetContract.at(_faucetAddress).then((_faucet) => {
-        _faucet.sendWei(_recipientAddress, {from : fromAddress });
-    })
+    return (dispatch) => {
+        faucetContract.at(_faucetAddress).then((_faucet) => {
+            _faucet.sendWei(_recipientAddress, {from : fromAddress })
+            .catch((error) => {
+                console.error(error);
+            })
+            .then((_tx) => {
+                console.log("_tx:", _tx);
+                dispatch({
+                    type: FAUCET_UPDATED,
+                    payload: _tx
+                });
+            })
+        })
+    }
 }
 
 // HELPER METHODS
@@ -106,7 +119,8 @@ export const getFaucetByAddress = (_address) => {
           address: _faucet.address,
           timeCreated: await _faucet.timeCreated.call(),
           creator: await _faucet.creator.call(),
-          name: await _faucet.name.call()
+          name: await _faucet.name.call(),
+          balance: await web3.fromWei(web3.eth.getBalance(_address), "ether").toNumber()
         }
     })
 }
