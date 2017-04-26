@@ -1,18 +1,28 @@
 pragma solidity ^0.4.8;
+import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract Faucet is Killable {
-    uint256 sendAmount;
+    using ArrayUtils for *;
+
     mapping (address => uint) lastSent;
-    uint blockLimit;
+    mapping (address => bool) authorizedAddressesMapping;
+    address[] public requestorAddresses;
     address public creator;
     string public name;
     uint public timeCreated;
 
+    uint256 sendAmount;
+    uint blockLimit;
+
+    // Events
+    event AccessRequested(address indexed requestorAddress);
+    event AuthorizationGranted(address indexed requestorAddress);
     event EtherRequested(address indexed fromAddress, uint256 indexed sentAmount);
     event EtherSent(address indexed toAddress);
 
-    function () payable {}
+    // Fallback Function
+    function() payable {}
 
     // Constructor
     function Faucet(string _name, address _creator) {
@@ -23,6 +33,26 @@ contract Faucet is Killable {
         blockLimit = 0;
     }
 
+    // Modifiers
+    modifier onlyCreator() {
+      if (msg.sender != creator)
+        throw;
+      _;
+    }
+
+    modifier onlyAuthorized() {
+      if (msg.sender != creator && !authorizedAddressesMapping[msg.sender])
+        throw;
+      _;
+    }
+
+    modifier isAvailable() {
+      if (lastSent[msg.sender] >= (block.number-blockLimit) || address(this).balance <= sendAmount)
+        throw;
+      _;
+    }
+
+    // Getters and Setters
   	function setBlockLimit(uint limit) returns (bool){
         blockLimit = limit;
         return true;
@@ -41,36 +71,9 @@ contract Faucet is Killable {
   	    return sendAmount;
   	}
 
+    // Helper Functions
   	function getBalance() returns (uint){
         return address(this).balance;
-  	}
-
-  	function getWei() returns (bool) {
-  	    if(lastSent[msg.sender] < (block.number-blockLimit) && address(this).balance > sendAmount) {
-  	        if (msg.sender.send(sendAmount)) {
-                lastSent[msg.sender] = block.number;
-				        EtherRequested(msg.sender, sendAmount);
-	              return true;
-            } else {
-                throw;
-            }
-  	    } else {
-  	        return false;
-  	    }
-  	}
-
-  	function sendWei(address recp) returns (bool) {
-  		  if(lastSent[msg.sender] < (block.number-blockLimit) && address(this).balance > sendAmount) {
-  	        if (recp.send(sendAmount)) {
-                lastSent[msg.sender] = block.number;
-				        EtherSent(msg.sender);
-	              return true;
-            } else {
-                throw;
-            }
-  	    } else {
-  	        return false;
-  	    }
   	}
 
   	function getRemainingBlocks() returns (uint) {
@@ -80,15 +83,33 @@ contract Faucet is Killable {
             return 0;
   	}
 
-  	function refundRemainingBalance() returns (bool) {
-        if (owner.send(address(this).balance)) {
-            return true;
-        } else {
+    function addRequestorAddress(address _requestor) {
+        requestorAddresses.push(_requestor);
+        authorizedAddressesMapping[_requestor] = false;
+        AccessRequested(_requestor);
+    }
+
+    function authorizeRequestorAddress(address _requestor) onlyCreator {
+        if (ArrayUtils.IndexOf(requestorAddresses, _requestor) > requestorAddresses.length - 1)
+            throw;
+        authorizedAddressesMapping[_requestor] = true;
+        AuthorizationGranted(_requestor);
+    }
+
+    // Interface
+  	function sendWei(address recp) onlyAuthorized isAvailable {
+        if (!recp.send(sendAmount)) {
             throw;
         }
+        lastSent[msg.sender] = block.number;
+        EtherSent(msg.sender);
   	}
 
-    function destroy() {
-        selfdestruct(owner);
-    }
+  	function getWei() onlyAuthorized isAvailable {
+        if (!msg.sender.send(sendAmount)) {
+            throw;
+        }
+        lastSent[msg.sender] = block.number;
+        EtherRequested(msg.sender, sendAmount);
+  	}
 }

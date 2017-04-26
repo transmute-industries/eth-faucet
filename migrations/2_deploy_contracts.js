@@ -18,6 +18,7 @@ module.exports = function (deployer) {
 
   deployer.deploy(ArrayUtils);
   deployer.link(ArrayUtils, FaucetManager);
+  deployer.link(ArrayUtils, Faucet);
 
   deployer.deploy(FaucetManager, {value:5000000000000000000});
   deployer.link(FaucetManager, Faucet);

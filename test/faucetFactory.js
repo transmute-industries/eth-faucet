@@ -21,7 +21,7 @@ contract('FaucetManager', function (accounts) {
     })
 
     it("Verify Faucet Factory Addresses", (done) => {
-        faucetManagerInstance.faucetByCreator
+        faucetManagerInstance.getFaucetByCreator
             .call({ from: faucetCreator })
             .then((_faucetAddress) => {
                 creatorFaucet = _faucetAddress;
@@ -66,7 +66,7 @@ contract('FaucetManager', function (accounts) {
     })
 
     it("Verify faucetByCreatorMapping update", (done) => {
-        faucetManagerInstance.faucetByCreator
+        faucetManagerInstance.getFaucetByCreator
             .call({ from: faucetCreator })
             .then((_faucetAddress) => {
                 assert.equal(_faucetAddress, faucetAddress, "_faucetAddress does not match faucetAddress")
@@ -75,7 +75,7 @@ contract('FaucetManager', function (accounts) {
     })
 
     it("Verify nameFaucetMapping update", (done) => {
-        faucetManagerInstance.faucetByName
+        faucetManagerInstance.getFaucetByName
             .call(faucetName, { from: faucetCreator })
             .then((_faucetAddress) => {
                 assert.equal(_faucetAddress, faucetAddress, "_faucetAddress does not match faucetAddress")
@@ -97,6 +97,23 @@ contract('FaucetManager', function (accounts) {
                 assert.equal(1000000000000000000, _sendAmount.toNumber(), "sendAmount wasn't 1000000000000000000")
                 done();
             });
+    })
+
+    it("Verify Customer Can Request Access", (done) => {
+         Faucet.at(faucetAddress).then((_faucet) => {
+            var events = _faucet.AccessRequested();
+
+            events.watch((error, result) => {
+                if (error == null) {
+                    console.log("result.args.requestorAddress:", result.args.requestorAddress)
+                    assert.equal(faucetCustomer, result.args.requestorAddress, "Customer did not request access")
+                    events.stopWatching()
+                    done();
+                }
+            });
+
+            faucetManagerInstance.requestAccess(faucetCustomer, faucetAddress, { from: faucetCustomer, gas: 2000000 });
+        });
     })
 
     it("Verify Customer Can Get Wei", (done) => {

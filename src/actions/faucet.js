@@ -25,7 +25,7 @@ let fromAddress = web3.eth.accounts[0];
 export const getFaucetByCreator = () => {
     return (dispatch) => {
         faucetManagerContract.deployed().then((_instance) => {
-            _instance.faucetByCreator
+            _instance.getFaucetByCreator
                 .call({ from: fromAddress })
                 .catch((error) => {
                     console.error(error);
@@ -43,7 +43,7 @@ export const getFaucetByCreator = () => {
 export const getFaucetByName = (_name) => {
     return (dispatch) => {
         faucetManagerContract.deployed().then((_instance) => {
-            _instance.faucetByName
+            _instance.getFaucetByName
                 .call(_name)
                 .catch((error) => {
                     console.error(error);
@@ -103,7 +103,6 @@ export const sendWei = (_faucetAddress, _recipientAddress) => {
                 console.error(error);
             })
             .then((_tx) => {
-                console.log("_tx:", _tx);
                 dispatch({
                     type: FAUCET_UPDATED,
                     payload: _tx
