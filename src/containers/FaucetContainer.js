@@ -6,7 +6,8 @@ import { sendWei } from '../actions/faucet'
 const mapStateToProps = (state, ownProps) => {
   console.log("state:", state);
   return {
-    faucet: state.faucet
+    faucet: state.faucet,
+    web3: state.web3
   }
 }
 

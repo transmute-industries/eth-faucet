@@ -7,6 +7,7 @@ export const SEND_WEI = 'SEND_WEI';
 import Web3 from 'web3'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
+import { browserHistory } from 'react-router';
 
 const contract = require('truffle-contract')
 
@@ -88,6 +89,7 @@ export const createFaucet = (_name) => {
                         type: FAUCET_CREATED,
                         payload: _tx
                     });
+                    browserHistory.push("/faucets/" + _name)
                 })
         })
     }
@@ -119,7 +121,7 @@ export const getFaucetByAddress = (_address) => {
           address: _faucet.address,
           timeCreated: await _faucet.timeCreated.call(),
           creator: await _faucet.creator.call(),
-          name: await _faucet.name.call(),
+          name: await _faucet.name.call().then((_name) => _name.replace(/-/g, ' ')),
           balance: await web3.fromWei(web3.eth.getBalance(_address), "ether").toNumber()
         }
     })

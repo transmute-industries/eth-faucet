@@ -18,7 +18,7 @@ const initialState = {
 const faucetReducer = (state = initialState, action) => {
 
     if (action.type === RECEIVE_FAUCET) {
-        return Object.assign(...state, state, {
+        return Object.assign({}, state, {
             selected: action.payload
         })
     }
@@ -27,26 +27,26 @@ const faucetReducer = (state = initialState, action) => {
         var parts = decodeURI(action.payload.pathname).split('/');
         if (parts.length == 3 &&
             parts[1].toLowerCase() == "faucets" &&
-            parts[2].trim().length != 0) {
-            store.dispatch(getFaucetByName(parts[2].trim()));
+            parts[2].length != 0) {
+            store.dispatch(getFaucetByName(parts[2].toLowerCase().replace(/\s+/g, "-")));
         }
     }
 
     if (action.type === RECEIVE_FAUCETS) {
-        return Object.assign(...state, state, {
+        return Object.assign({}, state, {
             addresses: without(action.payload, 0)
         })
     }
 
     if (action.type === FAUCET_CREATED) {
-        return Object.assign(...state, state, {
+        return Object.assign({}, state, {
             addresses: state.addresses.concat(action.payload.logs[0].address)
         })
     }
 
     if (action.type === FAUCET_UPDATED) {
         console.log("state.selected:", state.selected.balance);
-        return Object.assign(...state, state, {
+        return Object.assign({}, state, {
             selected: {
                 ...state.selected,
                 balance: state.selected.balance - 1
@@ -54,7 +54,7 @@ const faucetReducer = (state = initialState, action) => {
         })
     }
 
-    return initialState;
+    return state;
 }
 
 export default faucetReducer;

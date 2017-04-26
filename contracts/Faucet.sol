@@ -6,7 +6,7 @@ contract Faucet is Killable {
     mapping (address => uint) lastSent;
     uint blockLimit;
     address public creator;
-    bytes32 public name;
+    string public name;
     uint public timeCreated;
 
     event EtherRequested(address indexed fromAddress, uint256 indexed sentAmount);
@@ -15,7 +15,7 @@ contract Faucet is Killable {
     function () payable {}
 
     // Constructor
-    function Faucet(bytes32 _name, address _creator) {
+    function Faucet(string _name, address _creator) {
         timeCreated = now;
         name = _name;
         creator = _creator;

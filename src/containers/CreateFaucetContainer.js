@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import CreateFaucetForm from '../components/CreateFaucetForm'
+import CreateFaucet from '../components/CreateFaucet'
 import { getAllFaucets, createFaucet } from '../actions/faucet'
 
 const mapStateToProps = (state, ownProps) => {
@@ -8,7 +8,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateFaucetFormSubmit: (name) => {
+    onCreateFaucetSubmit: (name) => {
       event.preventDefault();
       dispatch(createFaucet(name))
     },
@@ -19,9 +19,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const CreateFaucetFormContainer = connect(
+const CreateFaucetContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateFaucetForm)
+)(CreateFaucet)
 
-export default CreateFaucetFormContainer
+export default CreateFaucetContainer

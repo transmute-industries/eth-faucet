@@ -5,9 +5,9 @@ import { Row, Col } from 'react-grid-system';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 import PageContainer from '../containers/PageContainer';
-import CreateFaucetFormContainer from '../containers/CreateFaucetFormContainer';
+import CreateFaucetContainer from '../containers/CreateFaucetContainer';
 
-class CreateFaucet extends Component {
+class CreateFaucetPage extends Component {
   render() {
     return(
       <PageContainer>
@@ -16,7 +16,7 @@ class CreateFaucet extends Component {
             <Card>
               <CardTitle title="Create Faucet" subtitle="Enter your info below." />
               <CardText>
-                <CreateFaucetFormContainer />
+                <CreateFaucetContainer />
               </CardText>
             </Card>
           </Col>
@@ -26,4 +26,4 @@ class CreateFaucet extends Component {
   }
 }
 
-export default CreateFaucet
+export default CreateFaucetPage

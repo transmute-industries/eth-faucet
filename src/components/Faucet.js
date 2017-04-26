@@ -14,7 +14,15 @@ export default class Faucet extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-      console.log("nextProps:", nextProps);
+      console.log("componentWillReceiveProps nextProps:", nextProps);
+    }
+
+    componentDidUpdate(prevProps, nextProps) {
+      console.log("componentDidUpdate this.props:", this.props)
+    }
+
+    componentWillUpdate(prevProps, nextProps) {
+      console.log("componentWillUpdate this.props:", this.props)
     }
 
     handleSendWei = () => {
@@ -22,20 +30,19 @@ export default class Faucet extends React.Component {
     }
 
     onInputChange(event) {
-        console.log("this.props:", this.props);
-        console.log("this.state:", this.state);
         this.setState({
             address: event.target.value
         });
     }
 
     render() {
+        const { selected } = this.props.faucet;
         return (
             <Card>
-              {this.props.faucet.selected &&
+              {selected &&
                 <CardTitle
-                  title={window.location.pathname.split('/').pop() + " Faucet"} style={{"textTransform":"capitalize"}}
-                  subtitle={"Balance: " + this.props.faucet.selected.balance + " Ether" }
+                  title={selected.name + " Faucet"} style={{"textTransform":"capitalize"}}
+                  subtitle={"Balance: " + selected.balance + " Ether" }
                 />
               }
               <CardText>

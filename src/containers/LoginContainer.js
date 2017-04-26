@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import LoginForm from '../components/LoginForm'
+import Login from '../components/Login'
 
 const mapStateToProps = (state, ownProps) => {
   return {}
@@ -9,9 +9,9 @@ const mapDispatchToProps = (dispatch) => {
   return {}
 }
 
-const LoginFormContainer = connect(
+const LoginContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginForm)
+)(Login)
 
-export default LoginFormContainer
+export default LoginContainer

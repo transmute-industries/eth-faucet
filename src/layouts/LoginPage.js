@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 
 import PageContainer from '../containers/PageContainer';
-import LoginFormContainer from '../containers/LoginFormContainer';
+import LoginContainer from '../containers/LoginContainer';
 
-class Login extends Component {
+class LoginPage extends Component {
   render() {
     return(
       <PageContainer>
-        <LoginFormContainer />
+        <LoginContainer />
       </PageContainer>
     )
   }
 }
 
-export default Login
+export default LoginPage

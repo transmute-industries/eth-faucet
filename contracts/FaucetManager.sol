@@ -7,13 +7,13 @@ contract FaucetManager is Killable {
 
   using ArrayUtils for *;
   mapping (address => address) creatorFaucetMapping;
-  mapping (bytes32 => address) nameFaucetMapping;
-  address[] public faucets;
+  mapping (string => address) nameFaucetMapping;
+  address[] public faucetAddresses;
 
   event FaucetCreated(
     address _address,
     address _creatorAddress,
-    bytes32 _name,
+    string _name,
     uint _timeCreated
   );
 
@@ -23,7 +23,7 @@ contract FaucetManager is Killable {
   function() payable {
   }
 
-	function createFaucet(bytes32 _name) payable returns (address) {
+	function createFaucet(string _name) payable returns (address) {
     // Validate Local State
     if (nameFaucetMapping[_name] != 0) {
       throw;
@@ -41,12 +41,12 @@ contract FaucetManager is Killable {
     }
 
     // Update State Dependent On Other Contracts
-    faucets.push(address(_newFaucet));
+    faucetAddresses.push(address(_newFaucet));
     creatorFaucetMapping[msg.sender] = address(_newFaucet);
     nameFaucetMapping[_name] = address(_newFaucet);
 
     // Emit Events
-    FaucetCreated(address(_newFaucet), msg.sender, _newFaucet.name(), _newFaucet.timeCreated());
+    FaucetCreated(address(_newFaucet), msg.sender, _name, _newFaucet.timeCreated());
     return address(_newFaucet);
 	}
 
@@ -54,15 +54,15 @@ contract FaucetManager is Killable {
     return creatorFaucetMapping[msg.sender];
   }
 
-  function faucetByName(bytes32 _name) constant returns(address)  {
+  function faucetByName(string _name) constant returns(address)  {
     return nameFaucetMapping[_name];
   }
 
   function getFaucets() returns(address[] faucetAddresses)  {
-    return faucets;
+    return faucetAddresses;
   }
 
-  function killFaucet(address _address, bytes32 _name, address _creator) constant returns(bool)  {
+  function killFaucet(address _address, string _name, address _creator) constant returns(bool)  {
     Faucet _faucet = Faucet(_address);
     if (nameFaucetMapping[_name] == 0) {
       throw;
@@ -72,7 +72,7 @@ contract FaucetManager is Killable {
     }
     delete nameFaucetMapping[_name];
     delete creatorFaucetMapping[_creator];
-    ArrayUtils.RemoveByValue(faucets, _faucet);
+    ArrayUtils.RemoveByValue(faucetAddresses, _faucet);
     _faucet.kill();
     return true;
   }

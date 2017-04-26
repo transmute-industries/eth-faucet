@@ -6,7 +6,7 @@ import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 import PageContainer from '../containers/PageContainer';
 
-class Home extends Component {
+class HomePage extends Component {
   render() {
     return(
       <PageContainer>
@@ -20,10 +20,7 @@ class Home extends Component {
                   width: '200px',
                   margin: 'auto auto 15px auto',
                 }}/>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                Orie == Scrub Jr.
               </CardText>
             </Card>
           </Col>
@@ -33,4 +30,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default HomePage

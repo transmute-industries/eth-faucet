@@ -2,38 +2,24 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-export default class CreateFaucetForm extends React.Component {
+export default class CreateFaucet extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            faucetName: '',
-            expanded: true,
+            error: '',
+            faucetName: ''
         };
     }
 
-    handleExpandChange = (expanded) => {
-        this.setState({ expanded: expanded });
-    };
-
-    handleToggle = (event, toggle) => {
-        this.setState({ expanded: toggle });
-    };
-
-    handleExpand = () => {
-        this.setState({ expanded: true });
-    };
-
-    handleReduce = () => {
-        this.setState({ expanded: false });
-    };
-
     handleCreateFaucet = () => {
-        this.props.onCreateFaucetFormSubmit(this.state.faucetName);
+        this.props.onCreateFaucetSubmit(this.state.faucetName.toLowerCase().replace(/\s+/g, "-"));
     }
 
     onInputChange(event) {
+        var errorText = /^[a-zA-Z\s]*$/.test(event.target.value) ? "" : "Invalid name, please only use letters and spaces"
         this.setState({
+            error : errorText,
             faucetName: event.target.value
         });
     }
@@ -44,12 +30,12 @@ export default class CreateFaucetForm extends React.Component {
                 <TextField
                     id="text-field-controlled"
                     floatingLabelText="Name"
-                    value={this.state.value}
+                    value={this.state.faucetName}
                     errorText={this.state.error}
                     onChange={e => this.onInputChange(e)}
                 />
                 <br />
-                <RaisedButton onClick={this.handleCreateFaucet} label="Create" />
+                <RaisedButton onClick={this.handleCreateFaucet} disabled={this.state.error.length > 0 || this.state.faucetName.trim().length == 0} label="Create" />
             </div>
         );
     }
