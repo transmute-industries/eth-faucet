@@ -1,0 +1,105 @@
+{
+    "particles": {
+        "number": {
+            "value": 8,
+            "density": {
+                "enable": true,
+                "value_area": 256
+            }
+        },
+        "color": {
+            "value": "#FFFFFF"
+        },
+        "shape": {
+            "type": "polygon",
+            "stroke": {
+                "color": "#FFFFFF",
+                "width": 2
+            },
+            "polygon": {
+                "nb_sides": 6
+            }
+        },
+        "opacity": {
+            "value": 0.25,
+            "random": true,
+            "anim": {
+                "enable": true,
+                "speed": 1,
+                "opacity_min": 0.25,
+                "sync": true
+            }
+        },
+        "size": {
+            "value": 8,
+            "random": true,
+            "anim": {
+                "enable": true,
+                "speed": 8,
+                "size_min": 0.25,
+                "sync": false
+            }
+        },
+        "line_linked": {
+            "enable": true,
+            "distance": 96,
+            "color": "#FFFFFF",
+            "opacity": 0.50,
+            "width": 1
+        },
+        "move": {
+            "enable": true,
+            "speed": 0.5,
+            "direction": "none",
+            "random": true,
+            "straight": false,
+            "out_mode": "bounce",
+            "bounce": true,
+            "attract": {
+                "enable": true,
+                "rotateX": 3000,
+                "rotateY": 1500
+            }
+        }
+    },
+    "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+            "onhover": {
+                "enable": true,
+                "mode": "bubble grab repulse"
+            },
+            "onclick": {
+                "enable": true,
+                "mode": "remove"
+            },
+            "resize": true
+        },
+        "modes": {
+            "grab": {
+                "distance": 200,
+                "line_linked": {
+                    "opacity": 0.25
+                }
+            },
+            "bubble": {
+                "distance": 120,
+                "size": 32,
+                "duration": 2,
+                "opacity": 0.25,
+                "speed": 2
+            },
+            "repulse": {
+                "distance": 70,
+                "duration": 1.2
+            },
+            "push": {
+                "particles_nb": 10
+            },
+            "remove": {
+                "particles_nb": 10
+            }
+        }
+    },
+    "retina_detect": true
+}

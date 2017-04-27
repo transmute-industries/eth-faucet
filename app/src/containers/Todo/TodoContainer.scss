@@ -1,0 +1,31 @@
+@import 'base';
+.container {
+    @extend .flex-column-center;
+    padding-top: 4rem;
+    background-image: url("https://source.unsplash.com/category/nature/1280x1024");
+    background-size: cover;
+    background-color: rgba( 38, 50, 56, 0.80);
+    background-blend-mode: darken;
+}
+
+.todos {
+    @extend .flex-column-center;
+    margin-top: 4rem;
+    position: absolute;
+}
+
+.paper {
+    padding: 1rem;
+    margin-bottom: 4rem;
+}
+
+.info {
+    @extend .flex-row-center;
+}
+
+.particles {
+    @extend .flex-row-center;
+   
+
+  
+}

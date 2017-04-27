@@ -1,0 +1,10 @@
+*.log
+**/*.log
+.DS_Store
+**/.DS_Store
+
+node_modules
+coverage
+
+dist
+src/creds.js

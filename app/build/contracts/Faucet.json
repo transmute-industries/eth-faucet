@@ -1,0 +1,306 @@
+{
+  "contract_name": "Faucet",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "creator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "refundRemainingBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "limit",
+          "type": "uint256"
+        }
+      ],
+      "name": "setBlockLimit",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "recp",
+          "type": "address"
+        }
+      ],
+      "name": "sendWei",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "val",
+          "type": "uint256"
+        }
+      ],
+      "name": "setSendAmount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getWei",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getBlockLimit",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "destroy",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getSendAmount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "timeCreated",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getRemainingBlocks",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "payable": true,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "sentAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "EtherRequested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "toAddress",
+          "type": "address"
+        }
+      ],
+      "name": "EtherSent",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052346100005760405161082038038061082083398101604052805160208201519101905b5b60008054600160a060020a03191633600160a060020a03161790555b426006819055508160059080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061009757805160ff19168380011785556100c4565b828001600101855582156100c4579182015b828111156100c45782518255916020019190600101906100a9565b5b506100e59291505b808211156100e157600081556001016100cd565b5090565b505060048054600160a060020a031916600160a060020a038316179055670de0b6b3a764000060015560006003555b50505b6106fa806101266000396000f300606060405236156100ca5763ffffffff60e060020a60003504166302d05d3f81146100d3578063039f5872146100fc57806306fdde031461011d57806311355585146101aa57806312065fe0146101ce578063148f2e5e146101ed578063266b059e1461021a5780633ba150361461023e57806341c0e1b51461025f5780636a2e882b1461026e57806383197ef01461025f5780638da5cb5b1461029c57806390b08a52146102c5578063f1653f6e146102e4578063f2fde38b14610303578063f5938baf1461031e575b6100d15b5b565b005b34610000576100e061033d565b60408051600160a060020a039092168252519081900360200190f35b346100005761010961034c565b604080519115158252519081900360200190f35b346100005761012a61038c565b604080516020808252835181830152835191928392908301918501908083838215610170575b80518252602083111561017057601f199092019160209182019101610150565b505050905090810190601f16801561019c5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b346100005761010960043561041a565b604080519115158252519081900360200190f35b34610000576101db610427565b60408051918252519081900360200190f35b3461000057610109600160a060020a0360043516610436565b604080519115158252519081900360200190f35b3461000057610109600435610500565b604080519115158252519081900360200190f35b346100005761010961050b565b604080519115158252519081900360200190f35b34610000576100d16105d9565b005b34610000576101db6105e9565b60408051918252519081900360200190f35b34610000576100d16105d9565b005b34610000576100e0610600565b60408051600160a060020a039092168252519081900360200190f35b34610000576101db61060f565b60408051918252519081900360200190f35b34610000576101db610616565b60408051918252519081900360200190f35b34610000576100d1600160a060020a036004351661061c565b005b34610000576101db610671565b60408051918252519081900360200190f35b600454600160a060020a031681565b60008054604051600160a060020a039182169130163180156108fc029184818181858888f193505050501561038357506001610388565b610000565b5b90565b6005805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156104125780601f106103e757610100808354040283529160200191610412565b820191906000526020600020905b8154815290600101906020018083116103f557829003601f168201915b505050505081565b600381905560015b919050565b600160a060020a033016315b90565b600354600160a060020a033316600090815260026020526040812054909143039010801561046f575060015430600160a060020a031631115b156104f257600154604051600160a060020a0384169180156108fc02916000818181858888f193505050501561038357600160a060020a033316600081815260026020526040808220439055517fb55e1e66be2063fbc7bfd18341a7dbae7946ed9af9e05f52a72e5a6076e6db5a9190a2506001610422565b610000565b610422565b506000610422565b5b919050565b60018181555b919050565b600354600160a060020a0333166000908152600260205260408120549091430390108015610544575060015430600160a060020a031631115b156105cd57600154604051600160a060020a0333169180156108fc02916000818181858888f193505050501561038357600160a060020a03331660008181526002602052604080822043905560015490519092917fb5e6012859c0d503f2a9455a198cd968d8fb3ff822abee9c3d361b9cf440582c91a3506001610388565b610000565b610388565b506000610388565b5b90565b600054600160a060020a0316ff5b565b6003545b90565b600054600160a060020a0316ff5b565b600054600160a060020a031681565b6001545b90565b60065481565b60005433600160a060020a039081169116141561066b57600160a060020a0381161561066b576000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b5b5b50565b600160a060020a03331660009081526002602052604081205460035443919091039011156105cd5750600160a060020a03331660009081526002602052604090205460035443919091039003610388565b506000610388565b5b905600a165627a7a7230582039ea1833c0eecd9c71c9bbd0730f5baa22d62370cfebe31e567fdfdc5d0249220029",
+  "networks": {
+    "1493249053849": {
+      "events": {
+        "0xb5e6012859c0d503f2a9455a198cd968d8fb3ff822abee9c3d361b9cf440582c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "fromAddress",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "sentAmount",
+              "type": "uint256"
+            }
+          ],
+          "name": "EtherRequested",
+          "type": "event"
+        },
+        "0xb55e1e66be2063fbc7bfd18341a7dbae7946ed9af9e05f52a72e5a6076e6db5a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "toAddress",
+              "type": "address"
+            }
+          ],
+          "name": "EtherSent",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x4d67eee82198928e69fcdeec9f76c4698d9b29d8",
+      "updated_at": 1493252747321
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1493252747321
+}
