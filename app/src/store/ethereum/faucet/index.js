@@ -3,7 +3,13 @@ import {
     RECEIVE_FAUCETS,
     FAUCET_CREATED,
     FAUCET_UPDATED,
-    SEND_WEI
+    SEND_WEI,
+    getFaucetByCreator,
+    getFaucetByName,
+    getAllFaucets,
+    createFaucet,
+    sendWei
+
 } from './actions';
 
 
@@ -18,6 +24,11 @@ export {
     FAUCET_CREATED,
     FAUCET_UPDATED,
     SEND_WEI,
+    getFaucetByCreator,
+    getFaucetByName,
+    getAllFaucets,
+    createFaucet,
+    sendWei,
 
 
     faucetReducer,

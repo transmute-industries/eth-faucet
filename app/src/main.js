@@ -18,7 +18,7 @@ import { getAllFaucets } from 'store/ethereum/faucet';
 
 function doEverything() {
   return dispatch => Promise.all([
-    // store.dispatch(getAllFaucets()),
+    store.dispatch(getAllFaucets()),
     store.dispatch(getWeb3Accounts())
   ]);
 }

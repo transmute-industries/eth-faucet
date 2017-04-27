@@ -19,13 +19,6 @@ import FaucetRoute from './Faucet'
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
-/*
-<Route path="admin" component={UserIsAuthenticated(AdminPage)} />
-<Route path="faucets/:faucetName" component={FaucetPage} />
-<Route path="faucet/create" component={UserIsAuthenticated(CreateFaucetPage)} />
-*/
-
-
 export const createRoutes = (store) => ({
   path: '/',
   component: CoreLayout,
