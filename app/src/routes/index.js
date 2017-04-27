@@ -14,6 +14,7 @@ import TodoRoute from './Todo'
 
 import AdminRoute from './Admin'
 import CreateFaucetRoute from './CreateFaucet'
+import FaucetRoute from './Faucet'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -39,7 +40,8 @@ export const createRoutes = (store) => ({
     DebugRoute(store),
     TodoRoute(store),
     AdminRoute(store),
-    CreateFaucetRoute(store)
+    CreateFaucetRoute(store),
+    FaucetRoute(store)
   ]
 })
 
