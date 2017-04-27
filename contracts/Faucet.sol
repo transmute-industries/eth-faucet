@@ -16,8 +16,6 @@ contract Faucet is Killable {
     uint blockLimit;
 
     // Events
-    event AccessRequested(address indexed requestorAddress);
-    event AuthorizationGranted(address indexed requestorAddress);
     event EtherRequested(address indexed fromAddress, uint256 indexed sentAmount);
     event EtherSent(address indexed toAddress);
 
@@ -76,6 +74,10 @@ contract Faucet is Killable {
         return address(this).balance;
   	}
 
+    function getRequestorAddresses() constant returns (address[]) {
+      return requestorAddresses;
+    }
+
   	function getRemainingBlocks() returns (uint) {
         if(blockLimit > (block.number-lastSent[msg.sender]))
             return blockLimit-(block.number-lastSent[msg.sender]);
@@ -83,17 +85,19 @@ contract Faucet is Killable {
             return 0;
   	}
 
-    function addRequestorAddress(address _requestor) {
+    function addRequestorAddress(address _requestor) public {
+        if (ArrayUtils.IndexOf(requestorAddresses, _requestor) <= requestorAddresses.length-1)
+            throw;
         requestorAddresses.push(_requestor);
         authorizedAddressesMapping[_requestor] = false;
-        AccessRequested(_requestor);
     }
 
-    function authorizeRequestorAddress(address _requestor) onlyCreator {
-        if (ArrayUtils.IndexOf(requestorAddresses, _requestor) > requestorAddresses.length - 1)
+    function authorizeRequestorAddress(address _requestor) onlyCreator public {
+        if (ArrayUtils.IndexOf(requestorAddresses, _requestor) > requestorAddresses.length-1)
+            throw;
+        if (authorizedAddressesMapping[_requestor])
             throw;
         authorizedAddressesMapping[_requestor] = true;
-        AuthorizationGranted(_requestor);
     }
 
     // Interface

@@ -11,6 +11,8 @@ contract FaucetManager is Killable {
   address[] public faucetAddresses;
 
   // Events
+  event AccessRequested(address indexed requestorAddress);
+  event AuthorizationGranted(address indexed requestorAddress);
   event FaucetCreated(address _address, address _creatorAddress, string _name, uint _timeCreated);
   event FaucetDestroyed(address _address);
 
@@ -23,7 +25,7 @@ contract FaucetManager is Killable {
 
   // Modifiers
   modifier checkExistence(address _faucetAddress) {
-    if (ArrayUtils.IndexOf(faucetAddresses, _faucetAddress) > faucetAddresses.length - 1)
+    if (ArrayUtils.IndexOf(faucetAddresses, _faucetAddress) > faucetAddresses.length-1)
       throw;
     _;
   }
@@ -37,7 +39,7 @@ contract FaucetManager is Killable {
     return nameFaucetMapping[_name];
   }
 
-  function getFaucets() constant returns(address[] faucetAddresses)  {
+  function getFaucets() constant returns(address[])  {
     return faucetAddresses;
   }
 
@@ -72,12 +74,15 @@ contract FaucetManager is Killable {
   function requestAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.addRequestorAddress(_requestorAddress);
+    AccessRequested(_requestorAddress);
   }
 
-  function approveAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+  function authorizeAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.authorizeRequestorAddress(_requestorAddress);
+    AuthorizationGranted(_requestorAddress);
   }
+
 
   function killFaucet(address _address, string _name, address _creator)  {
     // Validate Local State

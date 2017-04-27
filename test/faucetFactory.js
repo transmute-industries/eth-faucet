@@ -100,20 +100,31 @@ contract('FaucetManager', function (accounts) {
     })
 
     it("Verify Customer Can Request Access", (done) => {
-         Faucet.at(faucetAddress).then((_faucet) => {
-            var events = _faucet.AccessRequested();
+        var events = faucetManagerInstance.AccessRequested();
 
-            events.watch((error, result) => {
-                if (error == null) {
-                    console.log("result.args.requestorAddress:", result.args.requestorAddress)
-                    assert.equal(faucetCustomer, result.args.requestorAddress, "Customer did not request access")
-                    events.stopWatching()
-                    done();
-                }
-            });
-
-            faucetManagerInstance.requestAccess(faucetCustomer, faucetAddress, { from: faucetCustomer, gas: 2000000 });
+        events.watch((error, result) => {
+            if (error == null) {
+                assert.equal(faucetCustomer, result.args.requestorAddress, "Customer did not request access")
+                events.stopWatching()
+                done();
+            }
         });
+
+        faucetManagerInstance.requestAccess(faucetCustomer, faucetAddress, { from: faucetCustomer, gas: 2000000 });
+    })
+
+    it("Verify Creator Can Authorize Access", (done) => {
+        var events = faucetManagerInstance.AuthorizationGranted();
+
+        events.watch((error, result) => {
+            if (error == null) {
+                assert.equal(faucetCustomer, result.args.requestorAddress, "Creator did not authorize access")
+                events.stopWatching()
+                done();
+            }
+        });
+
+        faucetManagerInstance.authorizeAccess(faucetCustomer, faucetAddress, { from: faucetCreator, gas: 2000000 });
     })
 
     it("Verify Customer Can Get Wei", (done) => {
