@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import CreateFaucet from '../components/CreateFaucet'
-import { getAllFaucets, createFaucet } from '../actions/faucet'
+import CreateFaucet from 'components/CreateFaucet'
+import { getAllFaucets, createFaucet } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
   return {}

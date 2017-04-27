@@ -12,9 +12,11 @@ import AccountRoute from './Account'
 import RecoverRoute from './Recover'
 import TodoRoute from './Todo'
 
+import AdminRoute from './Admin'
+import CreateFaucetRoute from './CreateFaucet'
+
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
-
 
 /*
 <Route path="admin" component={UserIsAuthenticated(AdminPage)} />
@@ -35,7 +37,9 @@ export const createRoutes = (store) => ({
     RecoverRoute(store),
     TransferRoute(store),
     DebugRoute(store),
-    TodoRoute(store)
+    TodoRoute(store),
+    AdminRoute(store),
+    CreateFaucetRoute(store)
   ]
 })
 
