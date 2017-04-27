@@ -58,7 +58,7 @@ contract FaucetManager is Killable {
     return nameFaucetMapping[_name];
   }
 
-  function getFaucets() returns(address[] faucetAddresses)  {
+  function getFaucets() constant returns(address[])  {
     return faucetAddresses;
   }
 

@@ -13,13 +13,18 @@ export default class CreateFaucet extends React.Component {
     }
 
     handleCreateFaucet = () => {
-        this.props.onCreateFaucetSubmit(this.state.faucetName.toLowerCase().replace(/\s+/g, "-"));
+        let cleanName = this.state.faucetName.toLowerCase().replace(/\s+/g, "-");
+    
+        this.props.onCreateFaucetSubmit({
+            name: cleanName,
+            fromAddress: this.props.faucet.defaultAddress
+        });
     }
 
     onInputChange(event) {
         var errorText = /^[a-zA-Z\s]*$/.test(event.target.value) ? "" : "Invalid name, please only use letters and spaces"
         this.setState({
-            error : errorText,
+            error: errorText,
             faucetName: event.target.value
         });
     }

@@ -11,14 +11,12 @@ import createStore from './store/createStore'
 // so we need to provide a custom `selectLocationState` to inform
 // react-router-redux of its location.
 const initialState = window.___INITIAL_STATE__
-const store = createStore(initialState)
+export const store = createStore(initialState)
 
 import { getWeb3Accounts } from 'store/ethereum/web3';
-import { getAllFaucets } from 'store/ethereum/faucet';
 
 function doEverything() {
   return dispatch => Promise.all([
-    store.dispatch(getAllFaucets()),
     store.dispatch(getWeb3Accounts())
   ]);
 }

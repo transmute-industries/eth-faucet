@@ -20,6 +20,8 @@ faucetContract.setProvider(provider);
 const faucetManagerContract = contract(FaucetManager);
 faucetManagerContract.setProvider(provider);
 
+// CALL BACKIFY ALL THIS
+
 // HELPER METHODS
 
 export const faucetContractGetFaucetByAddress = (_address) => {
@@ -34,69 +36,77 @@ export const faucetContractGetFaucetByAddress = (_address) => {
     })
 }
 
-export const faucetManagerContractGetFaucetByCreator = (fromAddress) => {
-    return faucetManagerContract.deployed()
+export const faucetManagerContractGetFaucetByCreator = (fromAddress, _callback) => {
+    faucetManagerContract.deployed()
         .then((_instance) => {
             _instance.faucetByCreator
                 .call({ from: fromAddress })
+                .then(async (_address) => {
+                    let addr = _address == 0 ? null : await getFaucetByAddress(_address)
+                    _callback(addr);
+                })
                 .catch((error) => {
                     console.error(error);
-                })
-                .then(async (_address) => {
-                    return _address == 0 ? null : await getFaucetByAddress(_address)
                 })
         })
 }
 
-export const faucetManagerContractGetFaucetByName = (_name) => {
-    return faucetManagerContract.deployed()
+export const faucetManagerContractGetFaucetByName = (_name, _callback) => {
+    faucetManagerContract.deployed()
         .then((_instance) => {
             _instance.faucetByName
                 .call(_name)
+                .then(async (_address) => {
+                    let addr = _address == 0 ? null : await getFaucetByAddress(_address)
+                    _callback(addr);
+                })
                 .catch((error) => {
                     console.error(error);
-                })
-                .then(async (_address) => {
-                    return _address == 0 ? null : await getFaucetByAddress(_address)
                 })
         })
 }
 
-export const faucetManagerContractGetAllFaucets = () => {
-    return faucetManagerContract.deployed().then((_instance) => {
-        _instance.getFaucets
-            .call()
-            .catch((error) => {
-                console.error(error);
-            })
-    })
+export const faucetManagerContractGetAllFaucets = (_callback) => {
+    faucetManagerContract.deployed()
+        .then((_instance) => {
+            _instance.getFaucets
+                .call()
+                .then((data) => {
+                    console.log('what data: ', data)
+                    _callback(data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+        })
 }
 
-export const faucetManagerContractCreateFaucet = (_name, fromAddress) => {
-    return faucetManagerContract.deployed()
+export const faucetManagerContractCreateFaucet = (_name, fromAddress, _callback) => {
+    faucetManagerContract.deployed()
         .then((_instance) => {
             _instance
                 .createFaucet(_name, { from: fromAddress, gas: 2000000, value: web3.toWei(10) })
+                .then((_tx) => {
+                    // browserHistory.push("/faucets/" + _name)
+                    console.log(_tx)
+                    _callback(_tx);
+                })
                 .catch((error) => {
                     console.error(error);
-                })
-                .then((_tx) => {
-                    browserHistory.push("/faucets/" + _name)
-                    return _tx;
                 })
         })
 }
 
-export const faucetContractSendWei = (_faucetAddress, _recipientAddress, fromAddress) => {
-    return faucetContract.at(_faucetAddress)
+export const faucetContractSendWei = (_faucetAddress, _recipientAddress, fromAddress, _callback) => {
+    faucetContract.at(_faucetAddress)
         .then((_faucet) => {
             _faucet.sendWei(_recipientAddress, { from: fromAddress })
-                .catch((error) => {
-                    console.error(error);
-                })
                 .then((_tx) => {
                     console.log("_tx:", _tx);
-                    return _tx;
+                    _callback(_tx);
+                })
+                .catch((error) => {
+                    console.error(error);
                 })
         })
 }

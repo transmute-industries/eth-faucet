@@ -3,14 +3,17 @@ import CreateFaucet from 'components/CreateFaucet'
 import { getAllFaucets, createFaucet } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    faucet: state.faucet,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
+
   return {
-    onCreateFaucetSubmit: (name) => {
+    onCreateFaucetSubmit: (data) => {
       event.preventDefault();
-      dispatch(createFaucet(name))
+      dispatch(createFaucet(data.name, data.fromAddress))
     },
     onGetAllFaucets: () => {
       event.preventDefault();

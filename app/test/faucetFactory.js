@@ -53,7 +53,14 @@ contract('FaucetManager', function (accounts) {
           from: faucetCreator,
           gas: 2000000,
           value: faucetSeedEther
-        }).then();
+        });
+    });
+
+    it("Verify FaucetManager has additional faucet", () => {
+        console.log("instanceAddress: ", faucetManagerInstance.address)
+        faucetManagerInstance.getFaucets.call().then((_faucets) => {
+            console.log("orie is a scrub, here are the faucets:", _faucets);
+        });
     });
 
     it("Verify Faucet owner", (done) => {
@@ -131,12 +138,13 @@ contract('FaucetManager', function (accounts) {
         });
     })
 
-    it("Destroy Faucet", () => {
-        Faucet.at(faucetAddress).then((_faucet) => {
-            faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, { from: faucetCreator }).then(() => {
-                assert.equal(faucetManagerInstance.creatorFaucetMapping, null, "creatorFaucetMapping was not undefined")
-                assert.equal(faucetManagerInstance.nameFaucetMapping, null, "nameFaucetMapping was not undefined")
-            })
-        })
-    })
+    // it("Destroy Faucet", () => {
+    //     Faucet.at(faucetAddress).then((_faucet) => {
+    //         faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, { from: faucetCreator }).then(() => {
+    //             assert.equal(faucetManagerInstance.creatorFaucetMapping, null, "creatorFaucetMapping was not undefined")
+    //             assert.equal(faucetManagerInstance.nameFaucetMapping, null, "nameFaucetMapping was not undefined")
+    //         })
+    //     })
+    // })
+
 });

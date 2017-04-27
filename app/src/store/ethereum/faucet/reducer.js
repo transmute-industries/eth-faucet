@@ -11,21 +11,41 @@
 // import { getFaucetByName } from './actions';
 // import store from 'store';
 
+import { web3, getRandomAddress } from 'env'
+
+
+import {
+    RECEIVE_WEB3_ACCOUNTS
+} from 'store/ethereum/web3'
+
 import {
     RECEIVE_FAUCET,
     RECEIVE_FAUCETS,
     FAUCET_CREATED,
     FAUCET_UPDATED,
-    SEND_WEI
+    SEND_WEI,
+    getAllFaucets
 } from './actions';
 import { without } from 'lodash';
 
 export const initialState = {
     addresses: [],
-    selected: null
+    selected: null,
+    defaultAddress: null,
 };
 
+import { store } from 'main'
+
 export const faucetReducer = (state = initialState, action) => {
+
+    if (action.type === RECEIVE_WEB3_ACCOUNTS) {
+        let defaultAddress = action.payload[0];
+        console.log('faucet defaultAddress: ', defaultAddress)
+        store.dispatch(getAllFaucets(defaultAddress));
+        return Object.assign({}, state, {
+            defaultAddress: defaultAddress
+        })
+    }
 
     if (action.type === RECEIVE_FAUCET) {
         return Object.assign({}, state, {
@@ -34,6 +54,7 @@ export const faucetReducer = (state = initialState, action) => {
     }
 
     if (action.type === RECEIVE_FAUCETS) {
+        console.log('action.payload: ', action)
         return Object.assign({}, state, {
             addresses: without(action.payload, 0)
         })

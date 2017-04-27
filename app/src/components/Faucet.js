@@ -13,17 +13,17 @@ export default class Faucet extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-      console.log("componentWillReceiveProps nextProps:", nextProps);
-    }
+    // componentWillReceiveProps(nextProps) {
+    //   console.log("componentWillReceiveProps nextProps:", nextProps);
+    // }
 
-    componentDidUpdate(prevProps, nextProps) {
-      console.log("componentDidUpdate this.props:", this.props)
-    }
+    // componentDidUpdate(prevProps, nextProps) {
+    //   console.log("componentDidUpdate this.props:", this.props)
+    // }
 
-    componentWillUpdate(prevProps, nextProps) {
-      console.log("componentWillUpdate this.props:", this.props)
-    }
+    // componentWillUpdate(prevProps, nextProps) {
+    //   console.log("componentWillUpdate this.props:", this.props)
+    // }
 
     handleSendWei = () => {
         this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.address);
