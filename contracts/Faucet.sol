@@ -3,7 +3,7 @@ import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract Faucet is Killable {
-    using ArrayUtils for *;
+    using ArrayUtils for address[];
 
     mapping (address => uint) lastSent;
     mapping (address => bool) authorizedAddressesMapping;
@@ -86,14 +86,14 @@ contract Faucet is Killable {
   	}
 
     function addRequestorAddress(address _requestor) public {
-        if (ArrayUtils.IndexOf(requestorAddresses, _requestor) <= requestorAddresses.length-1)
+        if (requestorAddresses.indexOf( _requestor) != uint(-1))
             throw;
         requestorAddresses.push(_requestor);
         authorizedAddressesMapping[_requestor] = false;
     }
 
-    function authorizeRequestorAddress(address _requestor) onlyCreator public {
-        if (ArrayUtils.IndexOf(requestorAddresses, _requestor) > requestorAddresses.length-1)
+    function authorizeRequestorAddress(address _requestor) public {
+        if (requestorAddresses.indexOf(_requestor) == uint(-1))
             throw;
         if (authorizedAddressesMapping[_requestor])
             throw;

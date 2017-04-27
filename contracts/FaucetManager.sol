@@ -4,7 +4,7 @@ import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract FaucetManager is Killable {
-  using ArrayUtils for *;
+  using ArrayUtils for address[];
 
   mapping (address => address) creatorFaucetMapping;
   mapping (string => address) nameFaucetMapping;
@@ -25,7 +25,7 @@ contract FaucetManager is Killable {
 
   // Modifiers
   modifier checkExistence(address _faucetAddress) {
-    if (ArrayUtils.IndexOf(faucetAddresses, _faucetAddress) > faucetAddresses.length-1)
+    if (faucetAddresses.indexOf(_faucetAddress) == uint(-1))
       throw;
     _;
   }
@@ -96,7 +96,7 @@ contract FaucetManager is Killable {
     // Update Local State
     delete nameFaucetMapping[_name];
     delete creatorFaucetMapping[_creator];
-    ArrayUtils.RemoveByValue(faucetAddresses, _address);
+    /*faucetAddresses.remove(_address);*/
 
     // Interact With Other Contracts
     Faucet _faucet = Faucet(_address);
