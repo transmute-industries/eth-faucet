@@ -6,11 +6,7 @@
     background-color: rgba( 0, 0, 0, 0.80);
     background-blend-mode: darken;
     height: 100%;
-    div {
-        height: 100%;
-    }
     .particles {
         @extend .flex-row-center;
-        height: 100% !important;
     }
 }
