@@ -1,9 +1,9 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 
 import classes from './CreateFaucetForm.scss'
-
 
 export default class CreateFaucetForm extends React.Component {
 
@@ -15,9 +15,11 @@ export default class CreateFaucetForm extends React.Component {
         };
     }
 
+
+
     handleCreateFaucet = () => {
         let cleanName = this.state.faucetName.toLowerCase().replace(/\s+/g, "-");
-    
+
         this.props.onCreateFaucetSubmit({
             name: cleanName,
             fromAddress: this.props.faucet.defaultAddress
@@ -34,19 +36,30 @@ export default class CreateFaucetForm extends React.Component {
 
     render() {
         return (
-            <div className={classes.container} >
-                <TextField
-                    style={{width: '100%'}}
-                    id="text-field-controlled"
-                    floatingLabelText="Name"
-                    value={this.state.faucetName}
-                    errorText={this.state.error}
-                    onChange={e => this.onInputChange(e)}
+            <Card>
+                <CardTitle
+                    title="Create Faucet"
+                    subtitle="One per account address."
                 />
-              
-                <RaisedButton className={classes.submit} onClick={this.handleCreateFaucet} disabled={this.state.error.length > 0 || this.state.faucetName.trim().length == 0} label="Create" />
-               
-            </div>
+                <CardText>
+                    <TextField
+                        style={{ width: '100%' }}
+                        id="text-field-controlled"
+                        floatingLabelText="Name"
+                        value={this.state.faucetName}
+                        errorText={this.state.error}
+                        onChange={e => this.onInputChange(e)}
+                    />
+                </CardText>
+                <CardActions style={{textAlign: 'right'}}>
+                    <RaisedButton 
+                    style={{marginRight: '0px'}}
+                    secondary={true}
+                    onClick={this.handleCreateFaucet} 
+                    disabled={this.state.error.length > 0 || this.state.faucetName.trim().length == 0} 
+                    label="Create"  />
+                </CardActions>
+            </Card>
         );
     }
 }

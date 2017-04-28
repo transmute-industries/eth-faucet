@@ -1,7 +1,28 @@
 @import 'base';
 .container {
-    padding: 16px;
-    .children {
-        padding: 16px;
-    }
+    background-image: url("https://source.unsplash.com/random/1280x1024");
+    background-size: cover;
+    background-color: rgba( 0, 0, 0, 0.80);
+    background-blend-mode: darken;  
+    height: 100%;
 }
+
+
+.center{
+    @extend .flex-column-center;
+}
+.children{
+    margin-top: 200px;
+    position: fixed;
+    width: 512px;
+}
+
+// border-style: solid;
+// border-color: #ff0000 #0000ff;
+
+ // #root > div > div > div > div > div:nth-child(1){
+    //     height: 100%;
+    // }
+    // #root > div > div > div > div > div:nth-child(1) > canvas{
+    //     height: 100%;
+    // }

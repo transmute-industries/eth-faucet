@@ -24,7 +24,7 @@ import {
     FAUCET_CREATED,
     FAUCET_UPDATED,
     SEND_WEI,
-    getAllFaucets
+    getFaucetByCreator
 } from './actions';
 import { without } from 'lodash';
 
@@ -39,28 +39,37 @@ import { store } from 'main'
 export const faucetReducer = (state = initialState, action) => {
 
     if (action.type === RECEIVE_WEB3_ACCOUNTS) {
+
         let defaultAddress = action.payload[0];
-        console.log('faucet defaultAddress: ', defaultAddress)
-        store.dispatch(getAllFaucets(defaultAddress));
+
+        store.dispatch(getFaucetByCreator(defaultAddress));
+
         return Object.assign({}, state, {
             defaultAddress: defaultAddress
         })
     }
 
     if (action.type === RECEIVE_FAUCET) {
+        let faucet = action.payload;
         return Object.assign({}, state, {
-            selected: action.payload
+            selected: faucet,
+            isOwner: faucet && faucet.creator === state.defaultAddress
         })
     }
 
     if (action.type === RECEIVE_FAUCETS) {
-        console.log('action.payload: ', action)
+
+        console.log('action.payload find : ', action)
+
         return Object.assign({}, state, {
             addresses: without(action.payload, 0)
         })
     }
 
     if (action.type === FAUCET_CREATED) {
+
+        store.dispatch(getFaucetByCreator(state.defaultAddress));
+
         return Object.assign({}, state, {
             addresses: state.addresses.concat(action.payload.logs[0].address)
         })

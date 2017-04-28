@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PropTypes }  from 'prop-types';
+import { PropTypes } from 'prop-types';
 import classes from './Navbar.scss'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
@@ -14,7 +14,8 @@ import {
   ACCOUNT_PATH,
   TRANSFER_PATH,
   LOGIN_PATH,
-  SIGNUP_PATH
+  SIGNUP_PATH,
+  CREATE_FAUCET_PATH
 } from 'constants/paths'
 
 // Components
@@ -42,10 +43,11 @@ const avatarStyles = {
 
 @firebaseConnect()
 @connect(
-  ({ firebase }) => ({
+  ({ firebase, faucet }) => ({
     authError: pathToJS(firebase, 'authError'),
     auth: pathToJS(firebase, 'auth'),
-    account: pathToJS(firebase, 'profile')
+    account: pathToJS(firebase, 'profile'),
+    faucet: faucet
   })
 )
 export default class Navbar extends Component {
@@ -64,10 +66,9 @@ export default class Navbar extends Component {
     this.context.router.push('/')
   }
 
-  render () {
-    const { account } = this.props
+  render() {
+    const { account, faucet } = this.props
     const accountExists = isLoaded(account) && !isEmpty(account)
-
     const iconButton = (
       <IconButton style={avatarStyles.button} disableTouchRipple>
         <div className={classes.avatar}>
@@ -78,7 +79,7 @@ export default class Navbar extends Component {
           </div>
           <div className={classes['avatar-text']}>
             <span className={`${classes['avatar-text-name']} hidden-mobile`}>
-              { accountExists && account.displayName ? account.displayName : 'User' }
+              {accountExists && account.displayName ? account.displayName : 'User'}
             </span>
             <DownArrow color='white' />
           </div>
@@ -100,7 +101,7 @@ export default class Navbar extends Component {
             style={buttonStyle}
           />
         </Link>
-      </div>
+      </div >
     )
 
     const rightMenu = accountExists ? (
@@ -114,7 +115,7 @@ export default class Navbar extends Component {
           primaryText='Account'
           onTouchTap={() => this.context.router.push(ACCOUNT_PATH)}
         />
-         <MenuItem
+        <MenuItem
           primaryText='Transfer'
           onTouchTap={() => this.context.router.push(TRANSFER_PATH)}
         />

@@ -2,18 +2,38 @@ import React from 'react'
 import Navbar from 'containers/Navbar/Navbar'
 import classes from './Page.scss'
 
-import { PropTypes }  from 'prop-types';
+import { PropTypes } from 'prop-types';
 
-export const Page = ({ children }) => (
+import Particles from 'react-particles-js';
+import particles from './particles.json'
+
+export const Page = ({ children, renderParticles }) => (
   <div className={classes.container}>
-    <div className={classes.children}>
-      {children}
+
+    <div className={classes.center}>
+      <div className={classes.children}>
+        {children}
+      </div>
     </div>
+
+    {
+      renderParticles ?
+        <div className='ti_p'>
+          <Particles
+            params={{
+              particles: particles.particles,
+              interactivity: particles.interactivity
+            }} />
+        </div>
+        :
+        <div />
+    }
+
   </div>
 )
 
 Page.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.element.isRequired,
 }
 
 export default Page
