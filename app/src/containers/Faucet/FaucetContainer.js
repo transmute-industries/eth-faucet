@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import Faucet from 'components/Faucet'
+import Faucet from 'components/Faucet/Faucet'
 import { sendWei } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {

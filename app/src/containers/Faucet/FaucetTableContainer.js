@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import FaucetTable from 'components/FaucetTable'
+import FaucetTable from 'components/Faucet/FaucetTable'
 
 const mapStateToProps = (state, ownProps) => {
   return {

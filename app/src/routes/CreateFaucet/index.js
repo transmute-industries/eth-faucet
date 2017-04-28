@@ -9,12 +9,12 @@ export default (store) => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const CreateFaucetContainer = require('containers/Faucet/CreateFaucetContainer').default
+      const FaucetPage = require('containers/Faucet/CreateFaucet/CreateFaucetPage').default
 
       /*  Return getComponent   */
-      cb(null, CreateFaucetContainer)
+      cb(null, FaucetPage)
 
     /* Webpack named bundle   */
-    }, 'CreateFaucetContainer')
+    }, 'FaucetPage')
   }
 })

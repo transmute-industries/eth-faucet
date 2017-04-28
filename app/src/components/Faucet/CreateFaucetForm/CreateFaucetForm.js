@@ -2,7 +2,10 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-export default class CreateFaucet extends React.Component {
+import classes from './CreateFaucetForm.scss'
+
+
+export default class CreateFaucetForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -31,16 +34,18 @@ export default class CreateFaucet extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={classes.container} >
                 <TextField
+                    style={{width: '100%'}}
                     id="text-field-controlled"
                     floatingLabelText="Name"
                     value={this.state.faucetName}
                     errorText={this.state.error}
                     onChange={e => this.onInputChange(e)}
                 />
-                <br />
-                <RaisedButton onClick={this.handleCreateFaucet} disabled={this.state.error.length > 0 || this.state.faucetName.trim().length == 0} label="Create" />
+              
+                <RaisedButton className={classes.submit} onClick={this.handleCreateFaucet} disabled={this.state.error.length > 0 || this.state.faucetName.trim().length == 0} label="Create" />
+               
             </div>
         );
     }
