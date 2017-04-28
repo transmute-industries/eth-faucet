@@ -1,18 +1,11 @@
-// import { LOCATION_CHANGE } from 'react-router-redux'
-
-// if (action.type === LOCATION_CHANGE) {
-//     var parts = decodeURI(action.payload.pathname).split('/');
-//     if (parts.length == 3 &&
-//         parts[1].toLowerCase() == "faucets" &&
-//         parts[2].length != 0) {
-//         store.dispatch(getFaucetByName(parts[2].toLowerCase().replace(/\s+/g, "-")));
-//     }
-// }
-// import { getFaucetByName } from './actions';
-// import store from 'store';
 
 import { web3, getRandomAddress } from 'env'
+import { without } from 'lodash';
 
+
+import {
+    LOCATION_CHANGE
+} from 'store/location'
 
 import {
     RECEIVE_WEB3_ACCOUNTS
@@ -24,9 +17,10 @@ import {
     FAUCET_CREATED,
     FAUCET_UPDATED,
     SEND_WEI,
-    getFaucetByCreator
+    getFaucetByCreator,
+    getFaucetByName
 } from './actions';
-import { without } from 'lodash';
+
 
 export const initialState = {
     addresses: [],
@@ -38,9 +32,10 @@ import { store } from 'main'
 
 export const faucetReducer = (state = initialState, action) => {
 
+
     if (action.type === RECEIVE_WEB3_ACCOUNTS) {
 
-        let defaultAddress = action.payload[0];
+        let defaultAddress = getRandomAddress(action.payload);
 
         store.dispatch(getFaucetByCreator(defaultAddress));
 

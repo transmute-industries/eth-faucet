@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import Faucet from 'components/Faucet/Faucet'
-import { sendWei } from 'store/ethereum/faucet'
+import { sendWei, getFaucetByName } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
   console.log("state:", state);
@@ -13,9 +13,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSendWeiFormSubmit: (_faucetAddress, _recipientAddress) => {
+    onGetFaucetByName: (cleanName) => {
       event.preventDefault();
-      dispatch(sendWei(_faucetAddress, _recipientAddress))
+      dispatch(getFaucetByName(cleanName))
+    },
+    onSendWeiFormSubmit: (_faucetAddress, _recipientAddress, _fromAddress) => {
+      event.preventDefault();
+      console.log(':smile:', _faucetAddress, _recipientAddress, _fromAddress)
+      dispatch(sendWei(_faucetAddress, _recipientAddress, _fromAddress))
     }
   }
 }

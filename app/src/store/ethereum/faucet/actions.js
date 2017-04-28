@@ -23,14 +23,14 @@ export const getFaucetByCreator = (_fromAddress) => {
     }
 }
 
-export const getFaucetByName = (_name, _fromAddress) => {
+export const getFaucetByName = (_name) => {
     return (dispatch) => {
-        faucetManagerContractGetFaucetByName(_name, _fromAddress, ((faucet) => {
+        faucetManagerContractGetFaucetByName(_name, (faucet) => {
             dispatch({
                 type: RECEIVE_FAUCET,
                 payload: faucet
             })
-        }))
+        })
     }
 }
 

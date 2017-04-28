@@ -10,10 +10,10 @@ export default class FaucetPage extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("constructor: ", props);
-
+        // console.log("constructor: ", props);
     }
 
+   
     render() {
         return (
             <Page renderParticles={true}>

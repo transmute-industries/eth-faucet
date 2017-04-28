@@ -101,6 +101,11 @@ export default class Navbar extends Component {
             style={buttonStyle}
           />
         </Link>
+        <FlatButton
+          href='https://github.com/transmute-industries/eth-faucet'
+          label='Source'
+          style={buttonStyle}
+        />
       </div >
     )
 
