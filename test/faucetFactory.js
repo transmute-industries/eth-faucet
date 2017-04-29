@@ -157,7 +157,7 @@ contract('FaucetManager', function (accounts) {
         if (error == null) {
           _faucet.isAddressAuthorized.call(faucetCustomer)
           .then((_isAuthorized) => {
-            assert(_isAuthorized, 'faucetCustomer at all is not authorized')
+            assert(_isAuthorized, 'faucetCustomer is not authorized')
             done()
           })
           assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), 'Amount sent was not equal to 1000000000000000000')

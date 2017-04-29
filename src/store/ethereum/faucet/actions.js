@@ -11,6 +11,7 @@ import {
   faucetManagerContractCreateFaucet,
   faucetManagerContractRequestFaucetAccess,
   faucetManagerContractAuthorizeFaucetAccess,
+  faucetManagerContractRevokeFaucetAccess,
   faucetContractSendWei
 } from 'middleware/faucet'
 
@@ -61,6 +62,17 @@ export const requestFaucetAccess = (_requestorAddress, _faucetAddress) => {
 export const authorizeFaucetAccess = (_requestorAddress, _faucetAddress) => {
   return (dispatch) => {
     faucetManagerContractAuthorizeFaucetAccess(_requestorAddress, _faucetAddress, (_tx) => {
+      dispatch({
+        type: FAUCET_UPDATED,
+        payload: _tx
+      })
+    })
+  }
+}
+
+export const revokeFaucetAccess = (_requestorAddress, _faucetAddress) => {
+  return (dispatch) => {
+    faucetManagerContractRevokeFaucetAccess(_requestorAddress, _faucetAddress, (_tx) => {
       dispatch({
         type: FAUCET_UPDATED,
         payload: _tx
