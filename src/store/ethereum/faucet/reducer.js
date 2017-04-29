@@ -16,7 +16,8 @@ import {
 export const initialState = {
   addresses: [],
   selected: null,
-  defaultAddress: null
+  defaultAddress: null,
+  defaultFaucet: null
 }
 
 import { store } from 'main'
@@ -32,10 +33,15 @@ export const faucetReducer = (state = initialState, action) => {
   }
 
   if (action.type === RECEIVE_FAUCET) {
-    let faucet = action.payload
+    let faucet = action.payload;
+    let defaultFaucet;
+    if (faucet.creator === state.defaultAddress) {
+      defaultFaucet = faucet;
+    }
     return Object.assign({}, state, {
       selected: faucet,
-      isOwner: faucet && faucet.creator === state.defaultAddress
+      isOwner: faucet && faucet.creator === state.defaultAddress,
+      defaultFaucet: defaultFaucet
     })
   }
 

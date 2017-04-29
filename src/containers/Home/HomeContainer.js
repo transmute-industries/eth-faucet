@@ -31,20 +31,26 @@ export default class Home extends Component {
   componentWillReceiveProps(nextProps) {
     // console.log(nextProps)
     let { faucet } = nextProps;
-    if (faucet.isOwner) {
-      browserHistory.push("/faucets/" + faucet.selected.name)
-    }
+
+    // if (faucet.isOwner) {
+    //   browserHistory.push("/faucets/" + faucet.selected.name)
+    // }
+
   }
   render() {
     let { faucet } = this.props;
 
-
+    const useAFaucet = () => {
+      return (
+        <h1> Use a faucet</h1>
+      )
+    }
     return (
       <Page style={{ color: Theme.palette.primary2Color }} renderParticles={true}>
 
         {
           faucet.isOwner ?
-            <FaucetContainer />
+            useAFaucet()
             :
             <CreateFaucetContainer />
         }
