@@ -100,6 +100,10 @@ contract Faucet is Killable {
         authorizedAddressesMapping[_requestor] = true;
     }
 
+    function isAddressAuthorized(address _address) public constant returns (bool) {
+        return authorizedAddressesMapping[_address];
+    }
+
     // Interface
   	function sendWei(address recp) onlyAuthorized isAvailable {
         if (!recp.send(sendAmount)) {

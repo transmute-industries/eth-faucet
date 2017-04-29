@@ -34,6 +34,7 @@ class FaucetAdminTable extends React.Component {
         selectedRequestor: requestorAddress
       })
     }
+
     this.props.onAuthorizeFaucetAccess({
       name: requestorAddress,
       fromAddress: this.props.faucet.selected.address

@@ -115,6 +115,14 @@ contract('FaucetManager', function (accounts) {
     })
   })
 
+  it('Verify Customer address contained in Faucet requestorAddresses', () => {
+    Faucet.at(faucetAddress).then((_faucet) => {
+      return _faucet.getRequestorAddresses.call()
+    }).then((_requestorAddresses) => {
+      assert(_.includes(_requestorAddresses, faucetCustomer), '_requestorAddresses does not contain faucetCustomer')
+    })
+  })
+
   it('Verify Creator Can Authorize Access', (done) => {
     var events = faucetManagerInstance.AuthorizationGranted()
 
@@ -132,12 +140,26 @@ contract('FaucetManager', function (accounts) {
     })
   })
 
+  it('Verify Customer address is in authorizedAddressesMapping', (done) => {
+    Faucet.at(faucetAddress).then((_faucet) => {
+      return _faucet.isAddressAuthorized.call(faucetCustomer)
+    }).then((_isAuthorized) => {
+      assert(_isAuthorized, 'faucetCustomer is not authorized')
+      done()
+    })
+  })
+
   it('Verify Customer Can Get Wei', (done) => {
     Faucet.at(faucetAddress).then((_faucet) => {
       var events = _faucet.EtherRequested()
 
       events.watch((error, result) => {
         if (error == null) {
+          _faucet.isAddressAuthorized.call(faucetCustomer)
+          .then((_isAuthorized) => {
+            assert(_isAuthorized, 'faucetCustomer at all is not authorized')
+            done()
+          })
           assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), 'Amount sent was not equal to 1000000000000000000')
           events.stopWatching()
           done()
