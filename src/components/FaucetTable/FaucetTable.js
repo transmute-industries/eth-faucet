@@ -27,14 +27,13 @@ class FaucetTable extends React.Component {
   }
 
   onRowSelection = (index) => {
-    var selectedObject = this.props.faucetObjects[index]
+    var selectedObject = this.props.faucetObjects[index];
     if (selectedObject) {
       this.setState({
-        dialogOpen: false,
+        dialogOpen: true,
         selectedObject: selectedObject
       })
     }
-    this.props.selectRow(selectedObject);
   }
 
   renderTableHeaderFooter() {
@@ -54,7 +53,9 @@ class FaucetTable extends React.Component {
     })
   }
 
-
+  handleConfirm = () => {
+    this.props.selectRow(this.state.selectedObject);
+  }
   render() {
     const actions = [
       <FlatButton
@@ -66,7 +67,7 @@ class FaucetTable extends React.Component {
         label='Confirm'
         primary
         keyboardFocused
-        onTouchTap={this.acceptLoan}
+        onTouchTap={this.handleConfirm}
       />
     ]
     return (
@@ -103,13 +104,13 @@ class FaucetTable extends React.Component {
           </TableBody>
         </Table>
         <Dialog
-          title='Grant Access?'
+          title='Open faucet in new tab?'
           actions={actions}
           modal={false}
           open={this.state.dialogOpen}
           onRequestClose={this.handleCloseDialog}
         >
-          Are you sure you want to grant {this.state.selectedObject !== null && this.state.selectedObject} access to this faucet?
+          Are you sure you want to open <strong>{this.state.selectedObject !== null && this.state.selectedObject.name}</strong> faucet in a new tab?
         </Dialog>
       </div>
     )

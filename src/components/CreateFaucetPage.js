@@ -1,7 +1,7 @@
 import React from 'react'
 import {Card, CardTitle, CardText} from 'material-ui/Card'
 import Page from 'layouts/Page'
-import CreateFaucetContainer from 'containers/Faucet/CreateFaucet/CreateFaucetContainer'
+import CreateFaucetContainer from 'containers/CreateFaucetContainer'
 
 export default class CreateFaucetPage extends React.Component {
   render () {

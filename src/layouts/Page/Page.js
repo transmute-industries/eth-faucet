@@ -20,7 +20,7 @@ export const Page = ({ children, renderParticles }) => (
 
     {
       renderParticles ?
-        <div className='ti_p'>
+        <div className='height100'>
           <Particles
             params={{
               particles: particles.particles,

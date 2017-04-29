@@ -7,21 +7,13 @@
     height: 100%;
 }
 
-
 .center{
     @extend .flex-column-center;
 }
 .children{
-    bottom: 0px;
-    position: static
+    margin-top: 150px;
+    // margin-bottom: -300px;
+    position: absolute;
+    width: 80%;
+
 }
-
-// border-style: solid;
-// border-color: #ff0000 #0000ff;
-
- // #root > div > div > div > div > div:nth-child(1){
-    //     height: 100%;
-    // }
-    // #root > div > div > div > div > div:nth-child(1) > canvas{
-    //     height: 100%;
-    // }

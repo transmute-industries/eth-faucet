@@ -1,7 +1,7 @@
-import HomeContainer from 'containers/HomeContainer'
+import HomePage from 'components/HomePage'
 
 // Sync route definition
 export default {
-  component: HomeContainer
+  component: HomePage
 }
 

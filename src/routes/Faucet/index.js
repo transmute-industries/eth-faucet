@@ -9,7 +9,7 @@ export default (store) => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const FaucetPage = require('containers/Faucet/FaucetContainer/FaucetPage').default
+      const FaucetPage = require('components/FaucetPage').default
       // const reducer = require('./modules/reducer').default
 
       // injectReducer(store, { key: 'tabs', reducer })
