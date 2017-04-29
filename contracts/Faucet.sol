@@ -100,6 +100,14 @@ contract Faucet is Killable {
         authorizedAddressesMapping[_requestor] = true;
     }
 
+    function revokeRequestorAddress(address _requestor) public {
+        if (requestorAddresses.indexOf(_requestor) == uint(-1))
+            throw;
+        if (!authorizedAddressesMapping[_requestor])
+            throw;
+        authorizedAddressesMapping[_requestor] = false;
+    }
+
     function isAddressAuthorized(address _address) public constant returns (bool) {
         return authorizedAddressesMapping[_address];
     }

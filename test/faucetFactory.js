@@ -140,7 +140,7 @@ contract('FaucetManager', function (accounts) {
     })
   })
 
-  it('Verify Customer address is in authorizedAddressesMapping', (done) => {
+  it('Verify Customer address is authorized', (done) => {
     Faucet.at(faucetAddress).then((_faucet) => {
       return _faucet.isAddressAuthorized.call(faucetCustomer)
     }).then((_isAuthorized) => {
@@ -162,7 +162,6 @@ contract('FaucetManager', function (accounts) {
           })
           assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), 'Amount sent was not equal to 1000000000000000000')
           events.stopWatching()
-          done()
         }
       })
 
@@ -183,6 +182,32 @@ contract('FaucetManager', function (accounts) {
       })
 
       _faucet.sendWei(faucetRecipient, {from: faucetCustomer})
+    })
+  })
+
+  it('Verify Creator Can Revoke Access', (done) => {
+    var events = faucetManagerInstance.AuthorizationRevoked()
+
+    events.watch((error, result) => {
+      if (error == null) {
+        assert.equal(faucetCustomer, result.args.requestorAddress, 'Creator did not revoke access')
+        events.stopWatching()
+        done()
+      }
+    })
+
+    faucetManagerInstance.revokeAccess(faucetCustomer, faucetAddress, {
+      from: faucetCreator,
+      gas: 2000000
+    })
+  })
+
+  it('Verify Customer address is not authorized', (done) => {
+    Faucet.at(faucetAddress).then((_faucet) => {
+      return _faucet.isAddressAuthorized.call(faucetCustomer)
+    }).then((_isAuthorized) => {
+      assert(!_isAuthorized, 'faucetCustomer is authorized')
+      done()
     })
   })
 

@@ -13,6 +13,7 @@ contract FaucetManager is Killable {
   // Events
   event AccessRequested(address indexed requestorAddress);
   event AuthorizationGranted(address indexed requestorAddress);
+  event AuthorizationRevoked(address indexed requestorAddress);
   event FaucetCreated(address _address, address _creatorAddress, string _name, uint _timeCreated);
   event FaucetDestroyed(address _address);
 
@@ -83,6 +84,11 @@ contract FaucetManager is Killable {
     AuthorizationGranted(_requestorAddress);
   }
 
+  function revokeAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+    Faucet _faucet = Faucet(_faucetAddress);
+    _faucet.revokeRequestorAddress(_requestorAddress);
+    AuthorizationRevoked(_requestorAddress);
+  }
 
   function killFaucet(address _address, string _name, address _creator)  {
     // Validate Local State
