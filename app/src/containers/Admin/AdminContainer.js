@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Faucet from 'components/Faucet/Faucet'
+import FaucetAdminTable from 'components/Faucet/FaucetAdminTable'
 import { authorizeFaucetAccess } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,6 +21,6 @@ const mapDispatchToProps = (dispatch) => {
 const AdminContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Faucet)
+)(FaucetAdminTable)
 
 export default AdminContainer
