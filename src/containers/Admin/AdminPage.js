@@ -9,7 +9,7 @@ export default class AdminPage extends React.Component {
       <Page renderParticles={false}>
         <Card>
           <CardTitle
-            title='Your Faucet'
+            title='All Faucets'
             />
           <CardText>
             <AdminContainer />

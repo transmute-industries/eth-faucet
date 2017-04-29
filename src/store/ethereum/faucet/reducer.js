@@ -10,7 +10,8 @@ import {
   RECEIVE_FAUCETS,
   FAUCET_CREATED,
   FAUCET_UPDATED,
-  getFaucetByCreator
+  getFaucetByCreator,
+  getAllFaucets
 } from './actions'
 
 export const initialState = {
@@ -26,7 +27,11 @@ export const faucetReducer = (state = initialState, action) => {
   if (action.type === RECEIVE_WEB3_ACCOUNTS) {
     let defaultAddress = getRandomAddress(action.payload)
     // let defaultAddress = action.payload[0];
+
     store.dispatch(getFaucetByCreator(defaultAddress))
+
+    store.dispatch(getAllFaucets())
+
     return Object.assign({}, state, {
       defaultAddress: defaultAddress
     })

@@ -7,8 +7,10 @@ import { PropTypes } from 'prop-types';
 import Particles from 'react-particles-js';
 import particles from './particles.json'
 
+import Theme from 'theme'
+
 export const Page = ({ children, renderParticles }) => (
-  <div className={classes.container}>
+  <div className={classes.container} style={{ color: Theme.palette.primary2Color }}>
 
     <div className={classes.center}>
       <div className={classes.children}>

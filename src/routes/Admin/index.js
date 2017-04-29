@@ -9,12 +9,12 @@ export default (store) => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const AdminContainer = require('containers/Admin/AdminContainer').default
+      const AdminPage = require('containers/Admin/AdminPage').default
 
       /*  Return getComponent   */
-      cb(null, AdminContainer)
+      cb(null, AdminPage)
 
     /* Webpack named bundle   */
-    }, 'AdminContainer')
+    }, 'AdminPage')
   }
 })
