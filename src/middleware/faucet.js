@@ -40,7 +40,7 @@ export const faucetManagerContractGetFaucetByCreator = (fromAddress, _callback) 
     _instance.getFaucetByCreator
     .call({ from: fromAddress })
     .then(async (_address) => {
-      let addr = _address === 0 ? null : await faucetContractGetFaucetByAddress(_address)
+      let addr = _address === '0x0000000000000000000000000000000000000000' ? null : await faucetContractGetFaucetByAddress(_address)
       _callback(addr)
     })
     .catch((error) => {
@@ -55,7 +55,7 @@ export const faucetManagerContractGetFaucetByName = (_name, _callback) => {
     _instance.getFaucetByName
     .call(_name)
     .then(async (_address) => {
-      let addr = _address === 0 ? null : await faucetContractGetFaucetByAddress(_address)
+      let addr = _address === '0x0000000000000000000000000000000000000000' ? null : await faucetContractGetFaucetByAddress(_address)
       _callback(addr)
     })
     .catch((error) => {
