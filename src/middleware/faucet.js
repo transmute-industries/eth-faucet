@@ -125,6 +125,22 @@ export const faucetManagerContractAuthorizeFaucetAccess = (_faucetAddress, _requ
   })
 }
 
+export const faucetManagerContractRevokeFaucetAccess = (_faucetAddress, _requestorAddress, _callback) => {
+  faucetManagerContract.deployed()
+  .then((_instance) => {
+    _instance
+    .revokeAccess(_requestorAddress, _faucetAddress, {
+      gas: 2000000
+    })
+    .then((_tx) => {
+      _callback(_tx)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  })
+}
+
 export const faucetContractSendWei = (_faucetAddress, _recipientAddress, _fromAddress, _callback) => {
   faucetContract.at(_faucetAddress)
   .then((_faucet) => {
