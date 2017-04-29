@@ -19,8 +19,6 @@ faucetContract.setProvider(provider)
 const faucetManagerContract = contract(FaucetManager)
 faucetManagerContract.setProvider(provider)
 
-// CALL BACKIFY ALL THIS
-
 // HELPER METHODS
 
 export const faucetContractGetFaucetByAddress = (_address) => {
@@ -31,7 +29,7 @@ export const faucetContractGetFaucetByAddress = (_address) => {
       creator: await _faucet.creator.call(),
       name: await _faucet.name.call().then((_name) => _name.replace(/-/g, ' ')),
       balance: await web3.fromWei(web3.eth.getBalance(_address), 'ether').toNumber(),
-      requestorAddresses: await _faucet.requestorAddresses.call()
+      requestorAddresses: await _faucet.getRequestorAddresses()
     }
   })
 }
@@ -39,7 +37,7 @@ export const faucetContractGetFaucetByAddress = (_address) => {
 export const faucetManagerContractGetFaucetByCreator = (fromAddress, _callback) => {
   faucetManagerContract.deployed()
   .then((_instance) => {
-    _instance.faucetByCreator
+    _instance.getFaucetByCreator
     .call({ from: fromAddress })
     .then(async (_address) => {
       let addr = _address === 0 ? null : await faucetContractGetFaucetByAddress(_address)
@@ -54,7 +52,7 @@ export const faucetManagerContractGetFaucetByCreator = (fromAddress, _callback) 
 export const faucetManagerContractGetFaucetByName = (_name, _callback) => {
   faucetManagerContract.deployed()
   .then((_instance) => {
-    _instance.faucetByName
+    _instance.getFaucetByName
     .call(_name)
     .then(async (_address) => {
       let addr = _address === 0 ? null : await faucetContractGetFaucetByAddress(_address)
