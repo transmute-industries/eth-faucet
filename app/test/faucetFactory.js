@@ -2,6 +2,7 @@ var Web3 = require('web3')
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 var Faucet = artifacts.require('./Faucet.sol')
 var FaucetManager = artifacts.require('./FaucetManager.sol')
+var _ = require('lodash')
 
 contract('FaucetManager', function (accounts) {
 
@@ -21,7 +22,6 @@ contract('FaucetManager', function (accounts) {
 
   it('Verify Faucet Factory Addresses', (done) => {
     faucetManagerInstance.getFaucetByCreator.call({from: faucetCreator}).then((_faucetAddress) => {
-      console.log('_faucetAddress:', _faucetAddress)
       faucetAddress = _faucetAddress
       done()
     })
@@ -53,6 +53,12 @@ contract('FaucetManager', function (accounts) {
       gas: 2000000,
       value: faucetSeedEther
     }).then()
+  })
+
+  it('Verify Faucet address contained in FaucetManager addresses', () => {
+    faucetManagerInstance.getFaucets().then((_faucetAddresses) => {
+      assert(_.includes(_faucetAddresses, faucetAddress), '_faucetAddresses does not contain faucetAddress')
+    })
   })
 
   it('Verify Faucet owner', (done) => {
