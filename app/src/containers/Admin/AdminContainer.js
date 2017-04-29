@@ -1,14 +1,26 @@
-import React, { Component } from 'react'
-
 import { connect } from 'react-redux'
-import { reduxForm, submit } from 'redux-form'
-import FaucetTableContainer from 'containers/Faucet/FaucetTableContainer'
+import Faucet from 'components/Faucet/Faucet'
+import { authorizeFaucetAccess } from 'store/ethereum/faucet'
 
-export default class AdminContainer extends Component {
-    render() {
-        return (
-            <FaucetTableContainer />
-        )
-    }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    faucet: state.faucet,
+    web3: state.web3
+  }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuthorizeFaucetAccess: (_requestorAddress, _faucetAddress) => {
+      event.preventDefault()
+      dispatch(authorizeFaucetAccess(_requestorAddress, _faucetAddress))
+    }
+  }
+}
+
+const AdminContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Faucet)
+
+export default AdminContainer

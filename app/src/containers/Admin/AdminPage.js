@@ -1,19 +1,18 @@
 import React from 'react'
 import {Card, CardTitle, CardText} from 'material-ui/Card'
 import Page from 'layouts/Page'
-import CreateFaucetContainer from 'containers/Faucet/CreateFaucet/CreateFaucetContainer'
+import AdminContainer from 'containers/Admin/AdminContainer'
 
-export default class CreateFaucetPage extends React.Component {
+export default class AdminPage extends React.Component {
   render () {
     return (
       <Page renderParticles={false}>
         <Card>
           <CardTitle
-            title='Create Faucet'
-            subtitle='One per account address.'
+            title='Your Faucet'
             />
           <CardText>
-            <CreateFaucetContainer />
+            <AdminContainer />
           </CardText>
         </Card>
       </Page>

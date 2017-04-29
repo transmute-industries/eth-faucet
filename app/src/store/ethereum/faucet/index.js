@@ -8,10 +8,10 @@ import {
     getFaucetByName,
     getAllFaucets,
     createFaucet,
+    requestFaucetAccess,
+    authorizeFaucetAccess,
     sendWei
-
-} from './actions';
-
+} from './actions'
 
 import {
     faucetReducer,
@@ -28,9 +28,9 @@ export {
     getFaucetByName,
     getAllFaucets,
     createFaucet,
+    requestFaucetAccess,
+    authorizeFaucetAccess,
     sendWei,
-
-
     faucetReducer,
     initialState
 }
