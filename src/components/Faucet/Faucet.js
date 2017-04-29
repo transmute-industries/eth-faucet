@@ -14,7 +14,8 @@ export default class Faucet extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     let { faucet } = nextProps
-    if (faucet.defaultAddress) {
+
+    if (faucet.defaultAddress && faucet.selected === null) {
       var parts = decodeURI(window.location.pathname).split('/')
       if (parts.length === 3 &&
         parts[1].toLowerCase() === 'faucets' &&
