@@ -4,25 +4,46 @@ import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract FaucetManager is Killable {
+  using ArrayUtils for address[];
 
-  using ArrayUtils for *;
   mapping (address => address) creatorFaucetMapping;
   mapping (string => address) nameFaucetMapping;
   address[] public faucetAddresses;
 
-  event FaucetCreated(
-    address _address,
-    address _creatorAddress,
-    string _name,
-    uint _timeCreated
-  );
+  // Events
+  event AccessRequested(address indexed requestorAddress);
+  event AuthorizationGranted(address indexed requestorAddress);
+  event FaucetCreated(address _address, address _creatorAddress, string _name, uint _timeCreated);
+  event FaucetDestroyed(address _address);
 
+  // Fallback Function
+  function() payable {}
+
+  // Constructor
   function FaucetManager() payable {
   }
 
-  function() payable {
+  // Modifiers
+  modifier checkExistence(address _faucetAddress) {
+    if (faucetAddresses.indexOf(_faucetAddress) == uint(-1))
+      throw;
+    _;
   }
 
+  // Helper Functions
+  function getFaucetByCreator() constant returns(address)  {
+    return creatorFaucetMapping[msg.sender];
+  }
+
+  function getFaucetByName(string _name) constant returns(address)  {
+    return nameFaucetMapping[_name];
+  }
+
+  function getFaucets() constant returns(address[])  {
+    return faucetAddresses;
+  }
+
+  // Interface
 	function createFaucet(string _name) payable returns (address) {
     // Validate Local State
     if (nameFaucetMapping[_name] != 0) {
@@ -50,30 +71,38 @@ contract FaucetManager is Killable {
     return address(_newFaucet);
 	}
 
-  function faucetByCreator() constant returns(address)  {
-    return creatorFaucetMapping[msg.sender];
+  function requestAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+    Faucet _faucet = Faucet(_faucetAddress);
+    _faucet.addRequestorAddress(_requestorAddress);
+    AccessRequested(_requestorAddress);
   }
 
-  function faucetByName(string _name) constant returns(address)  {
-    return nameFaucetMapping[_name];
+  function authorizeAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+    Faucet _faucet = Faucet(_faucetAddress);
+    _faucet.authorizeRequestorAddress(_requestorAddress);
+    AuthorizationGranted(_requestorAddress);
   }
 
-  function getFaucets() constant returns(address[])  {
-    return faucetAddresses;
-  }
 
-  function killFaucet(address _address, string _name, address _creator) constant returns(bool)  {
-    Faucet _faucet = Faucet(_address);
+  function killFaucet(address _address, string _name, address _creator)  {
+    // Validate Local State
     if (nameFaucetMapping[_name] == 0) {
       throw;
     }
     if ((_creator != msg.sender && this.owner() != msg.sender) || creatorFaucetMapping[_creator] == 0) {
       throw;
     }
+
+    // Update Local State
     delete nameFaucetMapping[_name];
     delete creatorFaucetMapping[_creator];
-    ArrayUtils.RemoveByValue(faucetAddresses, _faucet);
+    /*faucetAddresses.remove(_address);*/
+
+    // Interact With Other Contracts
+    Faucet _faucet = Faucet(_address);
     _faucet.kill();
-    return true;
+
+    // Emit Events
+    FaucetDestroyed(_address);
   }
 }
