@@ -35,7 +35,7 @@ export const faucetReducer = (state = initialState, action) => {
   if (action.type === RECEIVE_FAUCET) {
     let faucet = action.payload;
     let defaultFaucet;
-    if (faucet.creator === state.defaultAddress) {
+    if (faucet && faucet.creator === state.defaultAddress) {
       defaultFaucet = faucet;
     }
     return Object.assign({}, state, {
