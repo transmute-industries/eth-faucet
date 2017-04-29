@@ -1,5 +1,5 @@
 import {
-  blueGrey100, blueGrey500, blueGrey700,
+  green100, green500, green700,
   cyan500, tealA100, lightBlue500,
   grey900, white, grey400, darkBlack
 } from 'material-ui/styles/colors'
@@ -12,9 +12,9 @@ export default {
   zIndex: zIndex,
   fontFamily: 'Roboto, sans-serif',
   palette: {
-    primary1Color: blueGrey500,
-    primary2Color: blueGrey700,
-    primary3Color: blueGrey100,
+    primary1Color: green500,
+    primary2Color: green700,
+    primary3Color: green500,
     accent1Color: cyan500,
     accent2Color: tealA100,
     accent3Color: lightBlue500,

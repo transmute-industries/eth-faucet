@@ -1,12 +1,12 @@
 import React from 'react'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn }
-from 'material-ui/Table'
+  from 'material-ui/Table'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
-class FaucetAdminTable extends React.Component {
+class FaucetTable extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,28 +22,26 @@ class FaucetAdminTable extends React.Component {
       showCheckboxes: false,
       height: 'auto',
       dialogOpen: false,
-      selectedRequestor: null
+      selectedObject: null
     }
   }
 
   onRowSelection = (index) => {
-    var requestorAddress = this.props.faucet.addresses[index]
-    if (requestorAddress) {
+    var selectedObject = this.props.faucetObjects[index]
+    if (selectedObject) {
       this.setState({
         dialogOpen: false,
-        selectedRequestor: requestorAddress
+        selectedObject: selectedObject
       })
     }
-
-    this.props.onAuthorizeFaucetAccess({
-      name: requestorAddress,
-      fromAddress: this.props.faucet.selected.address
-    })
+    this.props.selectRow(selectedObject);
   }
 
-  renderTableHeaderFooter () {
+  renderTableHeaderFooter() {
     return (
       <TableRow>
+        <TableHeaderColumn tooltip='Balane'>Balance</TableHeaderColumn>
+        <TableHeaderColumn tooltip='Name'>Name</TableHeaderColumn>
         <TableHeaderColumn tooltip='Address'>Address</TableHeaderColumn>
       </TableRow>
     )
@@ -52,25 +50,25 @@ class FaucetAdminTable extends React.Component {
   handleCloseDialog = () => {
     this.setState({
       dialogOpen: false,
-      selectedRequestor: null
+      selectedObject: null
     })
   }
 
-  render () {
+
+  render() {
     const actions = [
       <FlatButton
         label='Cancel'
         primary
         onTouchTap={this.handleCloseDialog}
-        />,
+      />,
       <FlatButton
         label='Confirm'
         primary
         keyboardFocused
         onTouchTap={this.acceptLoan}
-        />
+      />
     ]
-
     return (
       <div>
         <Table
@@ -81,12 +79,12 @@ class FaucetAdminTable extends React.Component {
           selectable={this.state.selectable}
           multiSelectable={this.state.multiSelectable}
           bodyStyle={{ overflow: 'visible' }}
-          >
+        >
           <TableHeader
             displaySelectAll={this.state.showCheckboxes}
             adjustForCheckbox={this.state.showCheckboxes}
             enableSelectAll={this.state.enableSelectAll}
-            >
+          >
             {this.renderTableHeaderFooter()}
           </TableHeader>
           <TableBody
@@ -94,10 +92,12 @@ class FaucetAdminTable extends React.Component {
             deselectOnClickaway={this.state.deselectOnClickaway}
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
-            >
-            {this.props.faucet.addresses.map((address, index) => (
+          >
+            {this.props.faucetObjects.map((faucet, index) => (
               <TableRow key={index}>
-                <TableRowColumn>{address}</TableRowColumn>
+                <TableRowColumn>{faucet.balance}</TableRowColumn>
+                <TableRowColumn>{faucet.name}</TableRowColumn>
+                <TableRowColumn>{faucet.address}</TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
@@ -108,12 +108,12 @@ class FaucetAdminTable extends React.Component {
           modal={false}
           open={this.state.dialogOpen}
           onRequestClose={this.handleCloseDialog}
-          >
-          Are you sure you want to grant {this.state.selectedRequestor !== null && this.state.selectedRequestor} access to this faucet?
+        >
+          Are you sure you want to grant {this.state.selectedObject !== null && this.state.selectedObject} access to this faucet?
         </Dialog>
       </div>
     )
   }
 }
 
-export default FaucetAdminTable
+export default FaucetTable

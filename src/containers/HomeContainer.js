@@ -1,23 +1,11 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux'
-import { map } from 'lodash'
-import Theme from 'theme'
-import {
-  firebaseConnect,
-  isLoaded,
-  pathToJS,
-  dataToJS,
-  // orderedToJS,
-  // populatedDataToJS
-} from 'react-redux-firebase'
 
-import classes from './HomeContainer.scss'
-
-import Page from 'layouts/Page'
+import HeroRow from 'components/HeroRow'
 
 import CreateFaucetContainer from 'containers/Faucet/CreateFaucet/CreateFaucetContainer'
-import FaucetContainer from 'containers/Faucet/FaucetContainer/FaucetContainer'
+import FaucetTableContainer from 'containers/FaucetTableContainer'
 
 import { browserHistory } from 'react-router'
 
@@ -35,26 +23,28 @@ export default class Home extends Component {
     // if (faucet.isOwner) {
     //   browserHistory.push("/faucets/" + faucet.selected.name)
     // }
-
   }
   render() {
     let { faucet } = this.props;
-
-    const useAFaucet = () => {
-      return (
-        <h1> Use a faucet</h1>
-      )
-    }
     return (
-      <Page style={{ color: Theme.palette.primary2Color }} renderParticles={true}>
-
+      <div style={{paddingBottom: '20px'}}>
+        <HeroRow renderParticles={true}>
+          <h1 style={{ textAlign: 'center' }}>
+            {
+              faucet.isOwner ?
+                'Use or Join a Faucet.'
+                :
+                'Create or Join a Faucet.'
+            }
+          </h1>
+        </HeroRow>
         {
           faucet.isOwner ?
-            useAFaucet()
+            <FaucetTableContainer />
             :
             <CreateFaucetContainer />
         }
-      </Page>
+      </div>
     )
   }
 }

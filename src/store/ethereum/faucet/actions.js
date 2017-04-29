@@ -1,5 +1,6 @@
 export const RECEIVE_FAUCET = 'RECEIVE_FAUCET'
-export const RECEIVE_FAUCETS = 'RECEIVE_FAUCETS'
+export const RECEIVE_FAUCET_ADDRESSES = 'RECEIVE_FAUCET_ADDRESSES'
+export const RECEIVE_FAUCET_OBJECTS = 'RECEIVE_FAUCET_OBJECTS'
 export const FAUCET_CREATED = 'FAUCET_CREATED'
 export const FAUCET_UPDATED = 'FAUCET_UPDATED'
 export const SEND_WEI = 'SEND_WEI'
@@ -7,13 +8,14 @@ export const SEND_WEI = 'SEND_WEI'
 import {
   faucetManagerContractGetFaucetByCreator,
   faucetManagerContractGetFaucetByName,
-  faucetManagerContractGetAllFaucets,
+  faucetManagerContractGetAllFaucetAddresses,
+  faucetManagerContractGetAllFaucetObjects,
   faucetManagerContractCreateFaucet,
   faucetManagerContractRequestFaucetAccess,
   faucetManagerContractAuthorizeFaucetAccess,
   faucetManagerContractRevokeFaucetAccess,
   faucetContractSendWei
-} from 'middleware/faucet'
+} from 'middleware/ethereum/faucet'
 
 export const getFaucetByCreator = (_fromAddress) => {
   return (dispatch) => {
@@ -37,11 +39,22 @@ export const getFaucetByName = (_name) => {
   }
 }
 
-export const getAllFaucets = () => {
+export const getAllFaucetAddresses = () => {
   return (dispatch) => {
-    faucetManagerContractGetAllFaucets(faucets => {
+    faucetManagerContractGetAllFaucetAddresses(addresses => {
       dispatch({
-        type: RECEIVE_FAUCETS,
+        type: RECEIVE_FAUCET_ADDRESSES,
+        payload: addresses
+      })
+    })
+  }
+}
+
+export const getAllFaucetObjects = () => {
+  return (dispatch) => {
+    faucetManagerContractGetAllFaucetObjects(faucets => {
+      dispatch({
+        type: RECEIVE_FAUCET_OBJECTS,
         payload: faucets
       })
     })

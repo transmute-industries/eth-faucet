@@ -1,7 +1,7 @@
 import {
   getAccounts,
   sendTransaction
-} from 'middleware/ethereum'
+} from 'middleware/ethereum/web3'
 
 export const RECEIVE_WEB3_ACCOUNTS = 'RECEIVE_WEB3_ACCOUNTS'
 export const ETHER_TRANSFERED = 'ETHER_TRANSFERED'

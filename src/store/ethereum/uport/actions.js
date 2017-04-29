@@ -4,7 +4,7 @@ export const UPORT_LOGGED_OUT = 'UPORT_LOGGED_OUT'
 
 import {
   requestCredentials
-} from 'middleware/uport';
+} from 'middleware/ethereum/uport';
 
 export const loginUser = () => dispatch => {
   requestCredentials((profile) => {

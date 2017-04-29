@@ -12,9 +12,8 @@
     @extend .flex-column-center;
 }
 .children{
-    margin-top: 200px;
-    position: fixed;
-    width: 512px;
+    bottom: 0px;
+    position: static
 }
 
 // border-style: solid;

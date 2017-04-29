@@ -1,12 +1,14 @@
 import {
     RECEIVE_FAUCET,
-    RECEIVE_FAUCETS,
+    RECEIVE_FAUCET_ADDRESSES,
+    RECEIVE_FAUCET_OBJECTS,
     FAUCET_CREATED,
     FAUCET_UPDATED,
     SEND_WEI,
     getFaucetByCreator,
     getFaucetByName,
-    getAllFaucets,
+    getAllFaucetAddresses,
+    getAllFaucetObjects,
     createFaucet,
     requestFaucetAccess,
     authorizeFaucetAccess,
@@ -16,21 +18,27 @@ import {
 import {
     faucetReducer,
     initialState
-} from './reducer'
+}   from './reducer'
 
 export {
     RECEIVE_FAUCET,
-    RECEIVE_FAUCETS,
+    RECEIVE_FAUCET_ADDRESSES,
+    RECEIVE_FAUCET_OBJECTS,
     FAUCET_CREATED,
     FAUCET_UPDATED,
     SEND_WEI,
     getFaucetByCreator,
     getFaucetByName,
-    getAllFaucets,
+    getAllFaucetAddresses,
+    getAllFaucetObjects,
     createFaucet,
     requestFaucetAccess,
     authorizeFaucetAccess,
-    sendWei,
+    sendWei
+
+    ,
+
     faucetReducer,
     initialState
+
 }
