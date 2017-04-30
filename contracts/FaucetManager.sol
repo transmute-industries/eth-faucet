@@ -90,7 +90,6 @@ contract FaucetManager is Killable {
     AuthorizationRevoked(_requestorAddress);
   }
 
-
   function killFaucet(address _address, string _name, address _creator)  {
     // Validate Local State
     if (nameFaucetMapping[_name] == 0) {
