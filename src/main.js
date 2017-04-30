@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 import AppContainer from './containers/App/App'
 import createStore from './store/createStore'
 
+import { browserHistory } from 'react-router'
+import { updateLocation } from './store/location'
+
 // ========================================================
 // Store and History Instantiation
 // ========================================================
@@ -23,6 +26,8 @@ function doEverything() {
 
 store.dispatch(doEverything()).then(() => {
   console.log('I did everything!');
+  // To unsubscribe, invoke `store.unsubscribeHistory()` anytime
+  store.unsubscribeHistory = browserHistory.listen(updateLocation(store))
 });
 
 // ========================================================

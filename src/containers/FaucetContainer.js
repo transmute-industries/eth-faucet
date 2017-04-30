@@ -1,5 +1,9 @@
 import { connect } from 'react-redux'
 import Faucet from 'components/Faucet/Faucet'
+
+import { browserHistory } from 'react-router'
+
+
 import { sendWei, getFaucetByName, requestFaucetAccess } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
@@ -12,16 +16,16 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetFaucetByName: (cleanName) => {
-      event.preventDefault();
       dispatch(getFaucetByName(cleanName));
     },
     onSendWeiFormSubmit: (_faucetAddress, _recipientAddress, _fromAddress) => {
-      event.preventDefault();
       dispatch(sendWei(_faucetAddress, _recipientAddress, _fromAddress));
     },
     onRequestFaucetAccess: (_faucetAddress, _requestorAddress) => {
-      event.preventDefault();
       dispatch(requestFaucetAccess(_faucetAddress, _requestorAddress));
+    },
+    onNavigateToPath: (path) => {
+      browserHistory.push(path);
     }
   }
 }

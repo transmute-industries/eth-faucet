@@ -6,12 +6,18 @@ import {
 } from 'store/ethereum/web3'
 
 import {
+  LOCATION_CHANGE,
+  getFaucetNameFromPath
+} from 'store/location'
+
+import {
   RECEIVE_FAUCET,
   RECEIVE_FAUCET_ADDRESSES,
   RECEIVE_FAUCET_OBJECTS,
   FAUCET_CREATED,
   FAUCET_UPDATED,
   getFaucetByCreator,
+  getFaucetByName,
   getAllFaucetObjects
 } from './actions'
 
@@ -27,13 +33,17 @@ import { store } from 'main'
 
 export const faucetReducer = (state = initialState, action) => {
 
+  if (action.type === LOCATION_CHANGE) {
+    let faucetName = getFaucetNameFromPath(action.payload.pathname);
+    
+    if (faucetName && (state.selected === null || state.selected.name !== faucetName)) {
+      store.dispatch(getFaucetByName(faucetName));
+    }
+  }
+
   if (action.type === RECEIVE_WEB3_ACCOUNTS) {
     let defaultAddress = getRandomAddress(action.payload)
-    // let defaultAddress = action.payload[0];
-    // store.dispatch(getFaucetByCreator(defaultAddress))
-
     store.dispatch(getAllFaucetObjects())
-
     return Object.assign({}, state, {
       defaultAddress: defaultAddress
     })

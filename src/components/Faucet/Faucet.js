@@ -12,28 +12,17 @@ export default class Faucet extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    let { faucet } = nextProps
-
-    if (faucet.defaultAddress && faucet.selected === null) {
-      var parts = decodeURI(window.location.pathname).split('/')
-      if (parts.length === 3 &&
-        parts[1].toLowerCase() === 'faucets' &&
-        parts[2].length !== 0) {
-        let cleanName = parts[2].toLowerCase().replace(/\s+/g, '-')
-        if (faucet.selected === null || faucet.selected.name !== cleanName) {
-          this.props.onGetFaucetByName(cleanName)
-        }
-      }
-    }
-  }
-
   handleSendWei = () => {
     this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.address, this.props.faucet.defaultAddress)
   }
 
   handleRequestAccess = () => {
     this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.props.faucet.defaultAddress)
+  }
+
+  handleNavigateToAdmin = () => {
+    let path = '/faucets/' + this.props.faucet.selected.name + '/authorize-users';
+    this.props.onNavigateToPath(path)
   }
 
   onInputChange(event) {
@@ -65,6 +54,12 @@ export default class Faucet extends React.Component {
 
         </CardText>
         <CardActions style={{ textAlign: 'right' }}>
+
+          <RaisedButton
+            primary
+            onClick={this.handleNavigateToAdmin}
+            label='Admin' />
+
           <RaisedButton
             primary
             onClick={this.handleRequestAccess}
