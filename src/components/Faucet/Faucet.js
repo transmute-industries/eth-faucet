@@ -17,7 +17,7 @@ export default class Faucet extends React.Component {
   }
 
   handleRequestAccess = () => {
-    this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.props.faucet.defaultAddress)
+    this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.address)
   }
 
   handleNavigateToAdmin = () => {
@@ -46,7 +46,7 @@ export default class Faucet extends React.Component {
             style={{ width: '100%' }}
             id='text-field-controlled'
             floatingLabelText='Address'
-            value={this.state.address}
+            value={this.state.address || this.props.faucet.defaultAddress || ''}
             errorText={this.state.error}
             onChange={e => this.onInputChange(e)}
           />

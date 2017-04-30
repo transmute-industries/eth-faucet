@@ -41,6 +41,7 @@ class FaucetTable extends React.Component {
       <TableRow>
         <TableHeaderColumn tooltip='Balane'>Balance</TableHeaderColumn>
         <TableHeaderColumn tooltip='Name'>Name</TableHeaderColumn>
+        <TableHeaderColumn tooltip='Subscribers'>Subscribers</TableHeaderColumn>
         <TableHeaderColumn tooltip='Address'>Address</TableHeaderColumn>
       </TableRow>
     )
@@ -98,7 +99,8 @@ class FaucetTable extends React.Component {
               <TableRow key={index}>
                 <TableRowColumn>{faucet.balance}</TableRowColumn>
                 <TableRowColumn>{faucet.name}</TableRowColumn>
-                <TableRowColumn>{faucet.address}</TableRowColumn>
+                <TableRowColumn>{faucet.requestorAddresses.length}</TableRowColumn>
+                <TableRowColumn>{faucet.address.substring(0, 6) + '...'}</TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
