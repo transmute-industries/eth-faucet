@@ -27,7 +27,7 @@ import {
 
 export const initialState = {
   addresses: [],
-  objects: [],
+  objects: null,
   selected: null,
   defaultAddress: null,
   defaultFaucet: null
@@ -55,13 +55,21 @@ export const faucetReducer = (state = initialState, action) => {
   if (action.type === RECEIVE_FAUCET) {
     let faucet = action.payload;
     let defaultFaucet;
+
     if (faucet && faucet.creator === state.defaultAddress) {
       defaultFaucet = faucet;
     }
+
+    let objects = state.objects
+    if (objects){
+      objects = objects.concat(faucet)
+    }
+
     return Object.assign({}, state, {
       selected: faucet,
       isOwner: faucet && faucet.creator === state.defaultAddress,
-      defaultFaucet: defaultFaucet
+      defaultFaucet: defaultFaucet,
+      objects: objects
     })
   }
 
@@ -89,11 +97,17 @@ export const faucetReducer = (state = initialState, action) => {
   }
 
   if (action.type === FAUCET_AUTHORIZATION_REQUESTED) {
-    console.warn('FAUCET_AUTHORIZATION_REQUESTED stub!', action.payload)
+    // console.warn('FAUCET_AUTHORIZATION_REQUESTED stub!', action.payload)
+    let requestorAddress = action.payload.logs[0].args.requestorAddress;
+
+    let faucetObject = find(state.objects, (f) =>{
+      return f.address === state.selected.address;
+    })
+    
+    faucetObject.requestorAddresses = faucetObject.requestorAddresses.concat(requestorAddress)
+
     return Object.assign({}, state, {
-      selected: {
-        ...state.selected
-      }
+      selected: faucetObject
     })
   }
 

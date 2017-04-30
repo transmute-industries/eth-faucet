@@ -5,8 +5,6 @@ import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card'
 
 import CircularProgress from 'material-ui/CircularProgress'
 
-
-
 export default class Faucet extends React.Component {
 
   constructor(props) {

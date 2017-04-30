@@ -32,7 +32,7 @@ export default class Home extends Component {
     let { faucet } = this.props;
 
     const isLoaded = () => {
-      return faucet.objects.length;
+      return faucet.objects !== null;
     }
 
     const HeroContent = () => {
