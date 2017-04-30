@@ -26,10 +26,11 @@ export const initialState = {
 import { store } from 'main'
 
 export const faucetReducer = (state = initialState, action) => {
+
   if (action.type === RECEIVE_WEB3_ACCOUNTS) {
     let defaultAddress = getRandomAddress(action.payload)
     // let defaultAddress = action.payload[0];
-    store.dispatch(getFaucetByCreator(defaultAddress))
+    // store.dispatch(getFaucetByCreator(defaultAddress))
 
     store.dispatch(getAllFaucetObjects())
 
@@ -76,7 +77,7 @@ export const faucetReducer = (state = initialState, action) => {
     return Object.assign({}, state, {
       selected: {
         ...state.selected,
-        balance: state.selected.balance - 1
+        balance: state.selected.balance - 1 //eventually inconsistent...
       }
     })
   }

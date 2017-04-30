@@ -4,7 +4,7 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
-class FaucetTable extends React.Component {
+class FaucetAuthorizeTable extends React.Component {
 
   constructor(props) {
     super(props)
@@ -26,27 +26,38 @@ class FaucetTable extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    let { faucet } = nextProps
+    // route logic should be done via a helper module
+    if (faucet.defaultAddress && faucet.selected === null) {
+      var parts = decodeURI(window.location.pathname).split('/')
+      if (parts.length === 4 &&
+        parts[1].toLowerCase() === 'faucets' &&
+        parts[2].length !== 0) {
+        let cleanName = parts[2].toLowerCase().replace(/\s+/g, '-')
+        if (faucet.selected === null || faucet.selected.name !== cleanName) {
+          this.props.onGetFaucetByName(cleanName)
+        }
+      }
+    }
+  }
+
   onRowSelection = (index) => {
-    var selectedObject = this.props.faucetObjects[index]
+    var requestorAddress = this.props.faucet.selected.requestorAddresses[index]
 
     if (requestorAddress) {
       this.setState({
-        dialogOpen: false,
+        dialogOpen: true,
         selectedRequestor: requestorAddress
       })
     }
 
-    this.props.onAuthorizeFaucetAccess({
-      name: requestorAddress,
-      fromAddress: this.props.faucet.selected.address
-    })
+
   }
 
   renderTableHeaderFooter() {
     return (
       <TableRow>
-        <TableHeaderColumn tooltip='Balane'>Balance</TableHeaderColumn>
-        <TableHeaderColumn tooltip='Name'>Name</TableHeaderColumn>
         <TableHeaderColumn tooltip='Address'>Address</TableHeaderColumn>
       </TableRow>
     )
@@ -56,6 +67,14 @@ class FaucetTable extends React.Component {
     this.setState({
       dialogOpen: false,
       selectedRequestor: null
+    })
+  }
+
+  handleAuthorizeRequestorAddress = () => {
+    this.props.onAuthorizeFaucetAccess({
+      faucetAddress: this.props.faucet.selected.address,
+      requestorAddress: this.state.selectedRequestor,
+      fromAddress: this.props.faucet.defaultAddress
     })
   }
 
@@ -71,7 +90,7 @@ class FaucetTable extends React.Component {
         label='Confirm'
         primary
         keyboardFocused
-        onTouchTap={this.acceptLoan}
+        onTouchTap={this.handleAuthorizeRequestorAddress}
       />
     ]
 
@@ -101,11 +120,9 @@ class FaucetTable extends React.Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.faucetObjects.map((faucet, index) => (
+            {this.props.faucet.selected && this.props.faucet.selected.requestorAddresses.map((address, index) => (
               <TableRow key={index}>
-                <TableRowColumn>{faucet.balance}</TableRowColumn>
-                <TableRowColumn>{faucet.name}</TableRowColumn>
-                <TableRowColumn>{faucet.address}</TableRowColumn>
+                <TableRowColumn>{address}</TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
@@ -124,4 +141,4 @@ class FaucetTable extends React.Component {
   }
 }
 
-export default FaucetTable
+export default FaucetAuthorizeTable

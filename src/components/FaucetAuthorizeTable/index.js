@@ -1,3 +1,3 @@
-import FaucetTable from './FaucetTable'
+import FaucetAuthorizeTable from './FaucetAuthorizeTable'
 
-export default FaucetTable
+export default FaucetAuthorizeTable

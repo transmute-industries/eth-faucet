@@ -137,11 +137,12 @@ export const faucetManagerContractRequestFaucetAccess = (_faucetAddress, _reques
     })
 }
 
-export const faucetManagerContractAuthorizeFaucetAccess = (_faucetAddress, _requestorAddress, _callback) => {
+export const faucetManagerContractAuthorizeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress, _callback) => {
   faucetManagerContract.deployed()
     .then((_instance) => {
       _instance
         .authorizeAccess(_requestorAddress, _faucetAddress, {
+          from: _fromAddress,
           gas: 2000000
         })
         .then((_tx) => {

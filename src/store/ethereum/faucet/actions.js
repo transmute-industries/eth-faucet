@@ -61,9 +61,9 @@ export const getAllFaucetObjects = () => {
   }
 }
 
-export const requestFaucetAccess = (_requestorAddress, _faucetAddress) => {
+export const requestFaucetAccess = (_faucetAddress, _requestorAddress, ) => {
   return (dispatch) => {
-    faucetManagerContractRequestFaucetAccess(_requestorAddress, _faucetAddress, (_tx) => {
+    faucetManagerContractRequestFaucetAccess(_faucetAddress, _requestorAddress, (_tx) => {
       dispatch({
         type: FAUCET_UPDATED,
         payload: _tx
@@ -72,9 +72,9 @@ export const requestFaucetAccess = (_requestorAddress, _faucetAddress) => {
   }
 }
 
-export const authorizeFaucetAccess = (_requestorAddress, _faucetAddress) => {
+export const authorizeFaucetAccess = (_requestorAddress, _faucetAddress, _fromAddress) => {
   return (dispatch) => {
-    faucetManagerContractAuthorizeFaucetAccess(_requestorAddress, _faucetAddress, (_tx) => {
+    faucetManagerContractAuthorizeFaucetAccess(_requestorAddress, _faucetAddress, _fromAddress, (_tx) => {
       dispatch({
         type: FAUCET_UPDATED,
         payload: _tx
