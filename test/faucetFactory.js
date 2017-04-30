@@ -123,6 +123,19 @@ contract('FaucetManager', function (accounts) {
     })
   })
 
+  it('Verify Recipient Cannot Authorize Access', (done) => {
+    faucetManagerInstance.authorizeAccess(faucetCustomer, faucetAddress, {
+      from: faucetRecipient,
+      gas: 2000000
+    }).then((tx) => {
+      console.log('tx:', tx)
+      done()
+    }).catch((error) => {
+      validateError(error)
+      done()
+    })
+  })
+
   it('Verify Creator Can Authorize Access', (done) => {
     var events = faucetManagerInstance.AuthorizationGranted()
 
@@ -220,3 +233,13 @@ contract('FaucetManager', function (accounts) {
     })
   })
 })
+
+function validateError (error) {
+  if ((error + '').indexOf('invalid JUMP') || (error + '').indexOf('out of gas') > -1) {
+    console.log('testRPC')
+  } else if ((error + '').indexOf('please check your gas amount') > -1) {
+    console.log('Deployed')
+  } else {
+    throw error
+  }
+}

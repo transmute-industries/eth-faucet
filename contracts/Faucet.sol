@@ -33,39 +33,39 @@ contract Faucet is Killable {
 
     // Modifiers
     modifier onlyCreator() {
-      if (msg.sender != creator)
+      if (tx.origin != creator)
         throw;
       _;
     }
 
     modifier onlyAuthorized() {
-      if (msg.sender != creator && !authorizedAddressesMapping[msg.sender])
+      if (tx.origin != creator && !authorizedAddressesMapping[tx.origin])
         throw;
       _;
     }
 
     modifier isAvailable() {
-      if (lastSent[msg.sender] >= (block.number-blockLimit) || address(this).balance <= sendAmount)
+      if (lastSent[tx.origin] >= (block.number-blockLimit) || address(this).balance <= sendAmount)
         throw;
       _;
     }
 
     // Getters and Setters
-  	function setBlockLimit(uint limit) returns (bool){
+  	function setBlockLimit(uint limit) onlyCreator returns (bool) {
         blockLimit = limit;
         return true;
   	}
 
-  	function getBlockLimit() returns (uint){
+  	function getBlockLimit() returns (uint) {
   		  return blockLimit;
   	}
 
-  	function setSendAmount(uint256 val) returns (bool){
+  	function setSendAmount(uint256 val) onlyCreator returns (bool) {
         sendAmount = val;
         return true;
   	}
 
-  	function getSendAmount() returns (uint256){
+  	function getSendAmount() returns (uint256) {
   	    return sendAmount;
   	}
 
@@ -79,8 +79,8 @@ contract Faucet is Killable {
     }
 
   	function getRemainingBlocks() returns (uint) {
-        if(blockLimit > (block.number-lastSent[msg.sender]))
-            return blockLimit-(block.number-lastSent[msg.sender]);
+        if(blockLimit > (block.number-lastSent[tx.origin]))
+            return blockLimit-(block.number-lastSent[tx.origin]);
         else
             return 0;
   	}
@@ -92,7 +92,7 @@ contract Faucet is Killable {
         authorizedAddressesMapping[_requestor] = false;
     }
 
-    function authorizeRequestorAddress(address _requestor) public {
+    function authorizeRequestorAddress(address _requestor) public onlyCreator {
         if (requestorAddresses.indexOf(_requestor) == uint(-1))
             throw;
         if (authorizedAddressesMapping[_requestor])
@@ -100,7 +100,7 @@ contract Faucet is Killable {
         authorizedAddressesMapping[_requestor] = true;
     }
 
-    function revokeRequestorAddress(address _requestor) public {
+    function revokeRequestorAddress(address _requestor) public onlyCreator {
         if (requestorAddresses.indexOf(_requestor) == uint(-1))
             throw;
         if (!authorizedAddressesMapping[_requestor])
