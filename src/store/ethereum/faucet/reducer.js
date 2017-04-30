@@ -16,6 +16,10 @@ import {
   RECEIVE_FAUCET_OBJECTS,
   FAUCET_CREATED,
   FAUCET_UPDATED,
+  FAUCET_AUTHORIZATION_REQUESTED,
+  FAUCET_AUTHORIZATION_GRANTED,
+  FAUCET_AUTHORIZATION_REVOKED,
+  SEND_WEI,
   getFaucetByCreator,
   getFaucetByName,
   getAllFaucetObjects
@@ -35,7 +39,6 @@ export const faucetReducer = (state = initialState, action) => {
 
   if (action.type === LOCATION_CHANGE) {
     let faucetName = getFaucetNameFromPath(action.payload.pathname);
-
     if (faucetName && (state.selected === null || state.selected.name !== faucetName)) {
       store.dispatch(getFaucetByName(faucetName));
     }
@@ -80,14 +83,40 @@ export const faucetReducer = (state = initialState, action) => {
 
   if (action.type === FAUCET_CREATED) {
     store.dispatch(getFaucetByCreator(state.defaultAddress))
-
     return Object.assign({}, state, {
       addresses: state.addresses.concat(action.payload.logs[0].address)
     })
   }
 
-  if (action.type === FAUCET_UPDATED) {
-    console.log('state.selected:', state.selected.balance)
+  if (action.type === FAUCET_AUTHORIZATION_REQUESTED) {
+    console.warn('FAUCET_AUTHORIZATION_REQUESTED stub!', action.payload)
+    return Object.assign({}, state, {
+      selected: {
+        ...state.selected
+      }
+    })
+  }
+
+  if (action.type === FAUCET_AUTHORIZATION_GRANTED) {
+    console.warn('FAUCET_AUTHORIZATION_GRANTED stub!', action.payload)
+    return Object.assign({}, state, {
+      selected: {
+        ...state.selected
+      }
+    })
+  }
+
+  if (action.type === FAUCET_AUTHORIZATION_REVOKED) {
+    console.warn('FAUCET_AUTHORIZATION_REVOKED stub!', action.payload)
+    return Object.assign({}, state, {
+      selected: {
+        ...state.selected
+      }
+    })
+  }
+
+
+  if (action.type === SEND_WEI) {
     return Object.assign({}, state, {
       selected: {
         ...state.selected,

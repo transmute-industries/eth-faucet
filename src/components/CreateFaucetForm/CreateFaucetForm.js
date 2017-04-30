@@ -33,19 +33,7 @@ export default class CreateFaucetForm extends React.Component {
   }
 
   render () {
-    let {faucet} = this.props;
-
-    const isLoaded = () =>{
-      return faucet.selected !== null;
-    }
-
-    if (!isLoaded()){
-      return (
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress mode='indeterminate' size={80} />
-        </div>
-      );
-    } else {
+      let { faucet } = this.props;
       return (
         <Card>
           <CardTitle
@@ -72,7 +60,5 @@ export default class CreateFaucetForm extends React.Component {
           </CardActions>
         </Card>
       )
-    }
-  
   }
 }

@@ -3,6 +3,11 @@ export const RECEIVE_FAUCET_ADDRESSES = 'RECEIVE_FAUCET_ADDRESSES'
 export const RECEIVE_FAUCET_OBJECTS = 'RECEIVE_FAUCET_OBJECTS'
 export const FAUCET_CREATED = 'FAUCET_CREATED'
 export const FAUCET_UPDATED = 'FAUCET_UPDATED'
+
+export const FAUCET_AUTHORIZATION_REQUESTED = 'FAUCET_AUTHORIZATION_REQUESTED'
+export const FAUCET_AUTHORIZATION_GRANTED = 'FAUCET_AUTHORIZATION_GRANTED'
+export const FAUCET_AUTHORIZATION_REVOKED = 'FAUCET_AUTHORIZATION_REVOKED'
+
 export const SEND_WEI = 'SEND_WEI'
 
 import {
@@ -65,7 +70,7 @@ export const requestFaucetAccess = (_faucetAddress, _requestorAddress, ) => {
   return (dispatch) => {
     faucetManagerContractRequestFaucetAccess(_faucetAddress, _requestorAddress, (_tx) => {
       dispatch({
-        type: FAUCET_UPDATED,
+        type: FAUCET_AUTHORIZATION_REQUESTED,
         payload: _tx
       })
     })
@@ -76,7 +81,7 @@ export const authorizeFaucetAccess = (_requestorAddress, _faucetAddress, _fromAd
   return (dispatch) => {
     faucetManagerContractAuthorizeFaucetAccess(_requestorAddress, _faucetAddress, _fromAddress, (_tx) => {
       dispatch({
-        type: FAUCET_UPDATED,
+        type: FAUCET_AUTHORIZATION_GRANTED,
         payload: _tx
       })
     })
@@ -87,7 +92,7 @@ export const revokeFaucetAccess = (_requestorAddress, _faucetAddress) => {
   return (dispatch) => {
     faucetManagerContractRevokeFaucetAccess(_requestorAddress, _faucetAddress, (_tx) => {
       dispatch({
-        type: FAUCET_UPDATED,
+        type: FAUCET_AUTHORIZATION_REVOKED,
         payload: _tx
       })
     })
@@ -109,7 +114,7 @@ export const sendWei = (_faucetAddress, _recipientAddress, _fromAddress) => {
   return (dispatch) => {
     faucetContractSendWei(_faucetAddress, _recipientAddress, _fromAddress, (_tx) => {
       dispatch({
-        type: FAUCET_UPDATED,
+        type: SEND_WEI,
         payload: _tx
       })
     })

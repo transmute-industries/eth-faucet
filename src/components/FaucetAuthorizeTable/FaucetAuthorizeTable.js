@@ -92,48 +92,64 @@ class FaucetAuthorizeTable extends React.Component {
         </div>
       );
     } else {
-      return (
-      <div>
-        <Table
-          height={this.state.height}
-          onRowSelection={this.onRowSelection}
-          fixedHeader={this.state.fixedHeader}
-          fixedFooter={this.state.fixedFooter}
-          selectable={this.state.selectable}
-          multiSelectable={this.state.multiSelectable}
-          bodyStyle={{ overflow: 'visible' }}
-        >
-          <TableHeader
-            displaySelectAll={this.state.showCheckboxes}
-            adjustForCheckbox={this.state.showCheckboxes}
-            enableSelectAll={this.state.enableSelectAll}
+
+      if (!this.props.faucet.selected.requestorAddresses.length){
+         return (
+           <div style={{textAlign: 'center'}}>
+          <h1 >
+            No users have requested access to <strong>{this.props.faucet.selected.name}</strong>
+          </h1>
+          <FlatButton
+          label='Go Home'
+          primary
+          href="/"
+          />
+          </div>
+         )
+      } else {
+        return (
+        <div>
+          <Table
+            height={this.state.height}
+            onRowSelection={this.onRowSelection}
+            fixedHeader={this.state.fixedHeader}
+            fixedFooter={this.state.fixedFooter}
+            selectable={this.state.selectable}
+            multiSelectable={this.state.multiSelectable}
+            bodyStyle={{ overflow: 'visible' }}
           >
-            {this.renderTableHeaderFooter()}
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={this.state.showCheckboxes}
-            deselectOnClickaway={this.state.deselectOnClickaway}
-            showRowHover={this.state.showRowHover}
-            stripedRows={this.state.stripedRows}
+            <TableHeader
+              displaySelectAll={this.state.showCheckboxes}
+              adjustForCheckbox={this.state.showCheckboxes}
+              enableSelectAll={this.state.enableSelectAll}
+            >
+              {this.renderTableHeaderFooter()}
+            </TableHeader>
+            <TableBody
+              displayRowCheckbox={this.state.showCheckboxes}
+              deselectOnClickaway={this.state.deselectOnClickaway}
+              showRowHover={this.state.showRowHover}
+              stripedRows={this.state.stripedRows}
+            >
+              {isLoaded() && this.props.faucet.selected.requestorAddresses.map((address, index) => (
+                <TableRow key={index}>
+                  <TableRowColumn>{address}</TableRowColumn>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Dialog
+            title='Grant Access?'
+            actions={actions}
+            modal={false}
+            open={this.state.dialogOpen}
+            onRequestClose={this.handleCloseDialog}
           >
-            {isLoaded() && this.props.faucet.selected.requestorAddresses.map((address, index) => (
-              <TableRow key={index}>
-                <TableRowColumn>{address}</TableRowColumn>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Dialog
-          title='Grant Access?'
-          actions={actions}
-          modal={false}
-          open={this.state.dialogOpen}
-          onRequestClose={this.handleCloseDialog}
-        >
-          Are you sure you want to grant {this.state.selectedRequestor !== null && this.state.selectedRequestor} access to this faucet?
-        </Dialog>
-      </div>
-    )
+            Are you sure you want to grant {this.state.selectedRequestor !== null && this.state.selectedRequestor} access to this faucet?
+          </Dialog>
+        </div>
+      )
+    } 
     } 
   }
 }
