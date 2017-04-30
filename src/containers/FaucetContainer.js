@@ -22,6 +22,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(sendWei(_faucetAddress, _recipientAddress, _fromAddress));
     },
     onRequestFaucetAccess: (_faucetAddress, _requestorAddress) => {
+      console.log('_faucetAddress, _requestorAddress');
+      console.log(_faucetAddress, _requestorAddress);
       dispatch(requestFaucetAccess(_faucetAddress, _requestorAddress));
     },
     onNavigateToPath: (path) => {

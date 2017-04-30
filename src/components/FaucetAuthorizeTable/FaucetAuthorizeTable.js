@@ -4,6 +4,9 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
+import CircularProgress from 'material-ui/CircularProgress'
+
+
 class FaucetAuthorizeTable extends React.Component {
 
   constructor(props) {
@@ -23,22 +26,6 @@ class FaucetAuthorizeTable extends React.Component {
       height: 'auto',
       dialogOpen: false,
       selectedRequestor: null
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let { faucet } = nextProps
-    // route logic should be done via a helper module
-    if (faucet.defaultAddress && faucet.selected === null) {
-      var parts = decodeURI(window.location.pathname).split('/')
-      if (parts.length === 4 &&
-        parts[1].toLowerCase() === 'faucets' &&
-        parts[2].length !== 0) {
-        let cleanName = parts[2].toLowerCase().replace(/\s+/g, '-')
-        if (faucet.selected === null || faucet.selected.name !== cleanName) {
-          this.props.onGetFaucetByName(cleanName)
-        }
-      }
     }
   }
 
@@ -94,9 +81,18 @@ class FaucetAuthorizeTable extends React.Component {
       />
     ]
 
-
-
-    return (
+    const isLoaded = () => {
+      return this.props.faucet.selected !== null;
+    }
+    
+    if (!isLoaded()){
+      return (
+        <div style={{textAlign: 'center'}}>
+          <CircularProgress mode='indeterminate' size={80} />
+        </div>
+      );
+    } else {
+      return (
       <div>
         <Table
           height={this.state.height}
@@ -120,7 +116,7 @@ class FaucetAuthorizeTable extends React.Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.faucet.selected && this.props.faucet.selected.requestorAddresses.map((address, index) => (
+            {isLoaded() && this.props.faucet.selected.requestorAddresses.map((address, index) => (
               <TableRow key={index}>
                 <TableRowColumn>{address}</TableRowColumn>
               </TableRow>
@@ -138,6 +134,7 @@ class FaucetAuthorizeTable extends React.Component {
         </Dialog>
       </div>
     )
+    } 
   }
 }
 

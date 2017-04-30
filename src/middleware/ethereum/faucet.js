@@ -21,7 +21,7 @@ export const getFaucetViewModel = (_address) => {
     .then(async (_faucet) => {
       return {
         address: _faucet.address,
-        timeCreated: await _faucet.timeCreated.call(),
+        timeCreated: (await _faucet.timeCreated.call()).toNumber(),
         creator: await _faucet.creator.call(),
         name: await _faucet.name.call().then((_name) => _name.replace(/-/g, ' ')),
         balance: await web3.fromWei(web3.eth.getBalance(_address), 'ether').toNumber(),

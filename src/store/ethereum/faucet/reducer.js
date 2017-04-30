@@ -1,5 +1,5 @@
 import { getRandomAddress } from 'env'
-import { without } from 'lodash'
+import { without, find } from 'lodash'
 
 import {
   RECEIVE_WEB3_ACCOUNTS
@@ -35,7 +35,7 @@ export const faucetReducer = (state = initialState, action) => {
 
   if (action.type === LOCATION_CHANGE) {
     let faucetName = getFaucetNameFromPath(action.payload.pathname);
-    
+
     if (faucetName && (state.selected === null || state.selected.name !== faucetName)) {
       store.dispatch(getFaucetByName(faucetName));
     }
@@ -69,8 +69,12 @@ export const faucetReducer = (state = initialState, action) => {
   }
 
   if (action.type === RECEIVE_FAUCET_OBJECTS) {
+    let ownerFaucet = find(action.payload, (f) => {
+      return f.creator === state.defaultAddress;
+    })
     return Object.assign({}, state, {
-      objects: action.payload
+      objects: action.payload,
+      defaultFaucet: ownerFaucet
     })
   }
 

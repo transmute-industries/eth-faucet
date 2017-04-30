@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 
 import HeroRow from 'components/HeroRow'
 
+import CircularProgress from 'material-ui/CircularProgress'
+
 import CreateFaucetContainer from 'containers/CreateFaucetContainer'
 import FaucetTableContainer from 'containers/FaucetTableContainer'
 
@@ -24,27 +26,54 @@ export default class Home extends Component {
     //   browserHistory.push("/faucets/" + faucet.selected.name)
     // }
   }
+
+
   render() {
     let { faucet } = this.props;
+
+    const isLoaded = () => {
+      return faucet.objects.length;
+    }
+
+    const HeroContent = () => {
+      if (isLoaded()) {
+        return (
+          <h1 style={{ textAlign: 'center' }} >
+            Ethereum TestNet Faucets
+          </h1>
+        )
+      } else {
+        return (
+          <CircularProgress mode='indeterminate' size={80} />
+        )
+      }
+    }
+
+    const DefaultView = () => {
+
+      if (isLoaded()) {
+        if (faucet.defaultFaucet !== undefined) {
+          return (
+            <FaucetTableContainer />
+          )
+        } else {
+          return (
+            <div>
+              <CreateFaucetContainer />
+              <FaucetTableContainer />
+            </div>
+          )
+        }
+      } else {
+        return (<div />)
+      }
+    }
     return (
       <div style={{ paddingBottom: '20px' }}>
         <HeroRow renderParticles={true}>
-          <h1 style={{ textAlign: 'center' }}>
-            {
-              faucet.isOwner ?
-                'Welcome back!'
-                :
-                'Create or request access to Ethereum TestNet Faucets'
-            }
-          </h1>
+          <HeroContent />
         </HeroRow>
-
-        {
-          !faucet.isOwner &&
-          <CreateFaucetContainer />
-        }
-
-        <FaucetTableContainer />
+        <DefaultView />
       </div>
     )
   }

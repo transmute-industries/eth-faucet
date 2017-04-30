@@ -3,12 +3,24 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card'
 
+import CircularProgress from 'material-ui/CircularProgress'
+
+
+
 export default class Faucet extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
       address: ''
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.address === '' && this.props.faucet.defaultAddress) {
+      this.state = {
+        address: this.props.faucet.defaultAddress
+      }
     }
   }
 
@@ -33,6 +45,20 @@ export default class Faucet extends React.Component {
 
   render() {
     const { selected } = this.props.faucet
+
+     const isLoaded = () => {
+      return selected !== null;
+    }
+    
+    if (!isLoaded()){
+      return (
+        <div style={{textAlign: 'center'}}>
+          <CircularProgress mode='indeterminate' size={80} />
+        </div>
+      );
+    } else {
+
+
     return (
       <Card>
         {selected &&
@@ -46,7 +72,7 @@ export default class Faucet extends React.Component {
             style={{ width: '100%' }}
             id='text-field-controlled'
             floatingLabelText='Address'
-            value={this.state.address || this.props.faucet.defaultAddress || ''}
+            value={this.state.address}
             errorText={this.state.error}
             onChange={e => this.onInputChange(e)}
           />
@@ -73,5 +99,6 @@ export default class Faucet extends React.Component {
         </CardActions>
       </Card>
     )
+    }
   }
 }
