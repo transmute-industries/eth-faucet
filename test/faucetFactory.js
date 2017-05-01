@@ -6,11 +6,11 @@ var _ = require('lodash')
 
 
 const {
-    NEW_EVENT,
+  NEW_EVENT,
   eventsFromTransaction,
   convertUIntArray,
-  getEventById,
-  getEventsByIds
+  readEvent,
+  readEvents
 } = require('./Transmute/Framework')
 
 contract('FaucetManager', function (accounts) {
@@ -247,44 +247,32 @@ contract('FaucetManager', function (accounts) {
         })
     })
 
-    it('getEventIds', () => {
+    it('readEvent', () => {
       return Faucet.at(faucetAddress)
         .then((_faucet) => {
-          return _faucet.getEventIds()
+          return readEvent(_faucet, 0)
         })
-        .then((bigNumArray) => {
-          let _eventIds = convertUIntArray(bigNumArray);
-          assert.equal(_eventIds.length, 3);
-          assert.equal(_eventIds[0], 0);
-          assert.equal(_eventIds[1], 1);
-          assert.equal(_eventIds[2], 2);
-
-          eventIds = _eventIds;
+        .then((eventObject) => {
+          // console.log('eventObject: ', eventObject);
+          assert.equal(eventObject.Type, 'FAUCET_ADDRESS_ACCESS_REQUESTED');
+          assert.equal(eventObject.AddressValue, faucetCustomer);
+          assert.equal(eventObject.UIntValue, 1);
+          assert.equal(eventObject.StringValue, '');
         })
     })
 
-    it('getEventsByIds', () => {
+    it('readEvents', () => {
       return Faucet.at(faucetAddress)
         .then((_faucet) => {
-          return getEventsByIds(_faucet, eventIds)
-            .then((eventObjects) => {
-              assert(eventObjects.length === 3);
-
-              assert.equal(eventObjects[0].Type, 'FAUCET_ADDRESS_ACCESS_REQUESTED');
-              assert.equal(eventObjects[0].Value, 'true');
-              assert.equal(eventObjects[0].Address, faucetCustomer);
-
-              assert.equal(eventObjects[1].Type, 'FAUCET_ADDRESS_ACCESS_GRANTED');
-              assert.equal(eventObjects[1].Value, 'true');
-              assert.equal(eventObjects[1].Address, faucetCustomer);
-
-              assert.equal(eventObjects[2].Type, 'FAUCET_ADDRESS_ACCESS_REVOKED');
-              assert.equal(eventObjects[2].Value, 'true');
-              assert.equal(eventObjects[2].Address, faucetCustomer);
-
-            })
+          return readEvents(_faucet)
         })
-
+        .then((eventObjects) => {
+          // console.log('eventObject: ', eventObjects);
+          assert.equal(eventObjects.length, 3);
+          assert.equal(eventObjects[0].Id, 0);
+          assert.equal(eventObjects[1].Id, 1);
+          assert.equal(eventObjects[2].Id, 2);
+        })
     })
 
   })
