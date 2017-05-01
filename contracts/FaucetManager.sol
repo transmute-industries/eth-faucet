@@ -4,11 +4,11 @@ import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract FaucetManager is Killable {
-  using ArrayUtils for address[];
+  using ArrayUtils for ArrayUtils.ArrayList;
 
   mapping (address => address) creatorFaucetMapping;
   mapping (string => address) nameFaucetMapping;
-  address[] public faucetAddresses;
+  ArrayUtils.ArrayList public faucetAddresses;
 
   // Events
   event AccessRequested(address indexed requestorAddress);
@@ -26,22 +26,22 @@ contract FaucetManager is Killable {
 
   // Modifiers
   modifier checkExistence(address _faucetAddress) {
-    if (faucetAddresses.indexOf(_faucetAddress) == uint(-1))
+    if (faucetAddresses.contains(_faucetAddress))
       throw;
     _;
   }
 
   // Helper Functions
-  function getFaucetByCreator() constant returns(address)  {
+  function getFaucetByCreator() constant returns (address)  {
     return creatorFaucetMapping[msg.sender];
   }
 
-  function getFaucetByName(string _name) constant returns(address)  {
+  function getFaucetByName(string _name) constant returns (address)  {
     return nameFaucetMapping[_name];
   }
 
-  function getFaucets() constant returns(address[])  {
-    return faucetAddresses;
+  function getFaucets() constant returns (address[])  {
+    return faucetAddresses.values;
   }
 
   // Interface
@@ -63,7 +63,7 @@ contract FaucetManager is Killable {
     }
 
     // Update State Dependent On Other Contracts
-    faucetAddresses.push(address(_newFaucet));
+    faucetAddresses.insert(address(_newFaucet));
     creatorFaucetMapping[msg.sender] = address(_newFaucet);
     nameFaucetMapping[_name] = address(_newFaucet);
 
@@ -102,7 +102,7 @@ contract FaucetManager is Killable {
     // Update Local State
     delete nameFaucetMapping[_name];
     delete creatorFaucetMapping[_creator];
-    /*faucetAddresses.remove(_address);*/
+    faucetAddresses.remove(_address);
 
     // Interact With Other Contracts
     Faucet _faucet = Faucet(_address);

@@ -3,11 +3,11 @@ import "./ArrayUtils.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract Faucet is Killable {
-    using ArrayUtils for address[];
+    using ArrayUtils for ArrayUtils.ArrayList;
 
     mapping (address => uint) lastSent;
     mapping (address => bool) authorizedAddressesMapping;
-    address[] public requestorAddresses;
+    ArrayUtils.ArrayList public requestorAddresses;
     address public creator;
     string public name;
     uint public timeCreated;
@@ -70,12 +70,12 @@ contract Faucet is Killable {
   	}
 
     // Helper Functions
-  	function getBalance() returns (uint){
+  	function getBalance() returns (uint) {
         return address(this).balance;
   	}
 
     function getRequestorAddresses() constant returns (address[]) {
-      return requestorAddresses;
+      return requestorAddresses.values;
     }
 
   	function getRemainingBlocks() returns (uint) {
@@ -88,7 +88,7 @@ contract Faucet is Killable {
     function addRequestorAddress(address _requestor) public {
         if (requestorAddresses.indexOf( _requestor) != uint(-1))
             throw;
-        requestorAddresses.push(_requestor);
+        requestorAddresses.insert(_requestor);
         authorizedAddressesMapping[_requestor] = false;
     }
 
