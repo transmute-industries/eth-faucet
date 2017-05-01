@@ -26,7 +26,7 @@ contract FaucetManager is Killable {
 
   // Modifiers
   modifier checkExistence(address _faucetAddress) {
-    if (faucetAddresses.contains(_faucetAddress))
+    if (!faucetAddresses.contains(_faucetAddress))
       throw;
     _;
   }

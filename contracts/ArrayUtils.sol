@@ -7,7 +7,7 @@ library ArrayUtils {
       mapping(address => bool) addressToExistsMapping;
       mapping(address => uint) addressToIndexMapping;
       mapping(uint => address) indexToAddressMapping;
-      uint nextEmptyIndex;
+      uint numberOfValues;
   }
 
   function insert(ArrayList storage self, address value)
@@ -16,15 +16,19 @@ library ArrayUtils {
       if (self.addressToExistsMapping[value])
           return false;
       self.addressToExistsMapping[value] = true;
-      self.addressToIndexMapping[value] = self.nextEmptyIndex;
-      self.indexToAddressMapping[self.nextEmptyIndex] = value;
-      if (self.values.length > self.nextEmptyIndex) {
+      self.addressToIndexMapping[value] = self.numberOfValues;
+      self.indexToAddressMapping[self.numberOfValues] = value;
+      if (self.values.length <= self.numberOfValues) {
           self.values.push(value);
-          self.nextEmptyIndex++;
+          self.numberOfValues++;
+      } else {
+          for (uint i = 0; i < self.values.length; i++) {
+              if (self.values[i] == 0) {
+                  self.values[i] = value;
+                  self.numberOfValues++;
+              }
+          }
       }
-/*else {
-          self.values[self.nextEmptyIndex++] = value;
-      }*/
       return true;
   }
 
@@ -34,7 +38,7 @@ library ArrayUtils {
       if (!self.addressToExistsMapping[value])
           return false;
       self.addressToExistsMapping[value] = false;
-      self.nextEmptyIndex = self.addressToIndexMapping[value];
+      self.numberOfValues++;
       delete self.indexToAddressMapping[self.addressToIndexMapping[value]];
       delete self.values[self.addressToIndexMapping[value]];
       delete self.addressToIndexMapping[value];

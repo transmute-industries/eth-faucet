@@ -86,14 +86,14 @@ contract Faucet is Killable {
   	}
 
     function addRequestorAddress(address _requestor) public {
-        if (requestorAddresses.indexOf( _requestor) != uint(-1))
+        if (requestorAddresses.contains(_requestor))
             throw;
         requestorAddresses.insert(_requestor);
         authorizedAddressesMapping[_requestor] = false;
     }
 
     function authorizeRequestorAddress(address _requestor) public onlyCreator {
-        if (requestorAddresses.indexOf(_requestor) == uint(-1))
+        if (!requestorAddresses.contains(_requestor))
             throw;
         if (authorizedAddressesMapping[_requestor])
             throw;
@@ -101,7 +101,7 @@ contract Faucet is Killable {
     }
 
     function revokeRequestorAddress(address _requestor) public onlyCreator {
-        if (requestorAddresses.indexOf(_requestor) == uint(-1))
+        if (!requestorAddresses.contains(_requestor))
             throw;
         if (!authorizedAddressesMapping[_requestor])
             throw;
