@@ -1,14 +1,14 @@
 pragma solidity ^0.4.8;
 import "./Faucet.sol";
-import "./ArrayUtils.sol";
+import "./IndexedEnumerableSetLib.sol";
 import './zeppelin/lifecycle/Killable.sol';
 
 contract FaucetManager is Killable {
-  using ArrayUtils for ArrayUtils.ArrayList;
+  using IndexedEnumerableSetLib for IndexedEnumerableSetLib.IndexedEnumerableSet;
 
   mapping (address => address) creatorFaucetMapping;
   mapping (string => address) nameFaucetMapping;
-  ArrayUtils.ArrayList public faucetAddresses;
+  IndexedEnumerableSetLib.IndexedEnumerableSet faucetAddresses;
 
   // Events
   event AccessRequested(address indexed requestorAddress);
@@ -63,7 +63,7 @@ contract FaucetManager is Killable {
     }
 
     // Update State Dependent On Other Contracts
-    faucetAddresses.insert(address(_newFaucet));
+    faucetAddresses.add(address(_newFaucet));
     creatorFaucetMapping[msg.sender] = address(_newFaucet);
     nameFaucetMapping[_name] = address(_newFaucet);
 

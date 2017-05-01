@@ -1,14 +1,13 @@
 pragma solidity ^0.4.8;
-import "./ArrayUtils.sol";
-
+import "./IndexedEnumerableSetLib.sol";
 import './Transmute/EventStore.sol';
 
 contract Faucet is EventStore  {
-    using ArrayUtils for ArrayUtils.ArrayList;
+    using IndexedEnumerableSetLib for IndexedEnumerableSetLib.IndexedEnumerableSet;
 
     mapping (address => uint) lastSent;
     mapping (address => bool) authorizedAddressesMapping;
-    ArrayUtils.ArrayList public requestorAddresses;
+    IndexedEnumerableSetLib.IndexedEnumerableSet requestorAddresses;
     address public creator;
     string public name;
     uint public timeCreated;
@@ -89,7 +88,7 @@ contract Faucet is EventStore  {
     function addRequestorAddress(address _requestor) public {
         if (requestorAddresses.contains(_requestor))
             throw;
-        requestorAddresses.insert(_requestor);
+        requestorAddresses.add(_requestor);
         authorizedAddressesMapping[_requestor] = false;
         emitEvent('FAUCET_ADDRESS_ACCESS_REQUESTED', 'true',  _requestor);
     }
@@ -101,7 +100,7 @@ contract Faucet is EventStore  {
             throw;
         authorizedAddressesMapping[_requestor] = true;
         emitEvent('FAUCET_ADDRESS_ACCESS_GRANTED', 'true',  _requestor);
-       
+
     }
 
     function revokeRequestorAddress(address _requestor) public onlyCreator {
