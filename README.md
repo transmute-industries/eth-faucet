@@ -1,108 +1,66 @@
-# Eth Faucet
+# Transmute Faucet
 
-[![License][license-image]][license-url]
-[![Code Style][code-style-image]][code-style-url]
+## Motivation
 
-## Getting Started
+When developing Ethereum-based applications, you will eventually need to deploy your smart contracts to the testnet (unless you like flagrantly wasting money and deploying directly to the mainnet).
 
-1. Install dependencies: `npm install`
+In order to deploy these, you're going to need testnet ether for your testnet of choice. Right now, there are three main testnet faucets I am aware of - [The Ropsten Faucet](http://faucet.ropsten.be:3001/), [B9lab Faucet](http://ipfs.b9lab.com:8080/ipfs/QmTHdYEYiJPmbkcth3mQvEQQgEamFypLhc9zapsBatQW7Y/throttled_faucet.html), and the ever so elusive [Metamask Faucet](https://faucet.metamask.io/).
 
-2. Start Development server: `npm start`
+These are amazing resources and we have definitely taken advantage of each of them. The issue we found was that when you're trying to get ether from one of them, you're competing against everyone else who wants testnet ether. To address this, we've delivered a solution that allows people to create faucets on the fly and authorize whoever they wish to allow to use them (POA Faucet).
 
-3. Start Test RPC `testrpc`
+If you would like to create your own faucet, please visit the [Transmute Faucet](faucet.transmute.industries) to do so.
 
-4. Migrate Contracts to TestRPC `truffle migrate`
+## Funding Your Faucet Via AWS Mining
 
+### Step 1 - Get an Amazon AWS Account
 
-## Deployment
+Sign up for an AWS account, sign in, and click on EC2.
 
-1. Migrate Contracts
+### Step 2 - Setup the pre-built AMI (Amazon Machine Image) on AWS EC2
+
+An Amazon Machine Image (AMI) provides the information required to launch an instance, which is a virtual server in the cloud. For this tutorial, we need to use the following AMI: IMAGE: ami-2cbf3e44 for US-East (Ubuntu Server 14.04 LTS (HVM) – CUDA 6.5)
+
+To find the AMI go to the navigation bar, select US East (N.Virginia). Then In the navigation pane, click Images -> AMIs. Next switch to the Public Images next to the search filter (the default is "Owned by Me" which will be at first empty, if you do not yet own any AMI) Select Community AMIs Tab and Click on the search filter to (search by) AMI ID -> ami-2cbf3e44 Note: Make always sure you are in the correct region (US East, N.Virginia as we said) otherwise you will not see the AMI we are insterested in on the list. Select the ami-2cbf3e44 and click on the blue button, “Select”. Now you can choose an Instance Type.
+
+Select GPU instances g2.2xlarge or g2.8xlarge and click Next: Configure Instance details. WarningI recommend going with the smaller one first, or even stick to the t2.micro free instance for testing (not mining) to save money during the learning curve.
+
+### Step 3 - Configure Instance Details
+
+Leave the default settings, click Next: Add Storage.
+
+### Step 4 - Add Storage
+
+I added 60 Gigs on each volume. The blockchain is growing so it is better to get more, this should give me suitable time to figure out how to migrate my data volumes with snapshots. After adding the storage click Next: Tag Instance
+
+### Step 5 - Tag Isntance
+
+Leave the default settings alone and click Next: Configure Security Group.
+
+### Step 6 - Configure Security Group
+
+Click on Create new security group, make sure you add your ip and allow TCP & UDP for everyone on Port 30303.
+
+### Step 7 - Review, Launch, and Select a Key Pair
+
+Check over all your settings, and if they are correct select Launch!
+
+After completing this final section, check the box and launch the instance. If you got everything completed you should get a launch status screen. Click view instances to proceed.
+
+### Step 8 - Connect To Your Instance
+
+Once you have launched your image you can monitor it and get your connection string on the instances screen.
+
+Click Connect, and your connection info will appear. What you will do is paste this connection string in your terminal to access the cloud server for installing Ethereum.
+
+### Step 9 - Install Geth
+
+Run the following commands to install the latest developer version of go-ethereum:
 
 ```
-$ truffle migrate --compile-all --network ropsten --reset --verbose-rpc
+sudo apt-get install software-properties-common
+sudo add-apt-repository -y ppa:ethereum/ethereum-qt
+sudo add-apt-repository -y ppa:ethereum/ethereum
+sudo add-apt-repository -y ppa:ethereum/ethereum-dev
+sudo apt-get update
+sudo apt-get install ethereum
 ```
-
-2. Build and Deploy Prod
-
-```
-$ npm run build:prod
-$ firebase deploy
-```
-
-While developing, you will probably rely mostly on `npm start`; however, there are additional scripts at your disposal:
-
-|`npm run <script>`|Description|
-|------------------|-----------|
-|`start`|Serves your app at `localhost:3000`. HMR will be enabled in development.|
-|`build:dev`|Same as `build` but overrides `NODE_ENV` to "development".|
-|`build:prod`|Same as `build` but overrides `NODE_ENV` to "production".|
-|`lint`|Lint all `.js` files.|
-|`lint:fix`|Lint and fix all `.js` files. [Read more on this](http://eslint.org/docs/user-guide/command-line-interface.html#fix).|
-
-## What is Shown
-* Route protection using `redux-auth-wrapper`
-* Data input/validation using `redux-form`
-* Async & Sync route loading
-* Real CI and Deployment settings (including `prod` and `stage` environments)
-* Using different instances of Firebase based on environment
-
-## Application Structure
-
-The application structure presented in this boilerplate is **fractal**, where functionality is grouped primarily by feature rather than file type. Please note, however, that this structure is only meant to serve as a guide, it is by no means prescriptive. That said, it aims to represent generally accepted guidelines and patterns for building scalable applications. If you wish to read more about this pattern, please check out this [awesome writeup](https://github.com/davezuko/react-redux-starter-kit/wiki/Fractal-Project-Structure) by [Justin Greenberg](https://github.com/justingreenberg).
-
-```
-.
-├── bin                      # Build/Start scripts
-├── config                   # Project and build configurations
-├── server                   # Express application that provides Webpack middleware
-│   └── main.js              # Server application entry point
-├── src                      # Application source code
-│   ├── index.html           # Main HTML page container for app
-│   ├── main.js              # Application bootstrap and rendering
-│   ├── components           # Global Reusable Presentational Components
-│   ├── containers           # Global Reusable Container Components
-│   ├── layouts              # Components that dictate major page structure
-│   ├── routes               # Main route definitions and async split points
-│   │   ├── index.js         # Bootstrap main application routes with store
-│   │   └── Home             # Fractal route
-│   │       ├── index.js     # Route definitions and async split points
-│   │       ├── assets       # Assets required to render components
-│   │       ├── components   # Presentational React Components
-│   │       ├── container    # Connect components to actions and store
-│   │       ├── modules      # Collections of reducers/constants/actions
-│   │       └── routes **    # Fractal sub-routes (** optional)
-│   ├── static               # Static assets (not imported anywhere in source code)
-│   ├── store                # Redux-specific pieces
-│   │   ├── createStore.js   # Create and instrument redux store
-│   │   └── reducers.js      # Reducer registry and injection
-│   └── styles               # Application-wide styles (generally settings)
-```
-
-## Learning Resources
-
-* [Starting out with react-redux-starter-kit](https://suspicious.website/2016/04/29/starting-out-with-react-redux-starter-kit/) is an introduction to the components used in this starter kit with a small example in the end.
-
-### Production
-
-Build code before deployment by running `npm run build:prod`.
-
-### Deployment
-1. Login to [Firebase](firebase.google.com) (or Signup if you don't have an account) and create a new project
-2. Install cli: `npm i -g firebase-tools`
-3. Login: `firebase login`
-
-#### CI
-**Note:** The next steps automatically through config set in the `.travis.yml`. Use `firebase login:ci` to generate a token and set it to `FIREBASE_TOKEN` within your travis config.
-
-#### Local
-1. Build Project: `npm run build`
-2. Confirm Firebase config by running locally: `firebase serve`
-3. Deploy to firebase: `firebase deploy`
-
-[license-image]: https://img.shields.io/npm/l/material.svg?style=flat-square
-[license-url]: https://github.com/prescottprue/material/blob/master/LICENSE
-[code-style-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
-[code-style-url]: http://standardjs.com/
-
-#### Reading
-- [`generator-react-firebase`](https://github.com/prescottprue/generator-react-firebase)
