@@ -3,52 +3,62 @@ import '../zeppelin/lifecycle/Killable.sol';
 
 contract EventStore is Killable{
 
+  struct TransmuteEvent {
+    uint Id;
+    string Type;
+    uint Created;
+    address AddressValue;
+    uint UIntValue;
+    string StringValue;
+  }
+
   uint public eventCount;
-  uint[] public Ids;
+  mapping (uint => TransmuteEvent) events;
 
-  mapping (uint => string) typeMap;
-  mapping (uint => string) valueMap;
-  mapping (uint => address) addressMap;
-
-  event NEW_EVENT(uint Id, string Type, string Value, address Address);
+  event NEW_EVENT(uint Id, string Type, uint Created, address AddressValue, uint UIntValue, string StringValue);
 
   function getVersion() constant returns (uint) {
     return 1;
   }
 
-  function getEventIds() constant returns (uint[]) {
-    return Ids;
-  }
-
-  function emitEvent(string _type, string _value, address _address) 
+  function emitEvent(string _type, address _address, uint _uint, string _string) 
     returns (bool)
   {
     
-    Ids.push(eventCount);
+    uint _created = now;
 
-    typeMap[eventCount] =  _type;
-    valueMap[eventCount] =  _value;
-    addressMap[eventCount] =  _address;
+    events[eventCount] = TransmuteEvent({
+      Id: eventCount,
+      Type: _type,
+      Created: _created,
+      AddressValue: _address,
+      UIntValue: _uint,
+      StringValue: _string
+    });
     
-    NEW_EVENT(eventCount, _type, _value, _address);
-
+    NEW_EVENT(eventCount, _type, _created, _address, _uint, _string);
     eventCount = eventCount + 1;
     return true;
   }
 
   function getType(uint eventId) constant returns (string) {
-    return typeMap[eventId];
+    return events[eventId].Type;
   }
   
-  function getValue(uint eventId) constant returns (string) {
-    return valueMap[eventId];
+  function getCreated(uint eventId) constant returns (uint) {
+    return events[eventId].Created;
   }
 
-  function getAddress(uint eventId) constant returns (address) {
-    return addressMap[eventId];
+  function getAddressValue(uint eventId) constant returns (address) {
+    return events[eventId].AddressValue;
   }
 
-  
+  function getUIntValue(uint eventId) constant returns (uint) {
+    return events[eventId].UIntValue;
+  }
 
+  function getStringValue(uint eventId) constant returns (string) {
+    return events[eventId].StringValue;
+  }
 
 }

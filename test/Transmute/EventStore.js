@@ -9,16 +9,17 @@ const {
     NEW_EVENT,
     eventsFromTransaction,
     convertUIntArray,
-    getEventById,
-    getEventsByIds
+    readEvent,
+    readEvents
 } = require('./Framework')
 
 contract('EventStore', (accounts) => {
 
     let event = {
         Type: 'ADDRESS_AUTHORIZED',
-        Value: accounts[0],
-        Address: accounts[0]
+        AddressValue: accounts[0],
+        UIntValue: 1,
+        StringValue: 'TransmuteEvent'
     }
 
     it('is a deployed contract', () => {
@@ -40,11 +41,11 @@ contract('EventStore', (accounts) => {
     })
 
     describe('emitEvent', () => {
-        it('emits a NEW_EVENT event with Id, Type and Value', () => {
+        it('emits a NEW_EVENT', () => {
             return EventStore.deployed()
                 .then((_esInstance) => {
                     return _esInstance
-                        .emitEvent(event.Type, event.Value, event.Address, {
+                        .emitEvent(event.Type, event.AddressValue, event.UIntValue, event.StringValue, {
                             from: accounts[0],
                             gas: 2000000
                         })
@@ -54,102 +55,44 @@ contract('EventStore', (accounts) => {
                     // console.log(events);
                     assert.equal(events.length, 1);
                     assert.equal(events[0].Type, event.Type);
-                    assert.equal(events[0].Value, event.Value);
-                    assert.equal(events[0].Address, event.Address);
+                    assert.equal(events[0].AddressValue, event.AddressValue);
+                    assert.equal(events[0].UIntValue, event.UIntValue);
+                    assert.equal(events[0].StringValue, event.StringValue);
                 })
         })
     })
 
-    describe('getEventIds', () => {
-        it('should return all event Ids', () => {
+    describe('readEvent', () => {
+        it('should return the event object [EXPENSIVE]', () => {
             return EventStore.deployed()
                 .then((_esInstance) => {
-                    return _esInstance
-                        .getEventIds()
-
-                })
-                .then((bigNumArray) => {
-                    let eventIds = convertUIntArray(bigNumArray);
-                    assert.equal(eventIds.length, 1);
-                    assert.equal(eventIds[0], 0);
-                })
-        })
-    })
-
-    describe('getType', () => {
-        it('should return the event type by Id', () => {
-            return EventStore.deployed()
-                .then((_esInstance) => {
-                    return _esInstance
-                        .getType(0)
-                        .then((eventType) => {
-                            assert.equal(eventType, event.Type);
-                        })
-                })
-        })
-    })
-
-    describe('getValue', () => {
-        it('should return the event value by Id', () => {
-            return EventStore.deployed()
-                .then((_esInstance) => {
-                    return _esInstance
-                        .getValue(0)
-                        .then((eventValue) => {
-                            assert.equal(eventValue, event.Value);
-                        })
-                })
-        })
-    })
-
-    describe('getAddress', () => {
-        it('should return the event value by Id', () => {
-            return EventStore.deployed()
-                .then((_esInstance) => {
-                    return _esInstance
-                        .getAddress(0)
-                        .then((recordedAddress) => {
-                            assert.equal(recordedAddress, event.Address );
-                        })
-                })
-        })
-    })
-
-    describe('getEventById(esInstance, eventId)', () => {
-        it('should return the event object by eventId', () => {
-            return EventStore.deployed()
-                .then((_esInstance) => {
-                    return getEventById(_esInstance, 0)
+                    return readEvent(_esInstance, 0);
                 })
                 .then((eventObject) => {
-                    assert.equal(eventObject.Id, 0);
+                    // console.log("eventObject: ", eventObject)
                     assert.equal(eventObject.Type, event.Type);
-                    assert.equal(eventObject.Value, event.Value);
-                    assert.equal(eventObject.Address, event.Address);
+                    assert.equal(eventObject.AddressValue, event.AddressValue);
+                    assert.equal(eventObject.UIntValue, event.UIntValue);
+                    assert.equal(eventObject.StringValue, event.StringValue);
                 })
         })
     })
 
-    describe('getEventsByIds(esInstance, eventIds)', () => {
-        it('should return an array with event objects matching eventIds', () => {
+    describe('readEvents', () => {
+        it('should return all event objects [EXPENSIVE]', () => {
             return EventStore.deployed()
                 .then((_esInstance) => {
-                    return _esInstance
-                        .getEventIds()
-                        .then((bigNumArray) => {
-                            let eventIds = convertUIntArray(bigNumArray);
-                            return getEventsByIds(_esInstance, eventIds)
-                        })
-                        .then((eventObjects) => {
-                            assert(eventObjects.length === 1);
-                            assert.equal(eventObjects[0].Type, event.Type);
-                            assert.equal(eventObjects[0].Value, event.Value);
-                            assert.equal(eventObjects[0].Address, event.Address);
-                        })
+                    return readEvents(_esInstance);
+                })
+                .then((eventObjects) => {
+                    // console.log('eventObjects: ', eventObjects)
+                    assert.equal(eventObjects.length, 1);
+                    let eventObject = eventObjects[0];
+                    assert.equal(eventObject.Type, event.Type);
+                    assert.equal(eventObject.AddressValue, event.AddressValue);
+                    assert.equal(eventObject.UIntValue, event.UIntValue);
+                    assert.equal(eventObject.StringValue, event.StringValue);
                 })
         })
     })
-
 })
-
-

@@ -6,8 +6,11 @@ const EVENT_SCHEMAS = {
     [NEW_EVENT]: {
         Id: 'BigNumber',
         Type: 'String',
-        Value: 'String',
-        Address: 'String'
+        Created: 'BigNumber',
+
+        AddressValue: 'String',
+        UIntValue: 'BigNumber',
+        StringValue: 'String'
     }
 }
 
@@ -15,7 +18,7 @@ const getPropFromSchema = (propType, value) => {
     switch (propType) {
         case 'String': return value.toString(); break;
         case 'BigNumber': return value.toNumber(); break;
-        default: throw ('UNKNWON propType. Make sure your schema is up to date.')
+        default: throw (`UNKNWON propType for value '${value}'. Make sure your schema is up to date.`)
     }
 }
 
@@ -28,7 +31,6 @@ const convertUIntArray = (arr) => {
 const eventFromLog = (log) => {
     let schema = EVENT_SCHEMAS[log.event];
     let event = {};
-
     _.forIn(log.args, (value, key) => {
         let prop = getPropFromSchema(schema[key], value)
         _.extend(event, {
@@ -44,30 +46,33 @@ const eventsFromTransaction = (tx) => {
     })
 }
 
-const getEventById = async (esInstance, eventId) => {
+const readEvent = async (esInstance, eventId) => {
     return {
         Id: eventId,
         Type: await esInstance.getType(eventId),
-        Value: await esInstance.getValue(eventId),
-        Address: await esInstance.getAddress(eventId),
+        Created: (await esInstance.getCreated(eventId)).toNumber(),
+        AddressValue: await esInstance.getAddressValue(eventId),
+        UIntValue: (await esInstance.getUIntValue(eventId)).toNumber(),
+        StringValue: await esInstance.getStringValue(eventId),
     }
 }
 
-const getEventsByIds = async (esInstance, eventIds) => {
-    return await Promise.all(
-        eventIds
-            .map(async (eventId) => {
-                return await getEventById(esInstance, eventId)
-            })
-    );
+const readEvents = async (esInstance) => {
+    let eventCount = await esInstance.eventCount();
+    let eventId = 0;
+    let eventPromises = [];
+    while (eventId < eventCount) {
+        eventPromises.push(await readEvent(esInstance, eventId))
+        eventId++;
+    }
+    return await Promise.all(eventPromises);
 }
-
 
 module.exports = {
     NEW_EVENT,
     EVENT_SCHEMAS,
     eventsFromTransaction,
     convertUIntArray,
-    getEventById,
-    getEventsByIds
+    readEvent,
+    readEvents
 }
