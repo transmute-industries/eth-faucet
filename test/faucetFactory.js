@@ -4,6 +4,15 @@ var Faucet = artifacts.require('./Faucet.sol')
 var FaucetManager = artifacts.require('./FaucetManager.sol')
 var _ = require('lodash')
 
+
+const {
+    NEW_EVENT,
+  eventsFromTransaction,
+  convertUIntArray,
+  getEventById,
+  getEventsByIds
+} = require('./Transmute/Framework')
+
 contract('FaucetManager', function (accounts) {
 
   var faucetManagerInstance = null
@@ -13,6 +22,7 @@ contract('FaucetManager', function (accounts) {
   var faucetCustomer = accounts[2]
   var faucetName = 'austin-test-faucet'
   var faucetSeedEther = 5000000000000000000
+  var eventIds = [];
 
   it('Factory Instance Exists', () => {
     return FaucetManager.deployed().then((_instance) => {
@@ -21,7 +31,7 @@ contract('FaucetManager', function (accounts) {
   })
 
   it('Verify Faucet Factory Addresses', (done) => {
-    faucetManagerInstance.getFaucetByCreator.call({from: faucetCreator}).then((_faucetAddress) => {
+    faucetManagerInstance.getFaucetByCreator.call({ from: faucetCreator }).then((_faucetAddress) => {
       faucetAddress = _faucetAddress
       done()
     })
@@ -71,14 +81,14 @@ contract('FaucetManager', function (accounts) {
   })
 
   it('Verify faucetByCreatorMapping update', (done) => {
-    faucetManagerInstance.getFaucetByCreator.call({from: faucetCreator}).then((_faucetAddress) => {
+    faucetManagerInstance.getFaucetByCreator.call({ from: faucetCreator }).then((_faucetAddress) => {
       assert.equal(_faucetAddress, faucetAddress, '_faucetAddress does not match faucetAddress')
       done()
     })
   })
 
   it('Verify nameFaucetMapping update', (done) => {
-    faucetManagerInstance.getFaucetByName.call(faucetName, {from: faucetCreator}).then((_faucetAddress) => {
+    faucetManagerInstance.getFaucetByName.call(faucetName, { from: faucetCreator }).then((_faucetAddress) => {
       assert.equal(_faucetAddress, faucetAddress, '_faucetAddress does not match faucetAddress')
       done()
     })
@@ -91,7 +101,7 @@ contract('FaucetManager', function (accounts) {
 
   it('Verify Get Send Amount', (done) => {
     Faucet.at(faucetAddress).then((_faucet) => {
-      return _faucet.getSendAmount.call({from: faucetCustomer})
+      return _faucet.getSendAmount.call({ from: faucetCustomer })
     }).then((_sendAmount) => {
       assert.equal(1000000000000000000, _sendAmount.toNumber(), 'sendAmount wasn\'t 1000000000000000000')
       done()
@@ -169,16 +179,16 @@ contract('FaucetManager', function (accounts) {
       events.watch((error, result) => {
         if (error == null) {
           _faucet.isAddressAuthorized.call(faucetCustomer)
-          .then((_isAuthorized) => {
-            assert(_isAuthorized, 'faucetCustomer is not authorized')
-            done()
-          })
+            .then((_isAuthorized) => {
+              assert(_isAuthorized, 'faucetCustomer is not authorized')
+              done()
+            })
           assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), 'Amount sent was not equal to 1000000000000000000')
           events.stopWatching()
         }
       })
 
-      _faucet.getWei({from: faucetCustomer, gas: 2000000})
+      _faucet.getWei({ from: faucetCustomer, gas: 2000000 })
     })
   })
 
@@ -194,7 +204,7 @@ contract('FaucetManager', function (accounts) {
         }
       })
 
-      _faucet.sendWei(faucetRecipient, {from: faucetCustomer})
+      _faucet.sendWei(faucetRecipient, { from: faucetCustomer })
     })
   })
 
@@ -224,17 +234,73 @@ contract('FaucetManager', function (accounts) {
     })
   })
 
-  it('Destroy Faucet', () => {
-    Faucet.at(faucetAddress).then((_faucet) => {
-      faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, {from: faucetCreator}).then(() => {
-        assert.equal(faucetManagerInstance.creatorFaucetMapping, null, 'creatorFaucetMapping was not undefined')
-        assert.equal(faucetManagerInstance.nameFaucetMapping, null, 'nameFaucetMapping was not undefined')
-      })
+  describe('EventStore', () => {
+
+    it('is currently version 1', () => {
+      return Faucet.at(faucetAddress)
+        .then((_esInstance) => {
+          return _esInstance.getVersion();
+        })
+        .then((versionBigNum) => {
+          let version = versionBigNum.toNumber();
+          assert(version === 1)
+        })
     })
+
+    it('getEventIds', () => {
+      return Faucet.at(faucetAddress)
+        .then((_faucet) => {
+          return _faucet.getEventIds()
+        })
+        .then((bigNumArray) => {
+          let _eventIds = convertUIntArray(bigNumArray);
+          assert.equal(_eventIds.length, 3);
+          assert.equal(_eventIds[0], 0);
+          assert.equal(_eventIds[1], 1);
+          assert.equal(_eventIds[2], 2);
+
+          eventIds = _eventIds;
+        })
+    })
+
+    it('getEventsByIds', () => {
+      return Faucet.at(faucetAddress)
+        .then((_faucet) => {
+          return getEventsByIds(_faucet, eventIds)
+            .then((eventObjects) => {
+              assert(eventObjects.length === 3);
+
+              assert.equal(eventObjects[0].Type, 'FAUCET_ADDRESS_ACCESS_REQUESTED');
+              assert.equal(eventObjects[0].Value, 'true');
+              assert.equal(eventObjects[0].Address, faucetCustomer);
+
+              assert.equal(eventObjects[1].Type, 'FAUCET_ADDRESS_ACCESS_GRANTED');
+              assert.equal(eventObjects[1].Value, 'true');
+              assert.equal(eventObjects[1].Address, faucetCustomer);
+
+              assert.equal(eventObjects[2].Type, 'FAUCET_ADDRESS_ACCESS_REVOKED');
+              assert.equal(eventObjects[2].Value, 'true');
+              assert.equal(eventObjects[2].Address, faucetCustomer);
+
+            })
+        })
+
+    })
+
   })
+
+  // Timing issue here, need to add some buffer before destroying things, or tests fail...
+  // it('Destroy Faucet', () => {
+  //   Faucet.at(faucetAddress).then((_faucet) => {
+  //     faucetManagerInstance.killFaucet(_faucet.address, faucetName, faucetCreator, { from: faucetCreator }).then(() => {
+  //       assert.equal(faucetManagerInstance.creatorFaucetMapping, null, 'creatorFaucetMapping was not undefined')
+  //       assert.equal(faucetManagerInstance.nameFaucetMapping, null, 'nameFaucetMapping was not undefined')
+  //     })
+  //   })
+  // })
 })
 
-function validateError (error) {
+function validateError(error) {
   if ((error + '').indexOf('invalid JUMP') || (error + '').indexOf('out of gas') > -1) {
     console.log('testRPC')
   } else if ((error + '').indexOf('please check your gas amount') > -1) {

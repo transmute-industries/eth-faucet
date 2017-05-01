@@ -1,8 +1,9 @@
 pragma solidity ^0.4.8;
 import "./ArrayUtils.sol";
-import './zeppelin/lifecycle/Killable.sol';
 
-contract Faucet is Killable {
+import './Transmute/EventStore.sol';
+
+contract Faucet is EventStore  {
     using ArrayUtils for ArrayUtils.ArrayList;
 
     mapping (address => uint) lastSent;
@@ -90,6 +91,7 @@ contract Faucet is Killable {
             throw;
         requestorAddresses.insert(_requestor);
         authorizedAddressesMapping[_requestor] = false;
+        emitEvent('FAUCET_ADDRESS_ACCESS_REQUESTED', 'true',  _requestor);
     }
 
     function authorizeRequestorAddress(address _requestor) public onlyCreator {
@@ -98,6 +100,8 @@ contract Faucet is Killable {
         if (authorizedAddressesMapping[_requestor])
             throw;
         authorizedAddressesMapping[_requestor] = true;
+        emitEvent('FAUCET_ADDRESS_ACCESS_GRANTED', 'true',  _requestor);
+       
     }
 
     function revokeRequestorAddress(address _requestor) public onlyCreator {
@@ -106,6 +110,7 @@ contract Faucet is Killable {
         if (!authorizedAddressesMapping[_requestor])
             throw;
         authorizedAddressesMapping[_requestor] = false;
+        emitEvent('FAUCET_ADDRESS_ACCESS_REVOKED', 'true', _requestor);
     }
 
     function isAddressAuthorized(address _address) public constant returns (bool) {
@@ -128,4 +133,5 @@ contract Faucet is Killable {
         lastSent[msg.sender] = block.number;
         EtherRequested(msg.sender, sendAmount);
   	}
+
 }
