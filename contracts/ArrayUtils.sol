@@ -26,10 +26,11 @@ library ArrayUtils {
               if (self.values[i] == 0) {
                   self.values[i] = value;
                   self.numberOfValues++;
+                  return true;
               }
           }
       }
-      return true;
+      return false;
   }
 
   function remove(ArrayList storage self, address value)
@@ -38,7 +39,7 @@ library ArrayUtils {
       if (!self.addressToExistsMapping[value])
           return false;
       self.addressToExistsMapping[value] = false;
-      self.numberOfValues++;
+      self.numberOfValues--;
       delete self.indexToAddressMapping[self.addressToIndexMapping[value]];
       delete self.values[self.addressToIndexMapping[value]];
       delete self.addressToIndexMapping[value];
