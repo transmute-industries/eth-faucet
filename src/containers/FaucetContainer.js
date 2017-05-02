@@ -21,10 +21,10 @@ const mapDispatchToProps = (dispatch) => {
     onSendWeiFormSubmit: (_faucetAddress, _recipientAddress, _fromAddress) => {
       dispatch(sendWei(_faucetAddress, _recipientAddress, _fromAddress));
     },
-    onRequestFaucetAccess: (_faucetAddress, _requestorAddress) => {
-      console.log('_faucetAddress, _requestorAddress');
-      console.log(_faucetAddress, _requestorAddress);
-      dispatch(requestFaucetAccess(_faucetAddress, _requestorAddress));
+    onRequestFaucetAccess: (_faucetAddress, _requestorAddress, _fromAddress) => {
+      console.log('_faucetAddress, _requestorAddress, _fromAddress');
+      console.log(_faucetAddress, _requestorAddress, _fromAddress);
+      dispatch(requestFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress));
     },
     onNavigateToPath: (path) => {
       browserHistory.push(path);

@@ -27,7 +27,7 @@ export default class Faucet extends React.Component {
   }
 
   handleRequestAccess = () => {
-    this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.address)
+    this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.address, this.props.faucet.defaultAddress)
   }
 
   handleNavigateToAdmin = () => {

@@ -69,9 +69,7 @@ class FaucetAuthorizeTable extends React.Component {
   }
 
   handleConfirmDialog = () => {
-
     if (this.state.dialogActionChoice === 'grant') {
-
       this.state.selectedRows.forEach((requestingAddress) => {
         if (this.props.faucet.authorizedAddressReadModel[requestingAddress] !== 'Granted') {
           let payload = {
@@ -85,15 +83,16 @@ class FaucetAuthorizeTable extends React.Component {
     }
 
     if (this.state.dialogActionChoice === 'revoke') {
-      console.warn('REVOKE NOT IMPLEMENTED', this.state.selectedRows)
       this.state.selectedRows.forEach((requestingAddress) => {
-        console.log('revoking access from... ', requestingAddress);
-        // this.props.onAuthorizeFaucetAccess({
-        //   faucetAddress: this.props.faucet.selected.address,
-        //   requestorAddress: this.state.selectedRequestor,
-        //   fromAddress: this.props.faucet.defaultAddress
-        // })
-      })
+        if (this.props.faucet.authorizedAddressReadModel[requestingAddress] !== 'Revoked') {
+          let payload = {
+            faucetAddress: this.props.faucet.selected.address,
+            requestorAddress: requestingAddress,
+            fromAddress: this.props.faucet.selected.creator
+          };
+          this.props.onRevokeFaucetAccess(payload);
+        }
+      });
     }
 
     this.setState({

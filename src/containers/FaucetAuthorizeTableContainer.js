@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import FaucetAuthorizeTable from 'components/FaucetAuthorizeTable'
 
-import { authorizeFaucetAccess, getFaucetByName } from 'store/ethereum/faucet'
+import { authorizeFaucetAccess, revokeFaucetAccess } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -11,17 +11,20 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onGetFaucetByName: (cleanName) => {
-            event.preventDefault()
-            dispatch(getFaucetByName(cleanName))
-        },
         onAuthorizeFaucetAccess: (authorizeFaucetAccessBindingModel) => {
-            event.preventDefault()
-            console.log('check these obj params...', authorizeFaucetAccessBindingModel)
+            console.log('authorizeFaucetAccessBindingModel: ', authorizeFaucetAccessBindingModel);
             dispatch(authorizeFaucetAccess(
-                authorizeFaucetAccessBindingModel.requestorAddress,
                 authorizeFaucetAccessBindingModel.faucetAddress,
+                authorizeFaucetAccessBindingModel.requestorAddress,
                 authorizeFaucetAccessBindingModel.fromAddress
+            ))
+        },
+        onRevokeFaucetAccess: (revokeFaucetAccessBindingModel) => {
+            console.log('revokeFaucetAccessBindingModel: ', revokeFaucetAccessBindingModel);
+            dispatch(revokeFaucetAccess(
+                revokeFaucetAccessBindingModel.faucetAddress,
+                revokeFaucetAccessBindingModel.requestorAddress,
+                revokeFaucetAccessBindingModel.fromAddress
             ))
         }
     }

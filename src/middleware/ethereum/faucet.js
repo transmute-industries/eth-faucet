@@ -23,7 +23,7 @@ export const getEventStoreEvents = (_address, _callback) => {
     .then(async (_faucet) => {
       return readEvents(_faucet)
     })
-    .then((events) =>{
+    .then((events) => {
       _callback(events);
     })
 }
@@ -132,12 +132,12 @@ export const faucetManagerContractCreateFaucet = (_name, fromAddress, _callback)
     })
 }
 
-export const faucetManagerContractRequestFaucetAccess = (_faucetAddress, _requestorAddress, _callback) => {
+export const faucetManagerContractRequestFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress, _callback) => {
   faucetManagerContract.deployed()
     .then((_instance) => {
       _instance
-        .requestAccess(_requestorAddress, _faucetAddress, {
-          from: _requestorAddress,
+        .requestAccess(_faucetAddress, _requestorAddress, {
+          from: _fromAddress,
           gas: 2000000
         })
         .then((_tx) => {
@@ -153,7 +153,7 @@ export const faucetManagerContractAuthorizeFaucetAccess = (_faucetAddress, _requ
   faucetManagerContract.deployed()
     .then((_instance) => {
       _instance
-        .authorizeAccess(_requestorAddress, _faucetAddress, {
+        .authorizeAccess(_faucetAddress, _requestorAddress, {
           from: _fromAddress,
           gas: 2000000
         })
@@ -166,11 +166,12 @@ export const faucetManagerContractAuthorizeFaucetAccess = (_faucetAddress, _requ
     })
 }
 
-export const faucetManagerContractRevokeFaucetAccess = (_faucetAddress, _requestorAddress, _callback) => {
+export const faucetManagerContractRevokeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress, _callback) => {
   faucetManagerContract.deployed()
     .then((_instance) => {
       _instance
-        .revokeAccess(_requestorAddress, _faucetAddress, {
+        .revokeAccess(_faucetAddress, _requestorAddress, {
+          from: _fromAddress,
           gas: 2000000
         })
         .then((_tx) => {

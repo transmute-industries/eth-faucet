@@ -16,6 +16,7 @@ import {
     createFaucet,
     requestFaucetAccess,
     authorizeFaucetAccess,
+    revokeFaucetAccess,
     sendWei,
     getEventStore
 } from './actions'
@@ -43,6 +44,7 @@ export {
     createFaucet,
     requestFaucetAccess,
     authorizeFaucetAccess,
+    revokeFaucetAccess,
     sendWei,
     getEventStore
 
