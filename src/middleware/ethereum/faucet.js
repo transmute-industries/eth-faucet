@@ -14,7 +14,19 @@ faucetContract.setProvider(provider)
 const faucetManagerContract = contract(FaucetManager)
 faucetManagerContract.setProvider(provider)
 
+import { readEvent, readEvents } from '../../../ti-framework/event-store';
+
 // HELPER METHODS
+
+export const getEventStoreEvents = (_address, _callback) => {
+  return faucetContract.at(_address)
+    .then(async (_faucet) => {
+      return readEvents(_faucet)
+    })
+    .then((events) =>{
+      _callback(events);
+    })
+}
 
 export const getFaucetViewModel = (_address) => {
   return faucetContract.at(_address)

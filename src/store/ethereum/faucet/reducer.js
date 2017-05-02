@@ -19,10 +19,12 @@ import {
   FAUCET_AUTHORIZATION_REQUESTED,
   FAUCET_AUTHORIZATION_GRANTED,
   FAUCET_AUTHORIZATION_REVOKED,
+  RECEIVE_FAUCET_EVENT_STORE,
   SEND_WEI,
   getFaucetByCreator,
   getFaucetByName,
-  getAllFaucetObjects
+  getAllFaucetObjects,
+  getEventStore
 } from './actions'
 
 export const initialState = {
@@ -33,6 +35,9 @@ export const initialState = {
   defaultFaucet: null
 }
 
+
+import { authorizedAddressReadModel } from './generators';
+
 import { store } from 'main'
 
 export const faucetReducer = (state = initialState, action) => {
@@ -42,6 +47,13 @@ export const faucetReducer = (state = initialState, action) => {
     if (faucetName && (state.selected === null || state.selected.name !== faucetName)) {
       store.dispatch(getFaucetByName(faucetName));
     }
+  }
+
+  if (action.type === RECEIVE_FAUCET_EVENT_STORE) {
+    let _authorizedAddressReadModel = authorizedAddressReadModel(action.payload)
+    return Object.assign({}, state, {
+      authorizedAddressReadModel: _authorizedAddressReadModel
+    })
   }
 
   if (action.type === RECEIVE_WEB3_ACCOUNTS) {
@@ -60,8 +72,10 @@ export const faucetReducer = (state = initialState, action) => {
       defaultFaucet = faucet;
     }
 
+    store.dispatch(getEventStore(faucet.address));
+
     let objects = state.objects
-    if (objects){
+    if (objects) {
       objects = objects.concat(faucet)
     }
 
@@ -100,10 +114,10 @@ export const faucetReducer = (state = initialState, action) => {
     // console.warn('FAUCET_AUTHORIZATION_REQUESTED stub!', action.payload)
     let requestorAddress = action.payload.logs[0].args.requestorAddress;
 
-    let faucetObject = find(state.objects, (f) =>{
+    let faucetObject = find(state.objects, (f) => {
       return f.address === state.selected.address;
     })
-    
+
     faucetObject.requestorAddresses = faucetObject.requestorAddresses.concat(requestorAddress)
 
     return Object.assign({}, state, {

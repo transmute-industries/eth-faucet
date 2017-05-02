@@ -8,6 +8,8 @@ export const FAUCET_AUTHORIZATION_REQUESTED = 'FAUCET_AUTHORIZATION_REQUESTED'
 export const FAUCET_AUTHORIZATION_GRANTED = 'FAUCET_AUTHORIZATION_GRANTED'
 export const FAUCET_AUTHORIZATION_REVOKED = 'FAUCET_AUTHORIZATION_REVOKED'
 
+export const RECEIVE_FAUCET_EVENT_STORE = 'RECEIVE_FAUCET_EVENT_STORE'
+
 export const SEND_WEI = 'SEND_WEI'
 
 import {
@@ -19,8 +21,24 @@ import {
   faucetManagerContractRequestFaucetAccess,
   faucetManagerContractAuthorizeFaucetAccess,
   faucetManagerContractRevokeFaucetAccess,
-  faucetContractSendWei
+  faucetContractSendWei,
+
+  getEventStoreEvents
 } from 'middleware/ethereum/faucet'
+
+
+export const getEventStore = (_address) => {
+  console.log('getEventStore...')
+  return (dispatch) => {
+    getEventStoreEvents(_address, (events) => {
+       console.log('getEventStore...', events)
+      dispatch({
+        type: RECEIVE_FAUCET_EVENT_STORE,
+        payload: events
+      })
+    })
+  }
+}
 
 export const getFaucetByCreator = (_fromAddress) => {
   return (dispatch) => {

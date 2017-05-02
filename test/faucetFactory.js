@@ -11,7 +11,7 @@ const {
   convertUIntArray,
   readEvent,
   readEvents
-} = require('./Transmute/Framework')
+} = require('../ti-framework/event-store')
 
 contract('FaucetManager', function (accounts) {
 

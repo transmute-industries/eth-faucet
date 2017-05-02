@@ -8,6 +8,7 @@ import {
     FAUCET_AUTHORIZATION_GRANTED,
     FAUCET_AUTHORIZATION_REVOKED,
     SEND_WEI,
+    RECEIVE_FAUCET_EVENT_STORE,
     getFaucetByCreator,
     getFaucetByName,
     getAllFaucetAddresses,
@@ -15,7 +16,8 @@ import {
     createFaucet,
     requestFaucetAccess,
     authorizeFaucetAccess,
-    sendWei
+    sendWei,
+    getEventStore
 } from './actions'
 
 import {
@@ -33,6 +35,7 @@ export {
     FAUCET_AUTHORIZATION_GRANTED,
     FAUCET_AUTHORIZATION_REVOKED,
     SEND_WEI,
+    RECEIVE_FAUCET_EVENT_STORE,
     getFaucetByCreator,
     getFaucetByName,
     getAllFaucetAddresses,
@@ -40,7 +43,8 @@ export {
     createFaucet,
     requestFaucetAccess,
     authorizeFaucetAccess,
-    sendWei
+    sendWei,
+    getEventStore
 
     ,
 
