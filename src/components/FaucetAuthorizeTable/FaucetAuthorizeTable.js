@@ -40,12 +40,20 @@ class FaucetAuthorizeTable extends React.Component {
     let selectedRows = [];
     // console.log('wut...', rows)
     let addresses = Object.keys(this.props.faucet.authorizedAddressReadModel)
+
     if (rows === 'all') {
       selectedRows = addresses;
     } else {
-      for (let i in rows) {
-        selectedRows.push(addresses[i]);
-      }
+      console.log('rows: ', rows)
+
+      selectedRows = rows.map((index) => {
+        return addresses[index];
+      })
+      // for (let i in rows) {
+
+      //   console.log("i: ", i, addresses[i])
+      //   selectedRows.push(addresses[i]);
+      // }
     }
     this.setState({
       selectedRows: selectedRows
