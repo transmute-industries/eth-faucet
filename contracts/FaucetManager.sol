@@ -72,19 +72,19 @@ contract FaucetManager is Killable {
     return address(_newFaucet);
 	}
 
-  function requestAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+  function requestAccess(address _faucetAddress, address _requestorAddress ) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.addRequestorAddress(_requestorAddress);
     AccessRequested(_requestorAddress);
   }
 
-  function authorizeAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+  function authorizeAccess(address _faucetAddress, address _requestorAddress ) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.authorizeRequestorAddress(_requestorAddress);
     AuthorizationGranted(_requestorAddress);
   }
 
-  function revokeAccess(address _requestorAddress, address _faucetAddress) checkExistence(_faucetAddress) {
+  function revokeAccess(address _faucetAddress, address _requestorAddress) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.revokeRequestorAddress(_requestorAddress);
     AuthorizationRevoked(_requestorAddress);

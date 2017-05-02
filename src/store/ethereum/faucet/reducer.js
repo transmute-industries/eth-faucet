@@ -32,7 +32,8 @@ export const initialState = {
   objects: null,
   selected: null,
   defaultAddress: null,
-  defaultFaucet: null
+  defaultFaucet: null,
+  authorizedAddressReadModel: null
 }
 
 

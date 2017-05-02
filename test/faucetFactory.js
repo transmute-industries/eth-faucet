@@ -119,10 +119,11 @@ contract('FaucetManager', function (accounts) {
       }
     })
 
-    faucetManagerInstance.requestAccess(faucetCustomer, faucetAddress, {
-      from: faucetCustomer,
-      gas: 2000000
-    })
+    faucetManagerInstance
+      .requestAccess(faucetAddress, faucetCustomer, {
+        from: faucetCustomer,
+        gas: 2000000
+      })
   })
 
   it('Verify Customer address contained in Faucet requestorAddresses', () => {
@@ -134,16 +135,17 @@ contract('FaucetManager', function (accounts) {
   })
 
   it('Verify Recipient Cannot Authorize Access', (done) => {
-    faucetManagerInstance.authorizeAccess(faucetCustomer, faucetAddress, {
-      from: faucetRecipient,
-      gas: 2000000
-    }).then((tx) => {
-      console.log('tx:', tx)
-      done()
-    }).catch((error) => {
-      validateError(error)
-      done()
-    })
+    faucetManagerInstance
+      .authorizeAccess(faucetAddress, faucetCustomer, {
+        from: faucetRecipient,
+        gas: 2000000
+      }).then((tx) => {
+        console.log('tx:', tx)
+        done()
+      }).catch((error) => {
+        validateError(error)
+        done()
+      })
   })
 
   it('Verify Creator Can Authorize Access', (done) => {
@@ -157,10 +159,11 @@ contract('FaucetManager', function (accounts) {
       }
     })
 
-    faucetManagerInstance.authorizeAccess(faucetCustomer, faucetAddress, {
-      from: faucetCreator,
-      gas: 2000000
-    })
+    faucetManagerInstance
+      .authorizeAccess(faucetAddress, faucetCustomer, {
+        from: faucetCreator,
+        gas: 2000000
+      })
   })
 
   it('Verify Customer address is authorized', (done) => {
@@ -219,10 +222,11 @@ contract('FaucetManager', function (accounts) {
       }
     })
 
-    faucetManagerInstance.revokeAccess(faucetCustomer, faucetAddress, {
-      from: faucetCreator,
-      gas: 2000000
-    })
+    faucetManagerInstance
+      .revokeAccess(faucetAddress, faucetCustomer, {
+        from: faucetCreator,
+        gas: 2000000
+      })
   })
 
   it('Verify Customer address is not authorized', (done) => {

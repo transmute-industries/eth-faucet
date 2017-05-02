@@ -19,9 +19,9 @@ const mapDispatchToProps = (dispatch) => {
             event.preventDefault()
             console.log('check these obj params...', authorizeFaucetAccessBindingModel)
             dispatch(authorizeFaucetAccess(
-                authorizeFaucetAccessBindingModel.faucetAddress,
                 authorizeFaucetAccessBindingModel.requestorAddress,
-                authorizeFaucetAccessBindingModel.fromAddress,
+                authorizeFaucetAccessBindingModel.faucetAddress,
+                authorizeFaucetAccessBindingModel.fromAddress
             ))
         }
     }

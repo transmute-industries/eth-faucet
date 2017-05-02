@@ -8,6 +8,9 @@ import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card'
 
 import CircularProgress from 'material-ui/CircularProgress'
 
+
+import { each } from 'lodash';
+
 class FaucetAuthorizeTable extends React.Component {
 
   constructor(props) {
@@ -22,7 +25,7 @@ class FaucetAuthorizeTable extends React.Component {
       selectable: true,
       multiSelectable: true,
       enableSelectAll: true,
-      deselectOnClickaway: true,
+      deselectOnClickaway: false,
       showCheckboxes: true,
       height: 'auto',
       dialogOpen: false,
@@ -35,13 +38,13 @@ class FaucetAuthorizeTable extends React.Component {
 
   onRowSelection = (rows) => {
     let selectedRows = [];
+    // console.log('wut...', rows)
+    let addresses = Object.keys(this.props.faucet.authorizedAddressReadModel)
     if (rows === 'all') {
-      selectedRows = this.props.faucet.selected.requestorAddresses;
+      selectedRows = addresses;
     } else {
-      for (let i in this.props.faucet.selected.requestorAddresses) {
-        if (rows.indexOf(i) !== -1) {
-          selectedRows.push(this.props.faucet.selected.requestorAddresses[i]);
-        }
+      for (let i in rows) {
+        selectedRows.push(addresses[i]);
       }
     }
     this.setState({
@@ -66,18 +69,23 @@ class FaucetAuthorizeTable extends React.Component {
   }
 
   handleConfirmDialog = () => {
+
     if (this.state.dialogActionChoice === 'grant') {
+
       this.state.selectedRows.forEach((requestingAddress) => {
-        this.props.onAuthorizeFaucetAccess({
-          faucetAddress: this.props.faucet.selected.address,
-          requestorAddress: requestingAddress,
-          fromAddress: this.props.faucet.defaultAddress
-        })
+        if (this.props.faucet.authorizedAddressReadModel[requestingAddress] !== 'Granted') {
+          let payload = {
+            faucetAddress: this.props.faucet.selected.address,
+            requestorAddress: requestingAddress,
+            fromAddress: this.props.faucet.selected.creator
+          };
+          this.props.onAuthorizeFaucetAccess(payload)
+        }
       })
     }
 
     if (this.state.dialogActionChoice === 'revoke') {
-      console.warn('GRANT NOT IMPLEMENTED')
+      console.warn('REVOKE NOT IMPLEMENTED', this.state.selectedRows)
       this.state.selectedRows.forEach((requestingAddress) => {
         console.log('revoking access from... ', requestingAddress);
         // this.props.onAuthorizeFaucetAccess({
@@ -105,7 +113,6 @@ class FaucetAuthorizeTable extends React.Component {
       dialogMessage = 'Are you sure you want to revoke access for ' + this.state.selectedRows.length + ' addresses?';
     }
 
-    console.log(this.state)
     this.setState({
       dialogOpen: true,
       dialogActionChoice: action,
@@ -122,6 +129,11 @@ class FaucetAuthorizeTable extends React.Component {
     this.handleUpdateDialog('revoke');
   }
 
+  isSelected = (address) => {
+    // console.log("this.state.selectedRows ", this.state.selectedRows, address)
+    return this.state.selectedRows.indexOf(address) !== -1;
+  };
+
   render() {
     const actions = [
       <FlatButton
@@ -137,7 +149,22 @@ class FaucetAuthorizeTable extends React.Component {
     ]
 
     const isLoaded = () => {
-      return this.props.faucet.selected !== null;
+      return this.props.faucet.authorizedAddressReadModel !== null;
+    }
+
+    const readModelToRows = () => {
+      let rows = [];
+      each(this.props.faucet.authorizedAddressReadModel, (v, k) => {
+        rows.push(
+          <TableRow key={k} selected={this.isSelected(k)}>
+            <TableRowColumn>{k.substring(0, 6) + '...'}</TableRowColumn>
+            <TableRowColumn>
+              {v}
+            </TableRowColumn>
+          </TableRow>
+        )
+      })
+      return rows;
     }
 
     if (!isLoaded()) {
@@ -148,7 +175,7 @@ class FaucetAuthorizeTable extends React.Component {
       );
     } else {
 
-      if (!this.props.faucet.selected.requestorAddresses.length) {
+      if (!Object.keys(this.props.faucet.authorizedAddressReadModel).length) {
         return (
           <div style={{ textAlign: 'center' }}>
             <h1 >
@@ -192,15 +219,9 @@ class FaucetAuthorizeTable extends React.Component {
                     showRowHover={this.state.showRowHover}
                     stripedRows={this.state.stripedRows}
                   >
-                    {isLoaded() && this.props.faucet.selected.requestorAddresses.map((address, index) => (
-                      <TableRow key={index}>
-                        <TableRowColumn>{address.substring(0, 6) + '...'}</TableRowColumn>
-
-                        <TableRowColumn>
-                          Status....
-                        </TableRowColumn>
-                      </TableRow>
-                    ))}
+                    {isLoaded() &&
+                      readModelToRows()
+                    }
                   </TableBody>
                 </Table>
                 <Dialog

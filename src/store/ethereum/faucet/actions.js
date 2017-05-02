@@ -31,7 +31,7 @@ export const getEventStore = (_address) => {
   console.log('getEventStore...')
   return (dispatch) => {
     getEventStoreEvents(_address, (events) => {
-       console.log('getEventStore...', events)
+      console.log('getEventStore...', events)
       dispatch({
         type: RECEIVE_FAUCET_EVENT_STORE,
         payload: events
@@ -95,9 +95,9 @@ export const requestFaucetAccess = (_faucetAddress, _requestorAddress, ) => {
   }
 }
 
-export const authorizeFaucetAccess = (_requestorAddress, _faucetAddress, _fromAddress) => {
+export const authorizeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress) => {
   return (dispatch) => {
-    faucetManagerContractAuthorizeFaucetAccess(_requestorAddress, _faucetAddress, _fromAddress, (_tx) => {
+    faucetManagerContractAuthorizeFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
       dispatch({
         type: FAUCET_AUTHORIZATION_GRANTED,
         payload: _tx
@@ -106,9 +106,9 @@ export const authorizeFaucetAccess = (_requestorAddress, _faucetAddress, _fromAd
   }
 }
 
-export const revokeFaucetAccess = (_requestorAddress, _faucetAddress) => {
+export const revokeFaucetAccess = (_faucetAddress, _requestorAddress) => {
   return (dispatch) => {
-    faucetManagerContractRevokeFaucetAccess(_requestorAddress, _faucetAddress, (_tx) => {
+    faucetManagerContractRevokeFaucetAccess(_faucetAddress, _requestorAddress, (_tx) => {
       dispatch({
         type: FAUCET_AUTHORIZATION_REVOKED,
         payload: _tx
