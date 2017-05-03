@@ -18,7 +18,8 @@
     "__BASENAME__" : false
   },
   "rules": {
-    "semi" : [2, "never"],
+    "indent": ["error", 4],
+    "semi" : [2, "always"],
     "max-len": [2, 120, 2],
     "generator-star-spacing": 0,
     "babel/generator-star-spacing": 1,

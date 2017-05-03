@@ -58,15 +58,39 @@ const readEvent = async (esInstance, eventId) => {
 }
 
 const readEvents = async (esInstance) => {
-  let eventCount = await esInstance.eventCount()
-  let eventId = 0
-  let eventPromises = []
-  while (eventId < eventCount) {
-    eventPromises.push(await readEvent(esInstance, eventId))
-    eventId++
-  }
-  return await Promise.all(eventPromises)
+  return readEventsStartingAt(esInstance, 0);
 }
+
+const emitEventStream = async (esInstance, eventArray, fromAccount) => {
+  let eventPromises = eventArray
+    .map((event) => {
+      return esInstance
+        .emitEvent(event.Type, event.AddressValue, event.UIntValue, event.StringValue, {
+          from: fromAccount,
+          gas: 2000000
+        })
+        .then((tx) => {
+          return eventsFromTransaction(tx);
+        })
+    })
+  return await Promise.all(eventPromises)
+    .then((newEvents) => {
+      // console.log('newEvents: ', newEvents)
+      return newEvents;
+    })
+}
+
+
+const readEventsStartingAt = async (esInstance, eventId) => {
+  let currentEvent = await esInstance.eventCount();
+  let eventPromises = [];
+  while (eventId < currentEvent) {
+    eventPromises.push(await readEvent(esInstance, eventId));
+    eventId++;
+  }
+  return await Promise.all(eventPromises);
+};
+
 
 module.exports = {
   NEW_EVENT,
@@ -74,5 +98,7 @@ module.exports = {
   eventsFromTransaction,
   convertUIntArray,
   readEvent,
-  readEvents
-}
+  readEvents,
+  emitEventStream,
+  readEventsStartingAt
+};

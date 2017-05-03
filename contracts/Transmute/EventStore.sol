@@ -31,7 +31,7 @@ contract EventStore is Killable {
   }
 
   function emitEvent(string _type, address _address, uint _uint, string _string) public
-    returns (bool)
+    returns (uint)
   {
     uint _created = now;
 
@@ -46,7 +46,7 @@ contract EventStore is Killable {
 
     NEW_EVENT(eventCount, _type, _created, _address, _uint, _string);
     eventCount += 1;
-    return true;
+    return eventCount;
   }
 
   function getType(uint eventId) public constant
