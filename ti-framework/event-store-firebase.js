@@ -59,7 +59,6 @@ const maybeSyncReadModel = async (storePath, key, generator, esInstance) => {
     let eventCount = (await esInstance.eventCount()).toNumber();
     return getItem(storePath, key)
         .then(async (readModel) => {
-            // console.log('shoudl Sync? ', readModel.EventCount, eventCount);
             if (readModel.EventCount === eventCount) {
                 // console.log('No New Events To Apply');
                 return false;

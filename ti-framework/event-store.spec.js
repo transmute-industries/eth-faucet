@@ -26,7 +26,7 @@ contract('EventStore', (accounts) => {
 
 
     const event = {
-        Id: 1,
+        Id: 0,
         Type: 'PROJECT_CREATED',
         AddressValue: accounts[0],
         UIntValue: 1,
@@ -35,21 +35,21 @@ contract('EventStore', (accounts) => {
 
     const eventStream = [
         {
-            Id: 2,
+            Id: 1,
             Type: 'PROJECT_JOINED',
             AddressValue: accounts[0],
             UIntValue: 1,
             StringValue: 'Engineer Alice'
         },
         {
-            Id: 3,
+            Id: 2,
             Type: 'PROJECT_JOINED',
             AddressValue: accounts[1],
             UIntValue: 1,
             StringValue: 'Customer Bob'
         },
         {
-            Id: 4,
+            Id: 3,
             Type: 'PROJECT_MILESTONE',
             AddressValue: accounts[0],
             UIntValue: 1,
