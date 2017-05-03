@@ -45,7 +45,7 @@ contract Faucet is EventStore  {
     }
 
     modifier isAvailable() {
-      if (lastSent[tx.origin] >= (block.number-blockLimit) || address(this).balance <= sendAmount)
+      if (lastSent[tx.origin] >= (block.number - blockLimit) || address(this).balance <= sendAmount)
         throw;
       _;
     }
@@ -100,8 +100,6 @@ contract Faucet is EventStore  {
             throw;
         authorizedAddressesMapping[_requestor] = true;
         emitEvent('FAUCET_ADDRESS_ACCESS_GRANTED', _requestor, 1, '');
-      
-
     }
 
     function revokeRequestorAddress(address _requestor) public onlyCreator {
@@ -111,7 +109,6 @@ contract Faucet is EventStore  {
             throw;
         authorizedAddressesMapping[_requestor] = false;
         emitEvent('FAUCET_ADDRESS_ACCESS_REVOKED', _requestor, 1, '');
-    
     }
 
     function isAddressAuthorized(address _address) public constant returns (bool) {

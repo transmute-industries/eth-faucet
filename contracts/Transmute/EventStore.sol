@@ -1,7 +1,7 @@
 pragma solidity ^0.4.2;
 import '../zeppelin/lifecycle/Killable.sol';
 
-contract EventStore is Killable{
+contract EventStore is Killable {
 
   struct TransmuteEvent {
     uint Id;
@@ -15,16 +15,24 @@ contract EventStore is Killable{
   uint public eventCount;
   mapping (uint => TransmuteEvent) events;
 
-  event NEW_EVENT(uint Id, string Type, uint Created, address AddressValue, uint UIntValue, string StringValue);
+  event NEW_EVENT(
+    uint Id,
+    string Type,
+    uint Created,
+    address AddressValue,
+    uint UIntValue,
+    string StringValue
+  );
 
-  function getVersion() constant returns (uint) {
+  function getVersion() public constant
+    returns (uint)
+  {
     return 1;
   }
 
-  function emitEvent(string _type, address _address, uint _uint, string _string) 
+  function emitEvent(string _type, address _address, uint _uint, string _string) public
     returns (bool)
   {
-    
     uint _created = now;
 
     events[eventCount] = TransmuteEvent({
@@ -35,30 +43,39 @@ contract EventStore is Killable{
       UIntValue: _uint,
       StringValue: _string
     });
-    
+
     NEW_EVENT(eventCount, _type, _created, _address, _uint, _string);
-    eventCount = eventCount + 1;
+    eventCount += 1;
     return true;
   }
 
-  function getType(uint eventId) constant returns (string) {
+  function getType(uint eventId) public constant
+    returns (string)
+  {
     return events[eventId].Type;
   }
-  
-  function getCreated(uint eventId) constant returns (uint) {
+
+  function getCreated(uint eventId) public constant
+    returns (uint)
+  {
     return events[eventId].Created;
   }
 
-  function getAddressValue(uint eventId) constant returns (address) {
+  function getAddressValue(uint eventId) public constant
+    returns (address)
+  {
     return events[eventId].AddressValue;
   }
 
-  function getUIntValue(uint eventId) constant returns (uint) {
+  function getUIntValue(uint eventId) public constant
+    returns (uint)
+  {
     return events[eventId].UIntValue;
   }
 
-  function getStringValue(uint eventId) constant returns (string) {
+  function getStringValue(uint eventId) public constant
+    returns (string)
+  {
     return events[eventId].StringValue;
   }
-
 }
