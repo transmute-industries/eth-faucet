@@ -77,21 +77,18 @@ contract FaucetManager is EventStore {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.addRequestorAddress(_requestorAddress);
     AccessRequested(_requestorAddress);
-    emitEvent('FAUCET_ADDRESS_ACCESS_REQUESTED', _requestorAddress, 1, '');
   }
 
   function authorizeAccess(address _faucetAddress, address _requestorAddress ) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.authorizeRequestorAddress(_requestorAddress);
     AuthorizationGranted(_requestorAddress);
-    emitEvent('FAUCET_ADDRESS_ACCESS_GRANTED', _requestorAddress, 1, '');
   }
 
   function revokeAccess(address _faucetAddress, address _requestorAddress) checkExistence(_faucetAddress) {
     Faucet _faucet = Faucet(_faucetAddress);
     _faucet.revokeRequestorAddress(_requestorAddress);
     AuthorizationRevoked(_requestorAddress);
-    emitEvent('FAUCET_ADDRESS_ACCESS_REVOKED', _requestorAddress, 1, '');
   }
 
   function killFaucet(address _address, string _name, address _creator)  {

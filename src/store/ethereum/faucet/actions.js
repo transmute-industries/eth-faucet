@@ -31,9 +31,10 @@ import { eventsFromTransaction } from './event-store';
 
 
 export const getEventStore = (_address) => {
-  console.log('getEventStore...')
+  console.log('getEventStore...', _address)
   return (dispatch) => {
     getEventStoreEvents(_address, (events) => {
+      
       console.log('getEventStore...', events)
       dispatch({
         type: RECEIVE_FAUCET_EVENT_STORE,

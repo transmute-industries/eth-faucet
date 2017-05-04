@@ -19,6 +19,7 @@ import { readEvent, readEvents } from '../../../ti-framework/event-store';
 // HELPER METHODS
 
 export const getEventStoreEvents = (_address, _callback) => {
+ 
   return faucetContract.at(_address)
     .then(async (_faucet) => {
       return readEvents(_faucet)
@@ -37,7 +38,8 @@ export const getFaucetViewModel = (_address) => {
         creator: await _faucet.creator.call(),
         name: await _faucet.name.call().then((_name) => _name.replace(/-/g, ' ')),
         balance: await web3.fromWei(web3.eth.getBalance(_address), 'ether').toNumber(),
-        requestorAddresses: await _faucet.getRequestorAddresses()
+        requestorAddresses: await _faucet.getRequestorAddresses(),
+        events: await readEvents(_faucet)
       }
     })
 }
