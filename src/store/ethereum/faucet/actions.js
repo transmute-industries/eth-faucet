@@ -27,6 +27,9 @@ import {
 } from 'middleware/ethereum/faucet'
 
 
+import { eventsFromTransaction } from './event-store';
+
+
 export const getEventStore = (_address) => {
   console.log('getEventStore...')
   return (dispatch) => {
@@ -87,6 +90,18 @@ export const getAllFaucetObjects = () => {
 export const requestFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress) => {
   return (dispatch) => {
     faucetManagerContractRequestFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
+
+      let events = eventsFromTransaction(_tx);
+
+
+       if (events.length){
+        dispatch({
+          type: "FAUCET_READ_MODEL_EVENTS_RECEIVED",
+          payload: events
+        })
+      }
+
+
       dispatch({
         type: FAUCET_AUTHORIZATION_REQUESTED,
         payload: _tx
@@ -98,6 +113,17 @@ export const requestFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddr
 export const authorizeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress) => {
   return (dispatch) => {
     faucetManagerContractAuthorizeFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
+
+      let events = eventsFromTransaction(_tx);
+
+       if (events.length){
+        dispatch({
+          type: "FAUCET_READ_MODEL_EVENTS_RECEIVED",
+          payload: events
+        })
+      }
+
+
       dispatch({
         type: FAUCET_AUTHORIZATION_GRANTED,
         payload: _tx
@@ -110,6 +136,17 @@ export const revokeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddre
   return (dispatch) => {
     console.log('revokeFaucetAccess: ', _faucetAddress, _requestorAddress, _fromAddress)
     faucetManagerContractRevokeFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
+
+      let events = eventsFromTransaction(_tx);
+
+
+       if (events.length){
+        dispatch({
+          type: "FAUCET_READ_MODEL_EVENTS_RECEIVED",
+          payload: events
+        })
+      }
+
       dispatch({
         type: FAUCET_AUTHORIZATION_REVOKED,
         payload: _tx
@@ -121,6 +158,17 @@ export const revokeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddre
 export const createFaucet = (_name, _fromAddress) => {
   return (dispatch) => {
     faucetManagerContractCreateFaucet(_name, _fromAddress, (_tx) => {
+
+      let events = eventsFromTransaction(_tx);
+
+
+       if (events.length){
+        dispatch({
+          type: "FAUCET_READ_MODEL_EVENTS_RECEIVED",
+          payload: events
+        })
+      }
+
       dispatch({
         type: FAUCET_CREATED,
         payload: _tx
@@ -132,6 +180,17 @@ export const createFaucet = (_name, _fromAddress) => {
 export const sendWei = (_faucetAddress, _recipientAddress, _fromAddress) => {
   return (dispatch) => {
     faucetContractSendWei(_faucetAddress, _recipientAddress, _fromAddress, (_tx) => {
+
+      let events = eventsFromTransaction(_tx);
+
+
+      if (events.length){
+        dispatch({
+          type: "FAUCET_READ_MODEL_EVENTS_RECEIVED",
+          payload: events
+        })
+      }
+     
       dispatch({
         type: SEND_WEI,
         payload: _tx
