@@ -1,8 +1,8 @@
-import React  from 'react'
-import { PropTypes }  from 'prop-types';
+import React from 'react'
+import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { Field, reduxForm, submit } from 'redux-form'
-import { firebaseConnect, pathToJS, isLoaded } from 'react-redux-firebase'
+import { Field, reduxForm } from 'redux-form'
+import { pathToJS } from 'react-redux-firebase'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'components/TextField'
 import { List, ListItem } from 'material-ui/List'
@@ -17,54 +17,51 @@ export const AccountForm = ({ account, handleSubmit, submitForm, submitting }) =
       name='displayName'
       component={TextField}
       label='Name'
-    />
+      />
     <Field
       name='email'
       component={TextField}
       label='Email'
-    />
+      />
     <div>
       <h4>Linked Accounts</h4>
       {
-        account.providerData
-          ?
-            <List>
-              {
-                account.providerData.map((providerAccount, i) =>
-                  <ListItem
-                    key={i}
-                    primaryText={providerAccount.providerId}
-                    leftIcon={<AccountCircle />}
-                    nestedItems={[
-                      <ListItem
-                        key='display_name'
-                        primaryText={providerAccount.displayName}
-                      />,
-                      <ListItem
-                        key='email'
-                        label='email'
-                        primaryText={providerAccount.email}
-                        disabled
-                      />
-                    ]}
+        account.providerData &&
+        <List>
+          {
+            account.providerData.map((providerAccount, i) =>
+            <ListItem
+              key={i}
+              primaryText={providerAccount.providerId}
+              leftIcon={<AccountCircle />}
+              nestedItems={[
+                <ListItem
+                  key='display_name'
+                  primaryText={providerAccount.displayName}
+                  />,
+                <ListItem
+                  key='email'
+                  label='email'
+                  primaryText={providerAccount.email}
+                  disabled
                   />
-                )
-              }
-            </List>
-          :
-          null
-      }
-    </div>
-    <div>
-      <RaisedButton
-        label='Save'
-        primary
-        type='submit'
-        onTouchTap={submitForm}
-        disabled={submitting}
+              ]}
+              />
+          )
+        }
+      </List>
+    }
+  </div>
+  <div>
+    <RaisedButton
+      label='Save'
+      primary
+      type='submit'
+      onTouchTap={submitForm}
+      disabled={submitting}
       />
-    </div>
-  </form>
+  </div>
+</form>
 )
 
 AccountForm.propTypes = {

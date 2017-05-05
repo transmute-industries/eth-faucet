@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import { PropTypes }  from 'prop-types';
 import { connect } from 'react-redux'
-import { reduxForm } from 'redux-form'
-import { firebaseConnect, pathToJS, isLoaded } from 'react-redux-firebase'
 import { submit } from 'redux-form'
-import { reduxFirebase as rfConfig } from 'config'
+import { firebaseConnect, pathToJS } from 'react-redux-firebase'
 import { UserIsAuthenticated } from 'utils/router'
 import TransferForm from 'components/TransferForm'
 
@@ -28,8 +25,7 @@ import { sendEther } from 'store/ethereum/web3'
   }
 )
 export default class TransferFormContainer extends Component {
-
-  render() {
+  render () {
     const { web3, submitForm, onSubmit } = this.props
     return (
       <TransferForm
@@ -40,4 +36,3 @@ export default class TransferFormContainer extends Component {
     )
   }
 }
-

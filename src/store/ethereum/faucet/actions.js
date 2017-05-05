@@ -81,7 +81,9 @@ export const getAllFaucetObjects = () => {
 export const requestFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress) => {
   return (dispatch) => {
     faucetManagerContractRequestFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
+      console.log('requestFaucetAccess transaction:', _tx)
       let events = eventsFromTransaction(_tx)
+      console.log('requestFaucetAccess events:', events)
       if (events.length) {
         dispatch({
           type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',
@@ -96,7 +98,6 @@ export const authorizeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAd
   return (dispatch) => {
     faucetManagerContractAuthorizeFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
       let events = eventsFromTransaction(_tx)
-
       if (events.length) {
         dispatch({
           type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',

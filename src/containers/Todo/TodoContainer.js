@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PropTypes }  from 'prop-types';
+import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { map } from 'lodash'
 import Theme from 'theme'
@@ -7,7 +7,7 @@ import {
   firebaseConnect,
   isLoaded,
   pathToJS,
-  dataToJS,
+  dataToJS
   // orderedToJS,
   // populatedDataToJS
 } from 'react-redux-firebase'
@@ -20,9 +20,8 @@ import TodoItem from 'components/TodoItem'
 import NewTodoPanel from 'components/NewTodoPanel'
 import classes from './TodoContainer.scss'
 
-import Particles from 'react-particles-js';
+import Particles from 'react-particles-js'
 import particles from './particles.json'
-
 
 // const populates = [
 //   { child: 'owner', root: 'users', keyProp: 'key' }
@@ -92,7 +91,7 @@ export default class Todo extends Component {
     this.props.firebase.push('/todos', newTodo)
   }
 
-  render() {
+  render () {
     const { todos } = this.props
     const { error } = this.state
     console.log('todos:', todos)
@@ -114,7 +113,6 @@ export default class Todo extends Component {
           particles: particles.particles,
           interactivity: particles.interactivity
         }} />
-
 
         <div className={classes.todos}>
           <NewTodoPanel

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PropTypes } from 'prop-types';
+import { PropTypes } from 'prop-types'
 import classes from './Navbar.scss'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
@@ -12,10 +12,7 @@ import {
 import {
   LIST_PATH,
   ACCOUNT_PATH,
-  TRANSFER_PATH,
-  LOGIN_PATH,
-  SIGNUP_PATH,
-  CREATE_FAUCET_PATH
+  TRANSFER_PATH
 } from 'constants/paths'
 
 // Components

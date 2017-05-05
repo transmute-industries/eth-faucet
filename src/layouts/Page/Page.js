@@ -1,17 +1,15 @@
 import React from 'react'
-import Navbar from 'containers/Navbar/Navbar'
 import classes from './Page.scss'
 
-import { PropTypes } from 'prop-types';
+import { PropTypes } from 'prop-types'
 
-import Particles from 'react-particles-js';
+import Particles from 'react-particles-js'
 import particles from './particles.json'
 
 import Theme from 'theme'
 
 export const Page = ({ children, renderParticles }) => (
   <div className={classes.container} style={{ color: Theme.palette.primary2Color }}>
-
     <div className={classes.center}>
       <div className={classes.children}>
         {children}
@@ -19,7 +17,7 @@ export const Page = ({ children, renderParticles }) => (
     </div>
 
     {
-      renderParticles ?
+      renderParticles &&
         <div className='height100'>
           <Particles
             params={{
@@ -27,15 +25,13 @@ export const Page = ({ children, renderParticles }) => (
               interactivity: particles.interactivity
             }} />
         </div>
-        :
-        <div />
     }
 
   </div>
 )
 
 Page.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired
 }
 
 export default Page

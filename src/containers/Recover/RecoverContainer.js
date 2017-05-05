@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
-import { PropTypes }  from 'prop-types';
-import { reduxForm, submit } from 'redux-form'
+import { PropTypes } from 'prop-types'
 import { firebaseConnect } from 'react-redux-firebase'
-import IconButton from 'material-ui/IconButton'
 import Paper from 'material-ui/Paper'
-import TextField from 'material-ui/TextField'
 import Snackbar from 'material-ui/Snackbar'
-import ContentAdd from 'material-ui/svg-icons/content/add'
-import Subheader from 'material-ui/Subheader'
 import RecoverForm from 'components/RecoverForm'
 import EmailForm from 'components/EmailForm'
-import { RECOVER_FORM_NAME } from 'constants/formNames'
 
 @firebaseConnect() // adds this.props.firebase
 export default class RecoverContainer extends Component {
@@ -55,9 +49,9 @@ export default class RecoverContainer extends Component {
       })
   }
 
-  render() {
+  render () {
     return (
-      <div className="flex-column-center">
+      <div className='flex-column-center'>
         <Paper style={{ marginTop: '3rem' }}>
           <EmailForm onSubmit={this.sendRecoveryEmail} />
         </Paper>
@@ -68,7 +62,7 @@ export default class RecoverContainer extends Component {
           open={!!this.state.message}
           message={this.state.message || 'Error'}
           autoHideDuration={4000}
-          onRequestClose={() => this.setState({ message: null})}
+          onRequestClose={() => this.setState({message: null})}
         />
       </div>
     )

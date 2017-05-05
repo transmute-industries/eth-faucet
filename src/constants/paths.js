@@ -12,6 +12,8 @@ export const TODO_PATH = '/todo'
 export const ADMIN_PATH = '/admin'
 
 export const CREATE_FAUCET_PATH = '/faucet/create'
+export const AUTHORIZE_FAUCET_PATH = '/faucets/:name/authorize-users'
+export const NAME_FAUCET_PATH = '/faucets/:name'
 
 export default {
   LIST_PATH,
@@ -24,5 +26,6 @@ export default {
   DEBUG_PATH,
   TODO_PATH,
   ADMIN_PATH,
-  CREATE_FAUCET_PATH
+  CREATE_FAUCET_PATH,
+  AUTHORIZE_FAUCET_PATH
 }

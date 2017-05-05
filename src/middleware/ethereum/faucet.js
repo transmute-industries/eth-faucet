@@ -13,7 +13,7 @@ faucetContract.setProvider(provider)
 const faucetManagerContract = contract(FaucetManager)
 faucetManagerContract.setProvider(provider)
 
-import { readEvents } from '../../../ti-framework/event-store';
+import { readEvents } from '../../../ti-framework/event-store'
 
 // HELPER METHODS
 
@@ -23,7 +23,7 @@ export const getEventStoreEvents = (_address, _callback) => {
     return readEvents(_faucet)
   })
   .then((events) => {
-    _callback(events);
+    _callback(events)
   })
 }
 
@@ -45,7 +45,7 @@ export const getFaucetViewModel = (_address) => {
 export const faucetContractGetFaucetByAddress = (_address) => {
   return getFaucetViewModel(_address)
   .then((viewModel) => {
-    return viewModel;
+    return viewModel
   })
 }
 
@@ -55,7 +55,7 @@ const getFaucetsByAddressesAsyc = async (_addresses) => {
     .map(async (address) => {
       return await faucetContractGetFaucetByAddress(address)
     })
-  );
+  )
 }
 
 export const faucetManagerContractGetFaucetByCreator = (fromAddress, _callback) => {
@@ -94,8 +94,8 @@ export const faucetManagerContractGetAllFaucetObjects = (_callback) => {
     _instance.getFaucets
     .call()
     .then(async (addresses) => {
-      let faucetContracts = await getFaucetsByAddressesAsyc(addresses);
-      _callback(faucetContracts);
+      let faucetContracts = await getFaucetsByAddressesAsyc(addresses)
+      _callback(faucetContracts)
     })
     .catch((error) => {
       console.error(error)

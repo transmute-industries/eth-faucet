@@ -1,13 +1,12 @@
 import React from 'react'
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux'
-import { Field, reduxForm, submit } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import { Grid, Row, Col } from 'react-flexbox-grid';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { Grid, Row } from 'react-flexbox-grid'
+import { Card, CardActions, CardHeader } from 'material-ui/Card'
 
-import { DEBUG_FORM_NAME } from 'constants/formNames';
+import { DEBUG_FORM_NAME } from 'constants/formNames'
 import classes from './DebugForm.scss'
 import MenuItem from 'material-ui/MenuItem'
 
@@ -19,14 +18,14 @@ export const DebugForm = ({ handleSubmit, submitForm, submitting }) => (
   <form onSubmit={handleSubmit} className={classes.container} >
     <Card className={classes.card}>
       <CardHeader
-        title="Debug Settings"
+        title='Debug Settings'
       />
       <Grid fluid>
         <Row>
-          <Field style={{ width: '100%' }} name="web3Provider" component={SelectField} hintText="Select a provider">
-            <MenuItem value="testrpc" primaryText="Test RPC" />
-            <MenuItem value="infura" primaryText="Infura" />
-            <MenuItem value="parity" primaryText="Parity" />
+          <Field style={{ width: '100%' }} name='web3Provider' component={SelectField} hintText='Select a provider'>
+            <MenuItem value='testrpc' primaryText='Test RPC' />
+            <MenuItem value='infura' primaryText='Infura' />
+            <MenuItem value='parity' primaryText='Parity' />
           </Field>
         </Row>
       </Grid>

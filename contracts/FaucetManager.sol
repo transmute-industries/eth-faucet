@@ -1,9 +1,9 @@
 pragma solidity ^0.4.8;
 import "./Faucet.sol";
 import "./IndexedEnumerableSetLib.sol";
-import './zeppelin/lifecycle/Killable.sol';
+import './Transmute/EventStore.sol';
 
-contract FaucetManager is Killable {
+contract FaucetManager is EventStore {
   using IndexedEnumerableSetLib for IndexedEnumerableSetLib.IndexedEnumerableSet;
 
   mapping (address => address) creatorFaucetMapping;

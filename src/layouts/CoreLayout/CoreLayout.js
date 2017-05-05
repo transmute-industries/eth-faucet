@@ -3,7 +3,7 @@ import Navbar from 'containers/Navbar/Navbar'
 import classes from './CoreLayout.scss'
 import 'styles/core.scss'
 
-import { PropTypes }  from 'prop-types';
+import { PropTypes } from 'prop-types'
 
 export const CoreLayout = ({ children }) => (
   <div className={classes.container}>

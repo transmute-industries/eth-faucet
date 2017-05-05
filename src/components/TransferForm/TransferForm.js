@@ -1,13 +1,12 @@
 import React from 'react'
-import { PropTypes }  from 'prop-types';
 import { connect } from 'react-redux'
-import { Field, reduxForm, submit } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'components/TextField'
-import { Grid, Row, Col } from 'react-flexbox-grid';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { Grid, Row } from 'react-flexbox-grid'
+import { Card, CardActions, CardHeader } from 'material-ui/Card'
 
-import { TRANSFER_ETHER_FORM_NAME } from 'constants/formNames';
+import { TRANSFER_ETHER_FORM_NAME } from 'constants/formNames'
 
 import classes from './TransferForm.scss'
 

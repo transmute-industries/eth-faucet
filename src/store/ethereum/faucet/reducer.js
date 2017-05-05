@@ -32,16 +32,11 @@ export const initialState = {
   authorizedAddressReadModel: null
 }
 
-import { eventsFromTransaction, rebuildReadModelWithGenerator } from './event-store'
-
-const readModelStorePath = 'transmute/models/'
-
 import { authorizedAddressReadModel } from './generators'
 
 import { store } from 'main'
 
 export const faucetReducer = (state = initialState, action) => {
-
   if (action.type === 'FAUCET_READ_MODEL_EVENTS_RECEIVED') {
     let readModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
     console.log('readModel: ', readModel)
