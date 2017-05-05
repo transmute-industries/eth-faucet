@@ -15,10 +15,6 @@ import {
   RECEIVE_FAUCET_ADDRESSES,
   RECEIVE_FAUCET_OBJECTS,
   FAUCET_CREATED,
-  FAUCET_UPDATED,
-  FAUCET_AUTHORIZATION_REQUESTED,
-  FAUCET_AUTHORIZATION_GRANTED,
-  FAUCET_AUTHORIZATION_REVOKED,
   RECEIVE_FAUCET_EVENT_STORE,
   SEND_WEI,
   getFaucetByCreator,
@@ -36,30 +32,29 @@ export const initialState = {
   authorizedAddressReadModel: null
 }
 
-import { eventsFromTransaction, rebuildReadModelWithGenerator } from './event-store';
+import { eventsFromTransaction, rebuildReadModelWithGenerator } from './event-store'
 
-const readModelStorePath = 'transmute/models/';
+const readModelStorePath = 'transmute/models/'
 
-import { authorizedAddressReadModel } from './generators';
+import { authorizedAddressReadModel } from './generators'
 
 import { store } from 'main'
 
 export const faucetReducer = (state = initialState, action) => {
 
-  if (action.type === "FAUCET_READ_MODEL_EVENTS_RECEIVED") {
-    let readModel =  authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
+  if (action.type === 'FAUCET_READ_MODEL_EVENTS_RECEIVED') {
+    let readModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
     console.log('readModel: ', readModel)
-    // let readModel = state.authorizedAddressReadModel;
+    // let readModel = state.authorizedAddressReadModel
     return Object.assign({}, state, {
       authorizedAddressReadModel: readModel
     })
   }
 
-
   if (action.type === LOCATION_CHANGE) {
-    let faucetName = getFaucetNameFromPath(action.payload.pathname);
+    let faucetName = getFaucetNameFromPath(action.payload.pathname)
     if (faucetName && (state.selected === null || state.selected.name !== faucetName)) {
-      store.dispatch(getFaucetByName(faucetName));
+      store.dispatch(getFaucetByName(faucetName))
     }
   }
 
@@ -79,14 +74,14 @@ export const faucetReducer = (state = initialState, action) => {
   }
 
   if (action.type === RECEIVE_FAUCET) {
-    let faucet = action.payload;
-    let defaultFaucet;
+    let faucet = action.payload
+    let defaultFaucet
 
     if (faucet && faucet.creator === state.defaultAddress) {
-      defaultFaucet = faucet;
+      defaultFaucet = faucet
     }
 
-    store.dispatch(getEventStore(faucet.address));
+    store.dispatch(getEventStore(faucet.address))
 
     let objects = state.objects
     if (objects) {
@@ -109,7 +104,7 @@ export const faucetReducer = (state = initialState, action) => {
 
   if (action.type === RECEIVE_FAUCET_OBJECTS) {
     let ownerFaucet = find(action.payload, (f) => {
-      return f.creator === state.defaultAddress;
+      return f.creator === state.defaultAddress
     })
     return Object.assign({}, state, {
       objects: action.payload,
@@ -123,40 +118,6 @@ export const faucetReducer = (state = initialState, action) => {
       addresses: state.addresses.concat(action.payload.logs[0].address)
     })
   }
-
-  // if (action.type === FAUCET_AUTHORIZATION_REQUESTED) {
-  //   // console.warn('FAUCET_AUTHORIZATION_REQUESTED stub!', action.payload)
-  //   let requestorAddress = action.payload.logs[0].args.requestorAddress;
-
-  //   let faucetObject = find(state.objects, (f) => {
-  //     return f.address === state.selected.address;
-  //   })
-
-  //   faucetObject.requestorAddresses = faucetObject.requestorAddresses.concat(requestorAddress)
-
-  //   return Object.assign({}, state, {
-  //     selected: faucetObject
-  //   })
-  // }
-
-  // if (action.type === FAUCET_AUTHORIZATION_GRANTED) {
-  //   console.warn('FAUCET_AUTHORIZATION_GRANTED stub!', action.payload)
-  //   return Object.assign({}, state, {
-  //     selected: {
-  //       ...state.selected
-  //     }
-  //   })
-  // }
-
-  // if (action.type === FAUCET_AUTHORIZATION_REVOKED) {
-  //   console.warn('FAUCET_AUTHORIZATION_REVOKED stub!', action.payload)
-  //   return Object.assign({}, state, {
-  //     selected: {
-  //       ...state.selected
-  //     }
-  //   })
-  // }
-
 
   if (action.type === SEND_WEI) {
     return Object.assign({}, state, {

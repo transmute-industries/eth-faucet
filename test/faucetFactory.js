@@ -4,11 +4,7 @@ var Faucet = artifacts.require('./Faucet.sol')
 var FaucetManager = artifacts.require('./FaucetManager.sol')
 var _ = require('lodash')
 
-
 const {
-  NEW_EVENT,
-  eventsFromTransaction,
-  convertUIntArray,
   readEvent,
   readEvents
 } = require('../ti-framework/event-store')
@@ -22,7 +18,6 @@ contract('FaucetManager', function (accounts) {
   var faucetCustomer = accounts[2]
   var faucetName = 'austin-test-faucet'
   var faucetSeedEther = 5000000000000000000
-  var eventIds = [];
 
   it('Factory Instance Exists', () => {
     return FaucetManager.deployed().then((_instance) => {
@@ -120,10 +115,10 @@ contract('FaucetManager', function (accounts) {
     })
 
     faucetManagerInstance
-      .requestAccess(faucetAddress, faucetCustomer, {
-        from: faucetCustomer,
-        gas: 2000000
-      })
+    .requestAccess(faucetAddress, faucetCustomer, {
+      from: faucetCustomer,
+      gas: 2000000
+    })
   })
 
   it('Verify Customer address contained in Faucet requestorAddresses', () => {
@@ -136,16 +131,16 @@ contract('FaucetManager', function (accounts) {
 
   it('Verify Recipient Cannot Authorize Access', (done) => {
     faucetManagerInstance
-      .authorizeAccess(faucetAddress, faucetCustomer, {
-        from: faucetRecipient,
-        gas: 2000000
-      }).then((tx) => {
-        console.log('tx:', tx)
-        done()
-      }).catch((error) => {
-        validateError(error)
-        done()
-      })
+    .authorizeAccess(faucetAddress, faucetCustomer, {
+      from: faucetRecipient,
+      gas: 2000000
+    }).then((tx) => {
+      console.log('tx:', tx)
+      done()
+    }).catch((error) => {
+      validateError(error)
+      done()
+    })
   })
 
   it('Verify Creator Can Authorize Access', (done) => {
@@ -160,10 +155,10 @@ contract('FaucetManager', function (accounts) {
     })
 
     faucetManagerInstance
-      .authorizeAccess(faucetAddress, faucetCustomer, {
-        from: faucetCreator,
-        gas: 2000000
-      })
+    .authorizeAccess(faucetAddress, faucetCustomer, {
+      from: faucetCreator,
+      gas: 2000000
+    })
   })
 
   it('Verify Customer address is authorized', (done) => {
@@ -182,10 +177,10 @@ contract('FaucetManager', function (accounts) {
       events.watch((error, result) => {
         if (error == null) {
           _faucet.isAddressAuthorized.call(faucetCustomer)
-            .then((_isAuthorized) => {
-              assert(_isAuthorized, 'faucetCustomer is not authorized')
-              done()
-            })
+          .then((_isAuthorized) => {
+            assert(_isAuthorized, 'faucetCustomer is not authorized')
+            done()
+          })
           assert.equal(1000000000000000000, result.args.sentAmount.toNumber(), 'Amount sent was not equal to 1000000000000000000')
           events.stopWatching()
         }
@@ -223,10 +218,10 @@ contract('FaucetManager', function (accounts) {
     })
 
     faucetManagerInstance
-      .revokeAccess(faucetAddress, faucetCustomer, {
-        from: faucetCreator,
-        gas: 2000000
-      })
+    .revokeAccess(faucetAddress, faucetCustomer, {
+      from: faucetCreator,
+      gas: 2000000
+    })
   })
 
   it('Verify Customer address is not authorized', (done) => {
@@ -242,43 +237,42 @@ contract('FaucetManager', function (accounts) {
 
     it('is currently version 1', () => {
       return Faucet.at(faucetAddress)
-        .then((_esInstance) => {
-          return _esInstance.getVersion();
-        })
-        .then((versionBigNum) => {
-          let version = versionBigNum.toNumber();
-          assert(version === 1)
-        })
+      .then((_esInstance) => {
+        return _esInstance.getVersion();
+      })
+      .then((versionBigNum) => {
+        let version = versionBigNum.toNumber();
+        assert(version === 1)
+      })
     })
 
     it('readEvent', () => {
       return Faucet.at(faucetAddress)
-        .then((_faucet) => {
-          return readEvent(_faucet, 0)
-        })
-        .then((eventObject) => {
-          // console.log('eventObject: ', eventObject);
-          assert.equal(eventObject.Type, 'FAUCET_ADDRESS_ACCESS_REQUESTED');
-          assert.equal(eventObject.AddressValue, faucetCustomer);
-          assert.equal(eventObject.UIntValue, 1);
-          assert.equal(eventObject.StringValue, '');
-        })
+      .then((_faucet) => {
+        return readEvent(_faucet, 0)
+      })
+      .then((eventObject) => {
+        // console.log('eventObject: ', eventObject);
+        assert.equal(eventObject.Type, 'FAUCET_ADDRESS_ACCESS_REQUESTED');
+        assert.equal(eventObject.AddressValue, faucetCustomer);
+        assert.equal(eventObject.UIntValue, 1);
+        assert.equal(eventObject.StringValue, '');
+      })
     })
 
     it('readEvents', () => {
       return Faucet.at(faucetAddress)
-        .then((_faucet) => {
-          return readEvents(_faucet)
-        })
-        .then((eventObjects) => {
-          // console.log('eventObject: ', eventObjects);
-          assert.equal(eventObjects.length, 3);
-          assert.equal(eventObjects[0].Id, 0);
-          assert.equal(eventObjects[1].Id, 1);
-          assert.equal(eventObjects[2].Id, 2);
-        })
+      .then((_faucet) => {
+        return readEvents(_faucet)
+      })
+      .then((eventObjects) => {
+        // console.log('eventObject: ', eventObjects);
+        assert.equal(eventObjects.length, 3);
+        assert.equal(eventObjects[0].Id, 0);
+        assert.equal(eventObjects[1].Id, 1);
+        assert.equal(eventObjects[2].Id, 2);
+      })
     })
-
   })
 
   // Timing issue here, need to add some buffer before destroying things, or tests fail...

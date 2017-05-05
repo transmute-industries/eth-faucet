@@ -5,11 +5,11 @@ import { without } from 'lodash'
 export const uport = new Connect('Transmute.Industries')
 export const envs = ['testrpc', 'parity', 'infura', 'metamask']
 
-let currentEnv = localStorage.getItem('web3Provider') || 'infura'
+let currentEnv = localStorage.getItem('web3Provider') || 'testrpc'
 
 let _web3, _provider
 let isInjected = window.web3 !== undefined
-
+console.log('env curentenv:', currentEnv)
 switch (currentEnv) {
   case 'testrpc': _provider = 'http://localhost:8545'; break
   case 'parity': _provider = 'http://localhost:8545'; break
