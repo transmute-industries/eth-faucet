@@ -1,5 +1,6 @@
 import React from 'react'
 import TextField from 'material-ui/TextField'
+import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card'
 
@@ -24,13 +25,15 @@ export default class Faucet extends React.Component {
   }
 
   handleSendWei = () => {
-    if (this.isOwner || this.hasAccess(this.state.defaultAddress)) {
+    if (this.isOwner || (this.props.faucet.authorizedAddressReadModel !== null &&
+        this.hasAccess(this.state.defaultAddress))) {
       this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
     }
   }
 
   handleRequestAccess = () => {
-    if (!this.isOwner && !this.hasRequestedAccess(this.state.selectedAddress)) {
+    if (!this.isOwner() && (this.props.faucet.authorizedAddressReadModel === null ||
+        !this.hasRequestedAccess(this.state.selectedAddress))) {
       this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
     }
   }
@@ -51,6 +54,10 @@ export default class Faucet extends React.Component {
       this.props.faucet.authorizedAddressReadModel[address] === 'Granted'
   }
 
+  getStatus = (address) => {
+    return this.props.faucet.authorizedAddressReadModel[address]
+  }
+
   isOwner = () => {
     return this.props.faucet.isOwner
   }
@@ -62,10 +69,10 @@ export default class Faucet extends React.Component {
   }
 
   render () {
-    const { selected } = this.props.faucet
+    const { selected, authorizedAddressReadModel } = this.props.faucet
 
     const isLoaded = () => {
-      return selected && this.props.faucet.authorizedAddressReadModel !== null
+      return selected !== null
     }
 
     if (!isLoaded()) {
@@ -104,18 +111,27 @@ export default class Faucet extends React.Component {
                 label='Admin' />
             }
             {
-              !this.isOwner() && !this.hasRequestedAccess(this.state.defaultAddress) &&
+              !this.isOwner() && (authorizedAddressReadModel === null ||
+              !this.hasRequestedAccess(this.state.defaultAddress)) &&
               <RaisedButton
                 primary
                 onClick={this.handleRequestAccess}
                 label='Request Access' />
             }
             {
-              this.isOwner() || this.hasAccess(this.state.defaultAddress) &&
+              !this.isOwner() && (authorizedAddressReadModel !== null &&
+              this.hasRequestedAccess(this.state.defaultAddress) &&
+              !this.hasAccess(this.state.defaultAddress)) &&
+              <FlatButton
+                disabled
+                label='Access Pending' />
+            }
+            {
               <RaisedButton
                 secondary
-                style={{ marginRight: '0px' }}
                 onClick={this.handleSendWei}
+                disabled={!(this.isOwner() || (authorizedAddressReadModel !== null &&
+                this.hasAccess(this.state.defaultAddress)))}
                 label='Request 1 Ether' />
             }
           </CardActions>

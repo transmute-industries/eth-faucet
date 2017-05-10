@@ -39,8 +39,6 @@ import { store } from 'main'
 export const faucetReducer = (state = initialState, action) => {
   if (action.type === 'FAUCET_READ_MODEL_EVENTS_RECEIVED') {
     let readModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
-    console.log('readModel: ', readModel)
-    // let readModel = state.authorizedAddressReadModel
     return Object.assign({}, state, {
       authorizedAddressReadModel: readModel
     })

@@ -87,7 +87,7 @@ contract FaucetManager is EventStore {
     AccessRequested(_requestorAddress);
   }
 
-  function authorizeAccess(address _faucetAddress, address _requestorAddress )
+  function authorizeAccess(address _faucetAddress, address _requestorAddress)
     checkExistence(_faucetAddress)
   {
     Faucet _faucet = Faucet(_faucetAddress);
