@@ -127,6 +127,10 @@ class FaucetAuthorizeTable extends React.Component {
     return this.state.selectedRows.indexOf(address) !== -1
   }
 
+  hasAccess = (address) => {
+    return this.props.faucet.authorizedAddressReadModel[address] === 'Granted'
+  }
+
   render () {
     const actions = [
       <FlatButton
@@ -231,16 +235,18 @@ class FaucetAuthorizeTable extends React.Component {
             {
               this.state.selectedRows.length ?
               <div>
+                {this.hasAccess(this.state.selectedRows[0]) ?
                 <FlatButton
                   label='Revoke'
                   primary
                   onTouchTap={this.handleRevoke}
                   />
+                :
                 <FlatButton
                   label='Grant'
                   primary
                   onTouchTap={this.handleGrant}
-                  />
+                  />}
               </div>
               :
               <div />

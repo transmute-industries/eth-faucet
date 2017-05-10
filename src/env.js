@@ -9,7 +9,7 @@ let currentEnv = localStorage.getItem('web3Provider') || 'testrpc'
 
 let _web3, _provider
 let isInjected = window.web3 !== undefined
-console.log('env curentenv:', currentEnv)
+console.log('env currentenv:', currentEnv)
 switch (currentEnv) {
   case 'testrpc': _provider = 'http://localhost:8545'; break
   case 'parity': _provider = 'http://localhost:8545'; break

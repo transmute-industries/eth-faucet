@@ -1,5 +1,7 @@
 import { extend, forIn } from 'lodash'
 
+import { firebase as firebaseConfig } from 'config'
+const firebaseApp = firebase.initializeApp(firebaseConfig)
 import * as firebase from 'firebase'
 const db = firebase.database()
 

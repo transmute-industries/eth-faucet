@@ -1,5 +1,7 @@
 import * as firebase from 'firebase'
 import {resolveKeyType} from './utils'
+import { firebase as firebaseConfig } from 'config'
+const firebaseApp = firebase.initializeApp(firebaseConfig)
 const db = firebase.database()
 const cachePath = 'public-cache/truffle-contracts/'
 
