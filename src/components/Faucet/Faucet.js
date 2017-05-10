@@ -5,38 +5,59 @@ import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card'
 
 import CircularProgress from 'material-ui/CircularProgress'
 
+import { has } from 'lodash'
+
 export default class Faucet extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      address: ''
+      defaultAddress: '',
+      selectedAddress: ''
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.state.address === '' && this.props.faucet.defaultAddress) {
-      this.state = {
-        address: this.props.faucet.defaultAddress
-      }
-    }
+    this.setState({
+      selectedAddress: this.props.web3.defaultAddress,
+      defaultAddress: this.props.web3.defaultAddress
+    })
   }
 
   handleSendWei = () => {
-    this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.address, this.props.faucet.defaultAddress)
+    if (this.isOwner || this.hasAccess(this.state.defaultAddress)) {
+      this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
+    }
   }
 
   handleRequestAccess = () => {
-    this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.address, this.props.faucet.defaultAddress)
+    if (!this.isOwner && !this.hasRequestedAccess(this.state.selectedAddress)) {
+      this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
+    }
   }
 
   handleNavigateToAdmin = () => {
-    let path = '/faucets/' + this.props.faucet.selected.name + '/authorize-users'
-    this.props.onNavigateToPath(path)
+    if (this.isOwner()) {
+      let path = '/faucets/' + this.props.faucet.selected.name + '/authorize-users'
+      this.props.onNavigateToPath(path)
+    }
+  }
+
+  hasRequestedAccess = (address) => {
+    return has(this.props.faucet.authorizedAddressReadModel, address)
+  }
+
+  hasAccess = (address) => {
+    return this.hasRequestedAccess(address) &&
+      this.props.faucet.authorizedAddressReadModel[address] === 'Granted'
+  }
+
+  isOwner = () => {
+    return this.props.faucet.isOwner
   }
 
   onInputChange (event) {
     this.setState({
-      address: event.target.value
+      selectedAddress: event.target.value
     })
   }
 
@@ -44,7 +65,7 @@ export default class Faucet extends React.Component {
     const { selected } = this.props.faucet
 
     const isLoaded = () => {
-      return selected !== null
+      return selected && this.props.faucet.authorizedAddressReadModel !== null
     }
 
     if (!isLoaded()) {
@@ -67,7 +88,7 @@ export default class Faucet extends React.Component {
               style={{ width: '100%' }}
               id='text-field-controlled'
               floatingLabelText='Address'
-              value={this.state.address}
+              value={this.state.selectedAddress}
               errorText={this.state.error}
               onChange={e => this.onInputChange(e)}
               />
@@ -75,19 +96,28 @@ export default class Faucet extends React.Component {
           </CardText>
 
           <CardActions style={{ textAlign: 'right' }}>
-            <RaisedButton
-              primary
-              onClick={this.handleNavigateToAdmin}
-              label='Admin' />
-            <RaisedButton
-              primary
-              onClick={this.handleRequestAccess}
-              label='Request Access' />
-            <RaisedButton
-              secondary
-              style={{ marginRight: '0px' }}
-              onClick={this.handleSendWei}
-              label='Request 1 Ether' />
+            {
+              this.isOwner() &&
+              <RaisedButton
+                primary
+                onClick={this.handleNavigateToAdmin}
+                label='Admin' />
+            }
+            {
+              !this.isOwner() && !this.hasRequestedAccess(this.state.defaultAddress) &&
+              <RaisedButton
+                primary
+                onClick={this.handleRequestAccess}
+                label='Request Access' />
+            }
+            {
+              this.isOwner() || this.hasAccess(this.state.defaultAddress) &&
+              <RaisedButton
+                secondary
+                style={{ marginRight: '0px' }}
+                onClick={this.handleSendWei}
+                label='Request 1 Ether' />
+            }
           </CardActions>
         </Card>
       )
