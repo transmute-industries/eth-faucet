@@ -103,7 +103,7 @@ export default class Navbar extends Component {
           label='Source'
           style={buttonStyle}
         />
-      </div >
+      </div>
     )
 
     const rightMenu = accountExists ? (
