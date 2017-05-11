@@ -6,11 +6,6 @@ import {
 } from 'store/ethereum/web3'
 
 import {
-  LOCATION_CHANGE,
-  getFaucetNameFromPath
-} from 'store/location'
-
-import {
   RECEIVE_FAUCET,
   RECEIVE_FAUCET_ADDRESSES,
   RECEIVE_FAUCET_OBJECTS,
@@ -18,7 +13,6 @@ import {
   RECEIVE_FAUCET_EVENT_STORE,
   SEND_WEI,
   getFaucetByCreator,
-  getFaucetByName,
   getAllFaucetObjects,
   getEventStore
 } from './actions'
@@ -42,13 +36,6 @@ export const faucetReducer = (state = initialState, action) => {
     return Object.assign({}, state, {
       authorizedAddressReadModel: readModel
     })
-  }
-
-  if (action.type === LOCATION_CHANGE) {
-    let faucetName = getFaucetNameFromPath(action.payload.pathname)
-    if (faucetName && (state.selected === null || state.selected.name !== faucetName)) {
-      store.dispatch(getFaucetByName(faucetName))
-    }
   }
 
   if (action.type === RECEIVE_FAUCET_EVENT_STORE) {

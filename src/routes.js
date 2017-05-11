@@ -15,14 +15,38 @@ import CreateFaucetPage from './components/CreateFaucetPage'
 import FaucetPage from './components/FaucetPage'
 import AuthorizeFaucetPage from './components/AuthorizeFaucetPage'
 
-const routes = (
-  <Route path='/' component={CoreLayout}>
-    <IndexRoute component={HomePage} />
-    <Route path={DebugRoute} component={DebugFormContainer} />
-    <Route path={CreateFaucetRoute} component={CreateFaucetPage} />
-    <Route path={FaucetRoute} component={FaucetPage} />
-    <Route path={AuthorizeFaucetRoute} component={AuthorizeFaucetPage} />
-  </Route>
-)
+import { getFaucetByName } from './store/ethereum/faucet/actions'
+
+const routes = (store) => {
+  const fetchFaucet = () => {
+    let faucetName = getFaucetNameFromPath(window.location.pathname)
+    if (faucetName) {
+      store.dispatch(getFaucetByName(faucetName))
+    }
+  }
+
+  const getFaucetNameFromPath = (path) => {
+    if (pathContainsFaucet(path)) {
+      var parts = decodeURI(path).split('/')
+      let cleanName = parts[2].toLowerCase().replace(/\s+/g, '-')
+      return cleanName
+    }
+    return null
+  }
+
+  const pathContainsFaucet = (pathname) => {
+    return pathname.indexOf('/faucets/') !== -1
+  }
+
+  return (
+    <Route path='/' component={CoreLayout}>
+      <IndexRoute component={HomePage} />
+      <Route path={DebugRoute} component={DebugFormContainer} />
+      <Route path={CreateFaucetRoute} component={CreateFaucetPage} />
+      <Route path={FaucetRoute} component={FaucetPage} onEnter={fetchFaucet} />
+      <Route path={AuthorizeFaucetRoute} component={AuthorizeFaucetPage} />
+    </Route>
+  )
+}
 
 export default routes
