@@ -34,7 +34,7 @@ export const initialState = {
 
 import { authorizedAddressReadModel } from './generators'
 
-import { store } from 'main'
+import { store } from 'app'
 
 export const faucetReducer = (state = initialState, action) => {
   if (action.type === 'FAUCET_READ_MODEL_EVENTS_RECEIVED') {
