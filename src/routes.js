@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import { Route, IndexRoute, Redirect } from 'react-router'
 
 import {
   DEBUG_PATH as DebugRoute,
@@ -45,6 +45,7 @@ const routes = (store) => {
       <Route path={CreateFaucetRoute} component={CreateFaucetPage} />
       <Route path={FaucetRoute} component={FaucetPage} onEnter={fetchFaucet} />
       <Route path={AuthorizeFaucetRoute} component={AuthorizeFaucetPage} />
+      <Redirect from='*' to='/' />
     </Route>
   )
 }

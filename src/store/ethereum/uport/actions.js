@@ -1,14 +1,11 @@
-export const UPORT_LOGGED_IN = 'UPORT_LOGGED_IN'
-export const UPORT_LOGGED_OUT = 'UPORT_LOGGED_OUT'
+import { Constants } from './constants'
 
-import {
-  requestCredentials
-} from 'middleware/ethereum/uport'
+import { requestCredentials } from 'middleware/ethereum/uport'
 
 export const loginUser = () => dispatch => {
   requestCredentials((profile) => {
     dispatch({
-      type: UPORT_LOGGED_IN,
+      type: Constants.UPORT_LOGGED_IN,
       payload: profile
     })
   })
@@ -17,7 +14,7 @@ export const loginUser = () => dispatch => {
 export const logoutUser = () => dispatch => {
   return function (dispatch) {
     dispatch({
-      type: UPORT_LOGGED_OUT,
+      type: Constants.UPORT_LOGGED_OUT,
       payload: null
     })
   }

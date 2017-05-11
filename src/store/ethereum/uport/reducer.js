@@ -1,10 +1,29 @@
-import {
-  UPORT_LOGGED_IN,
-  UPORT_LOGGED_OUT
-} from './actions'
+import { Constants } from './constants'
 
 export const initialState = {
   profile: null
+}
+
+const handlers = {
+  [Constants.UPORT_LOGGED_IN]: (state, action) => {
+    personalizeForUser(true, action)
+    return Object.assign({}, state, {
+      profile: action.payload
+    })
+  },
+  [Constants.UPORT_LOGGED_OUT]: (state, action) => {
+    personalizeForUser(false, action)
+    return Object.assign({}, state, {
+      profile: null
+    })
+  }
+}
+
+export const uportReducer = (state = initialState, action) => {
+  if (handlers[action.type]) {
+    return handlers[action.type](state, action)
+  }
+  return state
 }
 
 var personalizeForUser = (isUserLoggedIn, action) => {
@@ -20,22 +39,4 @@ var personalizeForUser = (isUserLoggedIn, action) => {
       el.style['background-image'] = `url("${bannerURL}")`
     }
   }, 1 * 1000)
-}
-
-export const uportReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case UPORT_LOGGED_IN:
-      personalizeForUser(true, action)
-      return Object.assign({}, state, {
-        profile: action.payload
-      })
-
-    case UPORT_LOGGED_OUT:
-      personalizeForUser(false, action)
-      return Object.assign({}, state, {
-        profile: null
-      })
-    default:
-      return state
-  }
 }

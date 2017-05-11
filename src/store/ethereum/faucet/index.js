@@ -1,11 +1,4 @@
 import {
-  RECEIVE_FAUCET,
-  RECEIVE_FAUCET_ADDRESSES,
-  RECEIVE_FAUCET_OBJECTS,
-  FAUCET_CREATED,
-  FAUCET_UPDATED,
-  SEND_WEI,
-  RECEIVE_FAUCET_EVENT_STORE,
   getFaucetByCreator,
   getFaucetByName,
   getAllFaucetAddresses,
@@ -24,13 +17,6 @@ import {
 } from './reducer'
 
 export {
-  RECEIVE_FAUCET,
-  RECEIVE_FAUCET_ADDRESSES,
-  RECEIVE_FAUCET_OBJECTS,
-  FAUCET_CREATED,
-  FAUCET_UPDATED,
-  SEND_WEI,
-  RECEIVE_FAUCET_EVENT_STORE,
   getFaucetByCreator,
   getFaucetByName,
   getAllFaucetAddresses,

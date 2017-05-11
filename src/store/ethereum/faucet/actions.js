@@ -1,10 +1,4 @@
-export const RECEIVE_FAUCET = 'RECEIVE_FAUCET'
-export const RECEIVE_FAUCET_ADDRESSES = 'RECEIVE_FAUCET_ADDRESSES'
-export const RECEIVE_FAUCET_EVENT_STORE = 'RECEIVE_FAUCET_EVENT_STORE'
-export const RECEIVE_FAUCET_OBJECTS = 'RECEIVE_FAUCET_OBJECTS'
-export const FAUCET_CREATED = 'FAUCET_CREATED'
-export const FAUCET_UPDATED = 'FAUCET_UPDATED'
-export const SEND_WEI = 'SEND_WEI'
+import { Constants } from './constants'
 
 import {
   faucetManagerContractGetFaucetByCreator,
@@ -22,12 +16,10 @@ import {
 import { eventsFromTransaction } from './event-store'
 
 export const getEventStore = (_address) => {
-  console.log('getEventStore...', _address)
   return (dispatch) => {
     getEventStoreEvents(_address, (events) => {
-      console.log('getEventStore...', events)
       dispatch({
-        type: RECEIVE_FAUCET_EVENT_STORE,
+        type: Constants.RECEIVE_FAUCET_EVENT_STORE,
         payload: events
       })
     })
@@ -38,7 +30,7 @@ export const getFaucetByCreator = (_fromAddress) => {
   return (dispatch) => {
     faucetManagerContractGetFaucetByCreator(_fromAddress, (faucet) => {
       dispatch({
-        type: RECEIVE_FAUCET,
+        type: Constants.RECEIVE_FAUCET,
         payload: faucet
       })
     })
@@ -49,7 +41,7 @@ export const getFaucetByName = (_name) => {
   return (dispatch) => {
     faucetManagerContractGetFaucetByName(_name, (faucet) => {
       dispatch({
-        type: RECEIVE_FAUCET,
+        type: Constants.RECEIVE_FAUCET,
         payload: faucet
       })
     })
@@ -60,7 +52,7 @@ export const getAllFaucetAddresses = () => {
   return (dispatch) => {
     faucetManagerContractGetAllFaucetAddresses(addresses => {
       dispatch({
-        type: RECEIVE_FAUCET_ADDRESSES,
+        type: Constants.RECEIVE_FAUCET_ADDRESSES,
         payload: addresses
       })
     })
@@ -71,7 +63,7 @@ export const getAllFaucetObjects = () => {
   return (dispatch) => {
     faucetManagerContractGetAllFaucetObjects(faucets => {
       dispatch({
-        type: RECEIVE_FAUCET_OBJECTS,
+        type: Constants.RECEIVE_FAUCET_OBJECTS,
         payload: faucets
       })
     })
@@ -81,12 +73,10 @@ export const getAllFaucetObjects = () => {
 export const requestFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress) => {
   return (dispatch) => {
     faucetManagerContractRequestFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
-      console.log('requestFaucetAccess transaction:', _tx)
       let events = eventsFromTransaction(_tx)
-      console.log('requestFaucetAccess events:', events)
       if (events.length) {
         dispatch({
-          type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',
+          type: Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED,
           payload: events
         })
       }
@@ -100,7 +90,7 @@ export const authorizeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAd
       let events = eventsFromTransaction(_tx)
       if (events.length) {
         dispatch({
-          type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',
+          type: Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED,
           payload: events
         })
       }
@@ -110,13 +100,11 @@ export const authorizeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAd
 
 export const revokeFaucetAccess = (_faucetAddress, _requestorAddress, _fromAddress) => {
   return (dispatch) => {
-    console.log('revokeFaucetAccess: ', _faucetAddress, _requestorAddress, _fromAddress)
     faucetManagerContractRevokeFaucetAccess(_faucetAddress, _requestorAddress, _fromAddress, (_tx) => {
       let events = eventsFromTransaction(_tx)
-
       if (events.length) {
         dispatch({
-          type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',
+          type: Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED,
           payload: events
         })
       }
@@ -131,13 +119,13 @@ export const createFaucet = (_name, _fromAddress) => {
 
       if (events.length) {
         dispatch({
-          type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',
+          type: Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED,
           payload: events
         })
       }
 
       dispatch({
-        type: FAUCET_CREATED,
+        type: Constants.FAUCET_CREATED,
         payload: _tx
       })
     })
@@ -151,13 +139,13 @@ export const sendWei = (_faucetAddress, _recipientAddress, _fromAddress) => {
 
       if (events.length) {
         dispatch({
-          type: 'FAUCET_READ_MODEL_EVENTS_RECEIVED',
+          type: Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED,
           payload: events
         })
       }
 
       dispatch({
-        type: SEND_WEI,
+        type: Constants.SEND_WEI,
         payload: _tx
       })
     })

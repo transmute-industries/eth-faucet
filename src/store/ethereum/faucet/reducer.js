@@ -1,17 +1,9 @@
 import { getRandomAddress } from 'env'
 import { without, find } from 'lodash'
 
-import {
-  RECEIVE_WEB3_ACCOUNTS
-} from 'store/ethereum/web3'
+import { Constants } from './constants'
 
 import {
-  RECEIVE_FAUCET,
-  RECEIVE_FAUCET_ADDRESSES,
-  RECEIVE_FAUCET_OBJECTS,
-  FAUCET_CREATED,
-  RECEIVE_FAUCET_EVENT_STORE,
-  SEND_WEI,
   getFaucetByCreator,
   getAllFaucetObjects,
   getEventStore
@@ -27,34 +19,29 @@ export const initialState = {
 }
 
 import { authorizedAddressReadModel } from './generators'
-
 import { store } from 'app'
 
-export const faucetReducer = (state = initialState, action) => {
-  if (action.type === 'FAUCET_READ_MODEL_EVENTS_RECEIVED') {
+const handlers = {
+  [Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED]: (state, action) => {
     let readModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
     return Object.assign({}, state, {
       authorizedAddressReadModel: readModel
     })
-  }
-
-  if (action.type === RECEIVE_FAUCET_EVENT_STORE) {
+  },
+  [Constants.RECEIVE_FAUCET_EVENT_STORE]: (state, action) => {
     let _authorizedAddressReadModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
     return Object.assign({}, state, {
       authorizedAddressReadModel: _authorizedAddressReadModel
     })
-  }
-
-  if (action.type === RECEIVE_WEB3_ACCOUNTS) {
+  },
+  [Constants.RECEIVE_WEB3_ACCOUNTS]: (state, action) => {
     let defaultAddress = getRandomAddress(action.payload)
     store.dispatch(getAllFaucetObjects())
     return Object.assign({}, state, {
       defaultAddress: defaultAddress
     })
-  }
-
-  if (action.type === RECEIVE_FAUCET) {
-    console.log('RECEIVE_FAUCET:', state)
+  },
+  [Constants.RECEIVE_FAUCET]: (state, action) => {
     let faucet = action.payload
     let defaultFaucet
 
@@ -75,15 +62,13 @@ export const faucetReducer = (state = initialState, action) => {
       defaultFaucet: defaultFaucet,
       objects: objects
     })
-  }
-
-  if (action.type === RECEIVE_FAUCET_ADDRESSES) {
+  },
+  [Constants.RECEIVE_FAUCET_ADDRESSES]: (state, action) => {
     return Object.assign({}, state, {
       addresses: without(action.payload, 0)
     })
-  }
-
-  if (action.type === RECEIVE_FAUCET_OBJECTS) {
+  },
+  [Constants.RECEIVE_FAUCET_OBJECTS]: (state, action) => {
     let ownerFaucet = find(action.payload, (f) => {
       return f.creator === state.defaultAddress
     })
@@ -91,23 +76,26 @@ export const faucetReducer = (state = initialState, action) => {
       objects: action.payload,
       defaultFaucet: ownerFaucet
     })
-  }
-
-  if (action.type === FAUCET_CREATED) {
+  },
+  [Constants.FAUCET_CREATED]: (state, action) => {
     store.dispatch(getFaucetByCreator(state.defaultAddress))
     return Object.assign({}, state, {
       addresses: state.addresses.concat(action.payload.logs[0].address)
     })
-  }
-
-  if (action.type === SEND_WEI) {
+  },
+  [Constants.SEND_WEI]: (state, action) => {
     return Object.assign({}, state, {
       selected: {
         ...state.selected,
-        balance: state.selected.balance - 1 //eventually inconsistent...
+        balance: state.selected.balance - 1
       }
     })
   }
+}
 
+export const faucetReducer = (state = initialState, action) => {
+  if (handlers[action.type]) {
+    return handlers[action.type](state, action)
+  }
   return state
 }
