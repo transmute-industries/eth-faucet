@@ -1,20 +1,18 @@
 import { connect } from 'react-redux'
-import CreateFaucet from '../components/CreateFaucet'
-import { getAllFaucets, createFaucet } from '../actions/faucet'
+import CreateFaucetForm from 'components/CreateFaucetForm'
+import { createFaucet } from 'store/ethereum/faucet'
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    faucet: state.faucet
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateFaucetSubmit: (name) => {
-      event.preventDefault();
-      dispatch(createFaucet(name))
-    },
-    onGetAllFaucets: () => {
-      event.preventDefault();
-      dispatch(getAllFaucets())
+    onCreateFaucetSubmit: (data) => {
+      event.preventDefault()
+      dispatch(createFaucet(data.name, data.fromAddress))
     }
   }
 }
@@ -22,6 +20,6 @@ const mapDispatchToProps = (dispatch) => {
 const CreateFaucetContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateFaucet)
+)(CreateFaucetForm)
 
 export default CreateFaucetContainer

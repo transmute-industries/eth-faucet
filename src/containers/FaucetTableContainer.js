@@ -1,15 +1,20 @@
-import React from 'react';
 import { connect } from 'react-redux'
-import FaucetTable from '../components/FaucetTable'
+import FaucetTable from 'components/FaucetTable'
+
+import { browserHistory } from 'react-router'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    faucet: state.faucet
+    faucetObjects: state.faucet.objects
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    selectRow: (rowData) => {
+      event.preventDefault()
+      browserHistory.push('/faucets/' + rowData.name)
+    }
   }
 }
 

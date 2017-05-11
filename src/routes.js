@@ -1,22 +1,53 @@
-import React from 'react';
-import { Route, IndexRoute } from 'react-router'
+import React from 'react'
+import { Route, IndexRoute, Redirect } from 'react-router'
 
-import { UserIsNotAuthenticated, UserIsAuthenticated } from './util/wrappers.js'
+import {
+  DEBUG_PATH as DebugRoute,
+  CREATE_FAUCET_PATH as CreateFaucetRoute,
+  NAME_FAUCET_PATH as FaucetRoute,
+  AUTHORIZE_FAUCET_PATH as AuthorizeFaucetRoute
+} from './constants/paths'
 
-import HomePage from './layouts/HomePage'
-import LoginPage from './layouts/LoginPage'
-import AdminPage from './layouts/AdminPage'
-import CreateFaucetPage from './layouts/CreateFaucetPage'
-import FaucetPage from './layouts/FaucetPage'
+import CoreLayout from './layouts/CoreLayout/CoreLayout'
+import HomePage from './components/HomePage'
+import DebugFormContainer from './containers/DebugFormContainer'
+import CreateFaucetPage from './components/CreateFaucetPage'
+import FaucetPage from './components/FaucetPage'
+import AuthorizeFaucetPage from './components/AuthorizeFaucetPage'
 
-const routes = (
-    <Route path="/">
-        <IndexRoute component={HomePage} />
-        <Route path="login" component={UserIsNotAuthenticated(LoginPage)} />
-        <Route path="admin" component={UserIsAuthenticated(AdminPage)} />
-        <Route path="faucets/:faucetName" component={FaucetPage} />
-        <Route path="faucet/create" component={UserIsAuthenticated(CreateFaucetPage)} />
+import { getFaucetByName } from './store/ethereum/faucet/actions'
+
+const routes = (store) => {
+  const fetchFaucet = () => {
+    let faucetName = getFaucetNameFromPath(window.location.pathname)
+    if (faucetName) {
+      store.dispatch(getFaucetByName(faucetName))
+    }
+  }
+
+  const getFaucetNameFromPath = (path) => {
+    if (pathContainsFaucet(path)) {
+      var parts = decodeURI(path).split('/')
+      let cleanName = parts[2].toLowerCase().replace(/\s+/g, '-')
+      return cleanName
+    }
+    return null
+  }
+
+  const pathContainsFaucet = (pathname) => {
+    return pathname.indexOf('/faucets/') !== -1
+  }
+
+  return (
+    <Route path='/' component={CoreLayout}>
+      <IndexRoute component={HomePage} />
+      <Route path={DebugRoute} component={DebugFormContainer} />
+      <Route path={CreateFaucetRoute} component={CreateFaucetPage} />
+      <Route path={FaucetRoute} component={FaucetPage} onEnter={fetchFaucet} />
+      <Route path={AuthorizeFaucetRoute} component={AuthorizeFaucetPage} />
+      <Redirect from='*' to='/' />
     </Route>
-)
+  )
+}
 
-export default routes;
+export default routes
