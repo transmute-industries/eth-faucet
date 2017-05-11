@@ -9,6 +9,7 @@ export const RECEIVE_FAUCET_OBJECTS = 'RECEIVE_FAUCET_OBJECTS'
 export const FAUCET_CREATED = 'FAUCET_CREATED'
 export const FAUCET_UPDATED = 'FAUCET_UPDATED'
 export const SEND_WEI = 'SEND_WEI'
+export const DONATE_WEI = 'DONATE_WEI'
 export const RECEIVE_WEB3_ACCOUNTS = 'RECEIVE_WEB3_ACCOUNTS'
 
 export const Constants = {
@@ -23,5 +24,6 @@ export const Constants = {
   FAUCET_CREATED,
   FAUCET_UPDATED,
   SEND_WEI,
+  DONATE_WEI,
   RECEIVE_WEB3_ACCOUNTS
 }

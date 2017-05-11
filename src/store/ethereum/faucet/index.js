@@ -8,6 +8,7 @@ import {
   authorizeFaucetAccess,
   revokeFaucetAccess,
   sendWei,
+  donateWei,
   getEventStore
 } from './actions'
 
@@ -26,6 +27,7 @@ export {
   authorizeFaucetAccess,
   revokeFaucetAccess,
   sendWei,
+  donateWei,
   getEventStore,
   faucetReducer,
   initialState

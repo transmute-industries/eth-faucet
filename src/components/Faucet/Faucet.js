@@ -13,7 +13,10 @@ export default class Faucet extends React.Component {
     super(props)
     this.state = {
       defaultAddress: '',
-      selectedAddress: ''
+      selectedAddress: '',
+      selectedAddressError: '',
+      donationAmount: '',
+      donationError: ''
     }
   }
 
@@ -29,6 +32,10 @@ export default class Faucet extends React.Component {
         this.hasAccess(this.state.defaultAddress)) {
       this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
     }
+  }
+
+  handleDonateWei = () => {
+    this.props.onDonateWeiFormSubmit(this.props.faucet.selected.address, this.state.defaultAddress, this.state.donationAmount)
   }
 
   handleRequestAccess = () => {
@@ -62,9 +69,19 @@ export default class Faucet extends React.Component {
     return this.props.faucet.isOwner
   }
 
-  onInputChange (event) {
+  onSelectedAddressChange (event) {
+    var errorText = (/^(0x)?[0-9a-f]{40}$/.test(event.target.value) || /^(0x)?[0-9A-F]{40}$/.test(event.target.value)) ? '' : 'Invalid address'
     this.setState({
+      selectedAddressError: errorText,
       selectedAddress: event.target.value
+    })
+  }
+
+  onDonationAmountChange (event) {
+    var errorText = /^0*[1-9]\d*$/.test(event.target.value) ? '' : 'Invalid Amount, Please Input a Positive Whole Number'
+    this.setState({
+      donationError: errorText,
+      donationAmount: event.target.value
     })
   }
 
@@ -93,11 +110,10 @@ export default class Faucet extends React.Component {
           <CardText>
             <TextField
               style={{ width: '100%' }}
-              id='text-field-controlled'
               floatingLabelText='Address'
               value={this.state.selectedAddress}
-              errorText={this.state.error}
-              onChange={e => this.onInputChange(e)}
+              errorText={this.state.selectedAddressError}
+              onChange={e => this.onSelectedAddressChange(e)}
               />
             <br />
           </CardText>
@@ -116,6 +132,7 @@ export default class Faucet extends React.Component {
               <RaisedButton
                 primary
                 onClick={this.handleRequestAccess}
+                disabled={this.state.selectedAddressError.length > 0}
                 label='Request Access' />
             }
             {
@@ -130,8 +147,31 @@ export default class Faucet extends React.Component {
               <RaisedButton
                 secondary
                 onClick={this.handleSendWei}
-                disabled={!this.hasAccess(this.state.defaultAddress)}
+                disabled={selected.balance === 0 ||
+                this.state.selectedAddressError.length > 0 ||
+                !this.hasAccess(this.state.defaultAddress)}
                 label='Request 1 Ether' />
+            }
+          </CardActions>
+          <CardText>
+            <TextField
+              style={{ width: '100%' }}
+              type='number'
+              floatingLabelText='Donation Amount'
+              value={this.state.donationAmount}
+              errorText={this.state.donationError}
+              onChange={e => this.onDonationAmountChange(e)}
+              />
+            <br />
+          </CardText>
+
+          <CardActions style={{ textAlign: 'right' }}>
+            {
+              <RaisedButton
+                secondary
+                onClick={this.handleDonateWei}
+                disabled={this.state.donationError.length > 0}
+                label={'Donate ' + this.state.donationAmount + ' Ether'} />
             }
           </CardActions>
         </Card>
