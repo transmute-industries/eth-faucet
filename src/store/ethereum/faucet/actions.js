@@ -10,6 +10,7 @@ import {
   faucetManagerContractAuthorizeFaucetAccess,
   faucetManagerContractRevokeFaucetAccess,
   faucetContractSendWei,
+  faucetContractDonateWei,
   getEventStoreEvents
 } from 'middleware/ethereum/faucet'
 
@@ -146,6 +147,17 @@ export const sendWei = (_faucetAddress, _recipientAddress, _fromAddress) => {
 
       dispatch({
         type: Constants.SEND_WEI,
+        payload: _tx
+      })
+    })
+  }
+}
+
+export const donateWei = (_faucetAddress, _fromAddress, _amountInEther) => {
+  return (dispatch) => {
+    faucetContractDonateWei(_faucetAddress, _fromAddress, _amountInEther, (_tx) => {
+      dispatch({
+        type: Constants.DONATE_WEI,
         payload: _tx
       })
     })

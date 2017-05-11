@@ -194,3 +194,8 @@ export const faucetContractSendWei = (_faucetAddress, _recipientAddress, _fromAd
     })
   })
 }
+
+export const faucetContractDonateWei = (_faucetAddress, _fromAddress, _amountInEther, _callback) => {
+  web3.eth.sendTransaction({from: _fromAddress, to: _faucetAddress, value: web3.toWei(_amountInEther, 'ether')})
+  _callback(null)
+}

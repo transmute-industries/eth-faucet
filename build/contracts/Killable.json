@@ -169,8 +169,14 @@
       "links": {},
       "address": "0x270e64b9d24a94e1aaed9098abf93f1b8ad1e8f6",
       "updated_at": 1494465081280
+    },
+    "1494470103871": {
+      "events": {},
+      "links": {},
+      "address": "0x69eb5d5da45a91551021a8b335c93c938c5a2118",
+      "updated_at": 1494470109291
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1494465081280
+  "updated_at": 1494470109291
 }
