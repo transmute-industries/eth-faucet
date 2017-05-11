@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import HeroRow from 'components/HeroRow'
+import HeroRow from 'components/common/HeroRow'
 
 import CircularProgress from 'material-ui/CircularProgress'
 

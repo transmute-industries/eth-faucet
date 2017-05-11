@@ -7,8 +7,7 @@ import { sendWei, getFaucetByName, requestFaucetAccess } from 'store/ethereum/fa
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    faucet: state.faucet,
-    web3: state.web3
+    faucet: state.faucet
   }
 }
 

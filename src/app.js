@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
-import AppContainer from './containers/App/App'
+import AppContainer from './containers/AppContainer'
 
 import { getWeb3Accounts } from './store/ethereum/web3'
 

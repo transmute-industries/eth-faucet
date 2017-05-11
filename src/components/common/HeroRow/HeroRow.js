@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from 'containers/Navbar/Navbar'
+import Navbar from 'components/common/Navbar'
 import classes from './HeroRow.scss'
 
 import { PropTypes } from 'prop-types';

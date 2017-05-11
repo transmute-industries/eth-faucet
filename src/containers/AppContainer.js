@@ -4,7 +4,7 @@ import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 
 // Theming/Styling
-import Theme from '../../theme'
+import Theme from '../theme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 // Tap Plugin

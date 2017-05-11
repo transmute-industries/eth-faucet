@@ -10,7 +10,7 @@ import {
 
 import CoreLayout from './layouts/CoreLayout/CoreLayout'
 import HomePage from './components/HomePage'
-import DebugFormContainer from './containers/DebugForm/DebugFormContainer'
+import DebugFormContainer from './containers/DebugFormContainer'
 import CreateFaucetPage from './components/CreateFaucetPage'
 import FaucetPage from './components/FaucetPage'
 import AuthorizeFaucetPage from './components/AuthorizeFaucetPage'

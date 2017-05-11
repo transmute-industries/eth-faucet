@@ -76,6 +76,8 @@ contract FaucetManager is EventStore {
 
     // Emit Events
     FaucetCreated(address(_newFaucet), msg.sender, _name, _newFaucet.timeCreated());
+    requestAccess(address(_newFaucet), msg.sender);
+    authorizeAccess(address(_newFaucet), msg.sender);
     return address(_newFaucet);
 	}
 

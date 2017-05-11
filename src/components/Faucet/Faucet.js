@@ -19,14 +19,14 @@ export default class Faucet extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     this.setState({
-      selectedAddress: this.props.web3.defaultAddress,
-      defaultAddress: this.props.web3.defaultAddress
+      selectedAddress: this.props.faucet.defaultAddress,
+      defaultAddress: this.props.faucet.defaultAddress
     })
   }
 
   handleSendWei = () => {
-    if (this.isOwner || (this.props.faucet.authorizedAddressReadModel !== null &&
-        this.hasAccess(this.state.defaultAddress))) {
+    if (this.props.faucet.authorizedAddressReadModel !== null &&
+        this.hasAccess(this.state.defaultAddress)) {
       this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
     }
   }
@@ -72,7 +72,7 @@ export default class Faucet extends React.Component {
     const { selected, authorizedAddressReadModel } = this.props.faucet
 
     const isLoaded = () => {
-      return selected !== null
+      return authorizedAddressReadModel !== null
     }
 
     if (!isLoaded()) {
@@ -119,8 +119,8 @@ export default class Faucet extends React.Component {
                 label='Request Access' />
             }
             {
-              !this.isOwner() && (authorizedAddressReadModel !== null &&
-              this.hasRequestedAccess(this.state.defaultAddress) &&
+              !this.isOwner() &&
+              (this.hasRequestedAccess(this.state.defaultAddress) &&
               !this.hasAccess(this.state.defaultAddress)) &&
               <FlatButton
                 disabled
@@ -130,8 +130,7 @@ export default class Faucet extends React.Component {
               <RaisedButton
                 secondary
                 onClick={this.handleSendWei}
-                disabled={!(this.isOwner() || (authorizedAddressReadModel !== null &&
-                this.hasAccess(this.state.defaultAddress)))}
+                disabled={!this.hasAccess(this.state.defaultAddress)}
                 label='Request 1 Ether' />
             }
           </CardActions>

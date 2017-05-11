@@ -2,7 +2,7 @@ import { UserAuthWrapper } from 'redux-auth-wrapper'
 import { browserHistory } from 'react-router'
 import { paths } from 'constants'
 import { helpers } from 'react-redux-firebase'
-import LoadingSpinner from 'components/LoadingSpinner'
+import LoadingSpinner from 'components/common/LoadingSpinner'
 
 const { pathToJS } = helpers
 

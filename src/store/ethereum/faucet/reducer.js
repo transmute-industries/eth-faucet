@@ -54,6 +54,7 @@ export const faucetReducer = (state = initialState, action) => {
   }
 
   if (action.type === RECEIVE_FAUCET) {
+    console.log('RECEIVE_FAUCET:', state)
     let faucet = action.payload
     let defaultFaucet
 
