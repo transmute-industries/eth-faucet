@@ -147,7 +147,7 @@ export const sendWei = (_faucetAddress, _recipientAddress, _fromAddress) => {
 
       dispatch({
         type: Constants.SEND_WEI,
-        payload: _tx
+        payload: { transaction: _tx.tx }
       })
     })
   }
@@ -158,7 +158,7 @@ export const donateWei = (_faucetAddress, _fromAddress, _amountInEther) => {
     faucetContractDonateWei(_faucetAddress, _fromAddress, _amountInEther, (_tx) => {
       dispatch({
         type: Constants.DONATE_WEI,
-        payload: _tx
+        payload: { transaction: _tx, amount: _amountInEther }
       })
     })
   }

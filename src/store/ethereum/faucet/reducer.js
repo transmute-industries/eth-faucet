@@ -87,7 +87,17 @@ const handlers = {
     return Object.assign({}, state, {
       selected: {
         ...state.selected,
-        balance: state.selected.balance - 1
+        balance: state.selected.balance - 1,
+        lastTx: action.payload.transaction
+      }
+    })
+  },
+  [Constants.DONATE_WEI]: (state, action) => {
+    return Object.assign({}, state, {
+      selected: {
+        ...state.selected,
+        balance: state.selected.balance + parseInt(action.payload.amount),
+        lastTx: action.payload.transaction
       }
     })
   }
