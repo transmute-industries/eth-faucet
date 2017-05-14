@@ -4,7 +4,7 @@
             "value": 10,
             "density": {
                 "enable": true,
-                "value_area": 256
+                "value_area": 400
             }
         },
         "color": {
@@ -20,7 +20,7 @@
                 "nb_sides": 6
             },
             "image": {
-                "src": "http://www.stickpng.com/assets/images/5845ca7c1046ab543d25238b.png",
+                "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/ETHEREUM-YOUTUBE-PROFILE-PIC.png/768px-ETHEREUM-YOUTUBE-PROFILE-PIC.png",
                 "width": 10,
                 "height": 10
             }
@@ -48,7 +48,7 @@
         "line_linked": {
             "enable": true,
             "distance": 100,
-            "color": "#4CAF50",
+            "color": "#ABB5B6",
             "opacity": 0.50,
             "width": 1
         },
@@ -76,7 +76,7 @@
             },
             "onclick": {
                 "enable": true,
-                "mode": "push"
+                "mode": "remove"
             },
             "resize": true
         },
