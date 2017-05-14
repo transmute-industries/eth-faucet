@@ -29,6 +29,7 @@ contract Faucet is EventStore  {
     creator = _creator;
     sendAmount = 1000000000000000000;
     blockLimit = 0;
+    emitEvent('FAUCET_CREATED', _creator, 0, _name);
   }
 
   // Modifiers
@@ -105,7 +106,7 @@ contract Faucet is EventStore  {
       throw;
     requestorAddresses.add(_requestor);
     authorizedAddressesMapping[_requestor] = false;
-    emitEvent('FAUCET_ADDRESS_ACCESS_REQUESTED', _requestor, 0, '');
+    emitEvent('FAUCET_ACCESS_REQUESTED', _requestor, 0, '');
   }
 
   function authorizeRequestorAddress(address _requestor) public
@@ -116,7 +117,7 @@ contract Faucet is EventStore  {
     if (authorizedAddressesMapping[_requestor])
       throw;
     authorizedAddressesMapping[_requestor] = true;
-    emitEvent('FAUCET_ADDRESS_ACCESS_GRANTED', _requestor, 0, '');
+    emitEvent('FAUCET_ACCESS_GRANTED', _requestor, 0, '');
   }
 
   function revokeRequestorAddress(address _requestor) public
@@ -127,7 +128,7 @@ contract Faucet is EventStore  {
     if (!authorizedAddressesMapping[_requestor])
       throw;
     authorizedAddressesMapping[_requestor] = false;
-    emitEvent('FAUCET_ADDRESS_ACCESS_REVOKED', tx.origin, 0, '');
+    emitEvent('FAUCET_ACCESS_REVOKED', _requestor, 0, '');
   }
 
   function isAddressAuthorized(address _address) public constant

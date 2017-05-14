@@ -28,7 +28,7 @@ export default class Faucet extends React.Component {
   }
 
   handleSendWei = () => {
-    if (this.props.faucet.authorizedAddressReadModel !== null &&
+    if (this.props.faucet.selected.authorizedAddressReadModel !== null &&
         this.hasAccess(this.state.defaultAddress)) {
       this.props.onSendWeiFormSubmit(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
     }
@@ -39,7 +39,7 @@ export default class Faucet extends React.Component {
   }
 
   handleRequestAccess = () => {
-    if (!this.isOwner() && (this.props.faucet.authorizedAddressReadModel === null ||
+    if (!this.isOwner() && (this.props.faucet.selected.authorizedAddressReadModel === null ||
         !this.hasRequestedAccess(this.state.selectedAddress))) {
       this.props.onRequestFaucetAccess(this.props.faucet.selected.address, this.state.selectedAddress, this.state.defaultAddress)
     }
@@ -53,16 +53,16 @@ export default class Faucet extends React.Component {
   }
 
   hasRequestedAccess = (address) => {
-    return has(this.props.faucet.authorizedAddressReadModel, address)
+    return has(this.props.faucet.selected.authorizedAddressReadModel, address)
   }
 
   hasAccess = (address) => {
     return this.hasRequestedAccess(address) &&
-      this.props.faucet.authorizedAddressReadModel[address] === 'Granted'
+      this.props.faucet.selected.authorizedAddressReadModel[address] === 'Granted'
   }
 
   getStatus = (address) => {
-    return this.props.faucet.authorizedAddressReadModel[address]
+    return this.props.faucet.selected.authorizedAddressReadModel[address]
   }
 
   isOwner = () => {
@@ -86,10 +86,10 @@ export default class Faucet extends React.Component {
   }
 
   render () {
-    const { selected, authorizedAddressReadModel } = this.props.faucet
+    const { selected } = this.props.faucet
 
     const isLoaded = () => {
-      return authorizedAddressReadModel !== null
+      return selected !== null && selected.authorizedAddressReadModel !== null
     }
 
     if (!isLoaded()) {
@@ -127,7 +127,7 @@ export default class Faucet extends React.Component {
                 label='Admin' />
             }
             {
-              !this.isOwner() && (authorizedAddressReadModel === null ||
+              !this.isOwner() && (selected.authorizedAddressReadModel === null ||
               !this.hasRequestedAccess(this.state.defaultAddress)) &&
               <RaisedButton
                 primary

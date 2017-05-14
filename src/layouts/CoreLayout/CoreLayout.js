@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from 'components/common/Navbar'
+import SnackbarNotification from 'components/Common/SnackbarNotification'
 import classes from './CoreLayout.scss'
 import 'styles/core.scss'
 
@@ -10,6 +11,7 @@ export const CoreLayout = ({ children }) => (
     <Navbar />
     <div className={classes.children}>
       {children}
+      <SnackbarNotification />
     </div>
   </div>
 )

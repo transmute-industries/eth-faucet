@@ -36,7 +36,7 @@ class FaucetAuthorizeTable extends React.Component {
 
   onRowSelection = (rows) => {
     let selectedRows = []
-    let addresses = Object.keys(this.props.faucet.authorizedAddressReadModel)
+    let addresses = Object.keys(this.props.faucet.selected.authorizedAddressReadModel)
 
     if (rows === 'all') {
       selectedRows = addresses
@@ -69,7 +69,7 @@ class FaucetAuthorizeTable extends React.Component {
   handleConfirmDialog = () => {
     if (this.state.dialogActionChoice === 'grant') {
       this.state.selectedRows.forEach((requestingAddress) => {
-        if (this.props.faucet.authorizedAddressReadModel[requestingAddress] !== 'Granted') {
+        if (this.props.faucet.selected.authorizedAddressReadModel[requestingAddress] !== 'Granted') {
           let payload = {
             faucetAddress: this.props.faucet.selected.address,
             requestorAddress: requestingAddress,
@@ -82,7 +82,7 @@ class FaucetAuthorizeTable extends React.Component {
 
     if (this.state.dialogActionChoice === 'revoke') {
       this.state.selectedRows.forEach((requestingAddress) => {
-        if (this.props.faucet.authorizedAddressReadModel[requestingAddress] !== 'Revoked') {
+        if (this.props.faucet.selected.authorizedAddressReadModel[requestingAddress] !== 'Revoked') {
           let payload = {
             faucetAddress: this.props.faucet.selected.address,
             requestorAddress: requestingAddress,
@@ -128,7 +128,7 @@ class FaucetAuthorizeTable extends React.Component {
   }
 
   hasAccess = (address) => {
-    return this.props.faucet.authorizedAddressReadModel[address] === 'Granted'
+    return this.props.faucet.selected.authorizedAddressReadModel[address] === 'Granted'
   }
 
   render () {
@@ -146,12 +146,12 @@ class FaucetAuthorizeTable extends React.Component {
     ]
 
     const isLoaded = () => {
-      return this.props.faucet.authorizedAddressReadModel !== null
+      return this.props.faucet.selected.authorizedAddressReadModel !== null
     }
 
     const readModelToRows = () => {
       let rows = []
-      each(this.props.faucet.authorizedAddressReadModel, (v, k) => {
+      each(this.props.faucet.selected.authorizedAddressReadModel, (v, k) => {
         rows.push(
           <TableRow key={k} selected={this.isSelected(k)}>
             <TableRowColumn>{k.substring(0, 6) + '...'}</TableRowColumn>
@@ -171,7 +171,7 @@ class FaucetAuthorizeTable extends React.Component {
         </div>
       )
     } else {
-      if (!Object.keys(this.props.faucet.authorizedAddressReadModel).length) {
+      if (!Object.keys(this.props.faucet.selected.authorizedAddressReadModel).length) {
         return (
           <div style={{ textAlign: 'center' }}>
             <h1 >

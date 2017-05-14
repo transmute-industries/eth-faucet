@@ -1,5 +1,5 @@
 import { getRandomAddress } from 'env'
-import { without, find } from 'lodash'
+import { some, without, find } from 'lodash'
 
 import { Constants } from './constants'
 
@@ -14,24 +14,31 @@ export const initialState = {
   objects: null,
   selected: null,
   defaultAddress: null,
-  defaultFaucet: null,
-  authorizedAddressReadModel: null
+  defaultFaucet: null
 }
 
-import { authorizedAddressReadModel } from './generators'
+import { selectedFaucetReadModel } from './generators'
 import { store } from 'app'
 
 const handlers = {
   [Constants.FAUCET_READ_MODEL_EVENTS_RECEIVED]: (state, action) => {
-    let readModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
+    let _readModel = selectedFaucetReadModel(state.selected, action.payload)
+    // if (some(action.payload, {Type: Constants.FAUCET_CREATED})) {
+    //   store.dispatch(getFaucetByCreator(state.defaultAddress))
+    //   return Object.assign({}, state, {
+    //     addresses: state.addresses.concat(action.payload.logs[0].address)
+    //   })
+    // }
     return Object.assign({}, state, {
-      authorizedAddressReadModel: readModel
+      selected: _readModel
     })
+    // return Object.assign({}, _newState)
   },
   [Constants.RECEIVE_FAUCET_EVENT_STORE]: (state, action) => {
-    let _authorizedAddressReadModel = authorizedAddressReadModel(state.authorizedAddressReadModel, action.payload)
+    let _readModel = selectedFaucetReadModel(state.selected, action.payload)
+    // return Object.assign({}, _newState)
     return Object.assign({}, state, {
-      authorizedAddressReadModel: _authorizedAddressReadModel
+      selected: _readModel
     })
   },
   [Constants.RECEIVE_WEB3_ACCOUNTS]: (state, action) => {
@@ -42,6 +49,7 @@ const handlers = {
     })
   },
   [Constants.RECEIVE_FAUCET]: (state, action) => {
+    console.log('RECEIVE_FAUCET', action)
     let faucet = action.payload
     let defaultFaucet
 
@@ -78,6 +86,7 @@ const handlers = {
     })
   },
   [Constants.FAUCET_CREATED]: (state, action) => {
+    console.log('timbo')
     store.dispatch(getFaucetByCreator(state.defaultAddress))
     return Object.assign({}, state, {
       addresses: state.addresses.concat(action.payload.logs[0].address)

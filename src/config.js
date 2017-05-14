@@ -1,13 +1,22 @@
 // EXAMPLE ONLY! THIS FILE IS USUALLY NOT PART OF GIT TRACKING
 // .gitignore skips this at the project level, but it is added for example here
 
+// export const firebase = {
+//   apiKey: 'AIzaSyBev_5tS4kmdcgi6LcUhGP3HBP1s5Rl0H8',
+//   authDomain: 'eth-faucet.firebaseapp.com',
+//   databaseURL: 'https://eth-faucet.firebaseio.com',
+//   projectId: 'eth-faucet',
+//   storageBucket: 'eth-faucet.appspot.com',
+//   messagingSenderId: '686546727130'
+// }
+
 export const firebase = {
-  apiKey: 'AIzaSyBev_5tS4kmdcgi6LcUhGP3HBP1s5Rl0H8',
-  authDomain: 'eth-faucet.firebaseapp.com',
-  databaseURL: 'https://eth-faucet.firebaseio.com',
-  projectId: 'eth-faucet',
-  storageBucket: 'eth-faucet.appspot.com',
-  messagingSenderId: '686546727130'
+  apiKey: 'AIzaSyAiJfk6rcNuI4KMpYrk_NUL071Ply-G4zw',
+  authDomain: 'transmute-faucet.firebaseapp.com',
+  databaseURL: 'https://transmute-faucet.firebaseio.com',
+  projectId: 'transmute-faucet',
+  storageBucket: 'transmute-faucet.appspot.com',
+  messagingSenderId: '26669995270'
 }
 
 // Config for react-redux-firebase

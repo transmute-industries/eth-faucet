@@ -9,13 +9,14 @@ const NEW_EVENT = 'NEW_EVENT'
 
 const eventStorePath = 'transmute/events/'
 const readModelStorePath = 'transmute/models/'
+const faucetStorePath = 'transmute/faucets/'
+import {initialState} from './reducer'
 
 const EVENT_SCHEMAS = {
   [NEW_EVENT]: {
     Id: 'BigNumber',
     Type: 'String',
     Created: 'BigNumber',
-
     AddressValue: 'String',
     UIntValue: 'BigNumber',
     StringValue: 'String'
@@ -45,6 +46,9 @@ const eventFromLog = (log) => {
       [key]: prop
     })
   })
+  extend(event, {
+    ContractAddress: log.address
+  })
   return event
 }
 
@@ -52,7 +56,6 @@ const eventsFromTransaction = (tx) => {
   return tx.logs
   .filter((log) => {
     let isEventStoreEvent = EVENT_SCHEMAS[log.event] !== undefined
-
     return isEventStoreEvent
   }).map((log) => {
     return eventFromLog(log)
@@ -88,7 +91,6 @@ const emitEventStream = async (esInstance, eventArray, fromAccount) => {
   })
   return await Promise.all(eventPromises)
   .then((newEvents) => {
-    // console.log('newEvents: ', newEvents)
     return newEvents
   })
 }
@@ -123,25 +125,30 @@ const receiveEvents = async (events) => {
   }))
 }
 
-const rebuildReadModelWithGenerator = async (readModel, generator, events) => {
+const rebuildReadModelWithGenerator = async (storePath, readModel, generator, events) => {
+  console.log('readModel:', readModel)
   let model = generator(readModel, events)
-  return setItem(readModelStorePath, model.Id, model)
+  return setItem(storePath, model.address, model)
   .then(() => {
     return readModel
   })
 }
 
 const maybeSyncReadModel = async (storePath, key, generator, esInstance) => {
+  console.log('esInstance:', esInstance)
   let eventCount = (await esInstance.eventCount()).toNumber()
   return getItem(storePath, key)
   .then(async (readModel) => {
-    if (readModel.EventCount === eventCount) {
-      // console.log('No New Events To Apply')
-      return false
+    if (readModel == null) {
+      readModel = initialState
+    }
+    console.log('readModel:', readModel)
+    console.log('readModel == null:', readModel == null)
+    if (readModel.eventCount === eventCount) {
+      return readModel
     } else {
-      let events = await readEventsStartingAt(esInstance, readModel.EventCount)
-      // console.log('Apply Events: ', events)
-      return rebuildReadModelWithGenerator(readModel, generator, events)
+      let events = await readEventsStartingAt(esInstance, readModel == null ? 0 : readModel.eventCount)
+      return rebuildReadModelWithGenerator(storePath, readModel, generator, events)
     }
   })
 }
@@ -149,6 +156,9 @@ const maybeSyncReadModel = async (storePath, key, generator, esInstance) => {
 module.exports = {
   NEW_EVENT,
   EVENT_SCHEMAS,
+  getItem,
+  setItem,
+  faucetStorePath,
   eventsFromTransaction,
   convertUIntArray,
   readEvent,

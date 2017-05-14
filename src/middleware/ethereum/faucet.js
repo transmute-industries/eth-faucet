@@ -1,7 +1,6 @@
 import Web3 from 'web3'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
-
 const contract = require('truffle-contract')
 
 import Faucet from '../../../build/contracts/Faucet.json'
@@ -13,11 +12,18 @@ faucetContract.setProvider(provider)
 const faucetManagerContract = contract(FaucetManager)
 faucetManagerContract.setProvider(provider)
 
-import { readEvents } from '../../../ti-framework/event-store'
+import {
+  faucetStorePath,
+  receiveEvents,
+  readEvents,
+  maybeSyncReadModel
+} from '../../store/ethereum/faucet/event-store'
+import { selectedFaucetReadModel } from '../../store/ethereum/faucet/generators'
 
 // HELPER METHODS
 
 export const getEventStoreEvents = (_address, _callback) => {
+  console.log('_address:', _address)
   return faucetContract.at(_address)
   .then(async (_faucet) => {
     return readEvents(_faucet)
@@ -27,35 +33,44 @@ export const getEventStoreEvents = (_address, _callback) => {
   })
 }
 
-export const getFaucetViewModel = (_address) => {
-  return faucetContract.at(_address)
-  .then(async (_faucet) => {
-    return {
-      address: _faucet.address,
-      timeCreated: (await _faucet.timeCreated.call()).toNumber(),
-      creator: await _faucet.creator.call(),
-      name: await _faucet.name.call().then((_name) => _name.replace(/-/g, ' ')),
-      balance: await web3.fromWei(web3.eth.getBalance(_address), 'ether').toNumber(),
-      requestorAddresses: await _faucet.getRequestorAddresses(),
-      events: await readEvents(_faucet)
-    }
-  })
-}
-
-export const faucetContractGetFaucetByAddress = (_address) => {
-  return getFaucetViewModel(_address)
-  .then((viewModel) => {
+const getFaucetViewModel = async (_contract) => {
+  let cachedObject = await maybeSyncReadModel(faucetStorePath, _contract.address, selectedFaucetReadModel, _contract)
+  if (!cachedObject) {
+    let viewModel = await getFaucetViewModelFromWeb3Async(_contract)
+    console.info('getFaucetViewModel cache miss...')
+    maybeSyncReadModel(faucetStorePath, _contract.address, viewModel)
     return viewModel
-  })
+  } else {
+    console.info('getFaucetViewModel cache hit...')
+    console.log(cachedObject)
+    return cachedObject
+  }
 }
 
-const getFaucetsByAddressesAsyc = async (_addresses) => {
+export const getFaucetViewModelFromWeb3Async = async (_faucet) => {
+  return {
+    address: _faucet.address,
+    timeCreated: (await _faucet.timeCreated.call()).toNumber(),
+    creator: await _faucet.creator.call(),
+    name: await _faucet.name.call().then((_name) => _name.replace(/-/g, ' ')),
+    balance: await web3.fromWei(web3.eth.getBalance(_faucet.address), 'ether').toNumber(),
+    requestorAddresses: await _faucet.getRequestorAddresses(),
+    events: await readEvents(_faucet)
+  }
+}
+
+const getFaucetsFromWeb3Async = async (_addresses) => {
   return await Promise.all(
     _addresses
     .map(async (address) => {
       return await faucetContractGetFaucetByAddress(address)
     })
   )
+}
+
+export const faucetContractGetFaucetByAddress = async (_address) => {
+  let _faucet = await faucetContract.at(_address)
+  return await getFaucetViewModel(_faucet)
 }
 
 export const faucetManagerContractGetFaucetByCreator = (fromAddress, _callback) => {
@@ -94,7 +109,7 @@ export const faucetManagerContractGetAllFaucetObjects = (_callback) => {
     _instance.getFaucets
     .call()
     .then(async (addresses) => {
-      let faucetContracts = await getFaucetsByAddressesAsyc(addresses)
+      let faucetContracts = await getFaucetsFromWeb3Async(addresses)
       _callback(faucetContracts)
     })
     .catch((error) => {
