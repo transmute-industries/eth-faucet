@@ -121,7 +121,7 @@ export const faucetManagerContractCreateFaucet = (_name, fromAddress, _callback)
   faucetManagerContract.deployed()
   .then((_instance) => {
     _instance
-    .createFaucet(_name, { from: fromAddress, gas: 2000000, value: web3.toWei(10) })
+    .createFaucet(_name, { from: fromAddress, gas: 2000000 })
     .then((_tx) => {
       _callback(_tx)
     })
