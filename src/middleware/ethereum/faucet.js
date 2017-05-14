@@ -1,6 +1,4 @@
-import Web3 from 'web3'
-const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const web3 = new Web3(provider)
+import { web3 } from 'env'
 
 const contract = require('truffle-contract')
 
@@ -8,10 +6,10 @@ import Faucet from '../../../build/contracts/Faucet.json'
 import FaucetManager from '../../../build/contracts/FaucetManager.json'
 
 const faucetContract = contract(Faucet)
-faucetContract.setProvider(provider)
+faucetContract.setProvider(web3.currentProvider)
 
 const faucetManagerContract = contract(FaucetManager)
-faucetManagerContract.setProvider(provider)
+faucetManagerContract.setProvider(web3.currentProvider)
 
 import { readEvents } from '../../../ti-framework/event-store'
 
