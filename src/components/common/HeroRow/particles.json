@@ -8,21 +8,16 @@
             }
         },
         "color": {
-            "value": "#4CAF50"
+            "value": "#616161"
         },
         "shape": {
-            "type": "image",
+            "type": "polygon",
             "stroke": {
                 "width": 0,
-                "color": "#000000"
+                "color": "#616161"
             },
             "polygon": {
                 "nb_sides": 6
-            },
-            "image": {
-                "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/ETHEREUM-YOUTUBE-PROFILE-PIC.png/768px-ETHEREUM-YOUTUBE-PROFILE-PIC.png",
-                "width": 10,
-                "height": 10
             }
         },
         "opacity": {
@@ -40,7 +35,7 @@
             "random": true,
             "anim": {
                 "enable": true,
-                "speed": 8,
+                "speed": 5,
                 "size_min": 0.25,
                 "sync": false
             }
@@ -48,22 +43,22 @@
         "line_linked": {
             "enable": true,
             "distance": 100,
-            "color": "#ABB5B6",
-            "opacity": 0.50,
+            "color": "#616161",
+            "opacity": 0.70,
             "width": 1
         },
         "move": {
             "enable": true,
-            "speed": 1.0,
-            "direction": "none",
+            "speed": 0.8,
+            "direction": "",
             "random": false,
             "straight": false,
-            "out_mode": "bounce",
-            "bounce": true,
+            "out_mode": "out",
+            "bounce": false,
             "attract": {
-                "enable": true,
+                "enable": false,
                 "rotateX": 100,
-                "rotateY": 10000
+                "rotateY": 100
             }
         }
     },
@@ -72,11 +67,11 @@
         "events": {
             "onhover": {
                 "enable": true,
-                "mode": "bubble grab repulse"
+                "mode": "grab"
             },
             "onclick": {
                 "enable": true,
-                "mode": "remove"
+                "mode": "repulse"
             },
             "resize": true
         },
@@ -84,19 +79,19 @@
             "grab": {
                 "distance": 200,
                 "line_linked": {
-                    "opacity": 0.25
+                    "opacity": 0.9
                 }
             },
             "bubble": {
                 "distance": 120,
-                "size": 32,
+                "size": 16,
                 "duration": 2,
                 "opacity": 0.25,
                 "speed": 0.1
             },
             "repulse": {
-                "distance": 70,
-                "duration": 1.2
+                "distance": 200,
+                "duration": 10
             },
             "push": {
                 "particles_nb": 10
